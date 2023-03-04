@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import pl.krystiankaniowski.performance.timer.TimerScreen
+import pl.krystiankaniowski.performance.timer.TimerViewModel
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    Greeting("Android")
+                    TimerScreen(viewModel = TimerViewModel())
                 }
             }
         }
