@@ -10,8 +10,8 @@ class TimerViewModel : ViewModel() {
         State(
             counter = "-",
             isTimerActive = false,
-            isStartButtonEnabled = true
-        )
+            isStartButtonEnabled = true,
+        ),
     )
     val state: StateFlow<State> = _state
 
@@ -34,6 +34,6 @@ class TimerViewModel : ViewModel() {
     data class State(
         val counter: String,
         val isTimerActive: Boolean,
-        val isStartButtonEnabled: Boolean
+        val isStartButtonEnabled: Boolean,
     )
 }
