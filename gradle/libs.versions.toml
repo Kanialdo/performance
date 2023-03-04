@@ -1,6 +1,7 @@
 [versions]
 androidGradlePlugin = "7.4.2"
 androidxComposeMaterial3 = "1.1.0-alpha06"
+detekt = "1.22.0"
 kotlin = "1.8.10"
 lifecycleRuntimeKtx = "2.5.1"
 
@@ -19,8 +20,11 @@ androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espres
 androidx-test-ext = { group = "androidx.test.ext", name = "junit-ktx", version = "1.1.5" }
 junit4 = { group = "junit", name = "junit", version = "4.13.2" }
 
+detekt-plugins-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlin-android = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
