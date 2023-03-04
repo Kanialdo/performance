@@ -1,0 +1,76 @@
+build:
+  maxIssues: 0
+
+complexity:
+  LongMethod:
+    ignoreAnnotated:
+      - 'Composable'
+  LongParameterList:
+    ignoreAnnotated:
+      - 'Composable'
+  CyclomaticComplexMethod:
+    ignoreAnnotated:
+      - 'Composable'
+
+exceptions:
+  TooGenericExceptionCaught:
+    active: false
+  SwallowedException:
+    active: false
+
+empty-blocks:
+  EmptyCatchBlock:
+    active: false
+
+formatting:
+  FinalNewline:
+    active: false
+    autoCorrect: true
+    insertFinalNewLine: true
+  MaximumLineLength:
+    active: true
+    maxLineLength: 180
+  NoWildcardImports:
+    active: false
+  ArgumentListWrapping:
+    active: true
+    maxLineLength: 180
+  ParameterListWrapping:
+    active: true
+    maxLineLength: 180
+  NoEmptyFirstLineInMethodBlock:
+    active: false
+  TrailingCommaOnCallSite:
+    active: true
+    autoCorrect: true
+    useTrailingCommaOnCallSite: true
+  TrailingCommaOnDeclarationSite:
+    active: true
+    autoCorrect: true
+    useTrailingCommaOnDeclarationSite: true
+
+style:
+  MagicNumber:
+    active: false
+    ignoreAnnotated:
+      - 'Preview'
+  MaxLineLength:
+    active: true
+    maxLineLength: 180
+  NewLineAtEndOfFile:
+    active: false
+  WildcardImport:
+    active: false
+  UnusedPrivateMember:
+    active: true
+    ignoreAnnotated:
+      - 'Preview'
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated: [Composable]
+  VariableNaming:
+    variablePattern: '[_a-z][_A-Za-z0-9]*'
+    privateVariablePattern: '[_a-z][_A-Za-z0-9]*'
+  ConstructorParameterNaming:
+    privateParameterPattern: '[_a-z][_A-Za-z0-9]*'
