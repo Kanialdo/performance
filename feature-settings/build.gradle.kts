@@ -2,22 +2,19 @@ import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 plugins {
     kotlin("kapt")
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
     alias(libs.plugins.hilt)
     alias(libs.plugins.junit5)
 }
 
 android {
-    namespace = "pl.krystiankaniowski.performance"
+    namespace = "pl.krystiankaniowski.performance.settings"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "pl.krystiankaniowski.performance"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -64,13 +61,7 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 dependencies {
-    implementation(projects.featureTimer)
-    implementation(projects.featureSettings)
     implementation(projects.ui)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
@@ -81,8 +72,11 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit5.jupiter.api)
+    testImplementation(libs.kotlinx.coroutines.test)
     testRuntimeOnly(libs.junit5.jupiter.engine)
     androidTestImplementation(libs.androidx.test.ext)
     androidTestImplementation(libs.androidx.test.espresso.core)

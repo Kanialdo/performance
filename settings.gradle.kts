@@ -19,4 +19,5 @@ dependencyResolutionManagement {
 rootProject.name = "performance"
 include(":app")
 include(":feature-timer")
+include(":feature-settings")
 include(":ui")
