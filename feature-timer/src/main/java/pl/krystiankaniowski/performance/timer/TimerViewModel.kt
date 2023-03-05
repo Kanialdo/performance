@@ -18,7 +18,7 @@ import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 @HiltViewModel
-class TimerViewModel @Inject constructor(): ViewModel() {
+class TimerViewModel @Inject constructor() : ViewModel() {
 
     private val seconds = 25.toDuration(DurationUnit.MINUTES).inWholeSeconds
 
