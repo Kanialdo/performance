@@ -1,19 +1,16 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
     alias(libs.plugins.junit5)
 }
 
 android {
-    namespace = "pl.krystiankaniowski.performance"
+    namespace = "pl.krystiankaniowski.performance.timer"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "pl.krystiankaniowski.performance"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -56,7 +53,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.featureTimer)
     implementation(projects.ui)
     implementation(libs.androidx.core)
     implementation(libs.androidx.activity.compose)
@@ -66,6 +62,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     testImplementation(libs.junit5.jupiter.api)
+    testImplementation(libs.kotlinx.coroutines.test)
     testRuntimeOnly(libs.junit5.jupiter.engine)
     androidTestImplementation(libs.androidx.test.ext)
     androidTestImplementation(libs.androidx.test.espresso.core)
