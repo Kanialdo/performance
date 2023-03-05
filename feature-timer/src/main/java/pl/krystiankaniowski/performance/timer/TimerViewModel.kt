@@ -24,6 +24,7 @@ class TimerViewModel : ViewModel() {
             counter = seconds.toTextTime(),
             isTimerActive = false,
             isStartButtonEnabled = true,
+            isStopButtonEnabled = false,
         ),
     )
     val state: StateFlow<State> = _state
@@ -32,6 +33,7 @@ class TimerViewModel : ViewModel() {
 
     fun onEvent(event: Event) = when (event) {
         Event.Start -> onStart()
+        Event.Stop -> onStop()
     }
 
     private fun onStart() {
@@ -45,6 +47,7 @@ class TimerViewModel : ViewModel() {
                         counter = seconds.toTextTime(),
                         isTimerActive = false,
                         isStartButtonEnabled = true,
+                        isStopButtonEnabled = false,
                     )
                 }
                 .conflate() // In case the creating of State takes some time, conflate keeps the time ticking separately
@@ -53,9 +56,14 @@ class TimerViewModel : ViewModel() {
                         counter = it.toTextTime(),
                         isTimerActive = true,
                         isStartButtonEnabled = false,
+                        isStopButtonEnabled = true,
                     )
                 }
         }
+    }
+
+    private fun onStop() {
+        job?.cancel()
     }
 
     private fun Long.toTextTime() = "${this / 60}:${(this % 60).toString().padStart(2, '0')}"
@@ -64,10 +72,12 @@ class TimerViewModel : ViewModel() {
         val counter: String,
         val isTimerActive: Boolean,
         val isStartButtonEnabled: Boolean,
+        val isStopButtonEnabled: Boolean,
     )
 
     sealed class Event {
         object Start : Event()
+        object Stop : Event()
     }
 
     sealed class Effect

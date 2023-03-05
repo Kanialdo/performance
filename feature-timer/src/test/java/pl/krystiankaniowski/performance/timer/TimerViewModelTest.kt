@@ -1,6 +1,7 @@
 package pl.krystiankaniowski.performance.timer
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -34,16 +35,32 @@ class TimerViewModelTest {
                 counter = "25:00",
                 isTimerActive = false,
                 isStartButtonEnabled = true,
+                isStopButtonEnabled = false,
             ),
         )
     }
 
     @Test
-    fun `WHEN start is request THEN timer is active`() = runBlocking {
+    fun `WHEN start is requested THEN timer is active`() = runBlocking {
         val viewModel = TimerViewModel()
 
         viewModel.onEvent(TimerViewModel.Event.Start)
 
         Assertions.assertEquals(viewModel.state.value.isTimerActive, true)
+        Assertions.assertEquals(viewModel.state.value.isStartButtonEnabled, false)
+        Assertions.assertEquals(viewModel.state.value.isStopButtonEnabled, true)
+    }
+
+    @Test
+    fun `WHEN stop is requested during pending timer THEN timer is not active and start button enabled`() = runBlocking {
+        val viewModel = TimerViewModel()
+
+        viewModel.onEvent(TimerViewModel.Event.Start)
+        delay(5000)
+        viewModel.onEvent(TimerViewModel.Event.Stop)
+
+        Assertions.assertEquals(viewModel.state.value.isTimerActive, false)
+        Assertions.assertEquals(viewModel.state.value.isStartButtonEnabled, true)
+        Assertions.assertEquals(viewModel.state.value.isStopButtonEnabled, false)
     }
 }
