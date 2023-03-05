@@ -1,6 +1,10 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
+    kotlin("kapt")
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.hilt)
     alias(libs.plugins.junit5)
 }
 
@@ -47,6 +51,11 @@ android {
         kotlinCompilerExtensionVersion = "1.4.3"
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
     packagingOptions {
         resources.excludes.add("/META-INF/*")
     }
@@ -54,6 +63,8 @@ android {
 
 dependencies {
     implementation(projects.ui)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
     implementation(libs.androidx.core)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -61,6 +72,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     testImplementation(libs.junit5.jupiter.api)
     testImplementation(libs.kotlinx.coroutines.test)
     testRuntimeOnly(libs.junit5.jupiter.engine)

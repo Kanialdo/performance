@@ -2,6 +2,7 @@ package pl.krystiankaniowski.performance.timer
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,10 +13,12 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
-class TimerViewModel : ViewModel() {
+@HiltViewModel
+class TimerViewModel @Inject constructor(): ViewModel() {
 
     private val seconds = 25.toDuration(DurationUnit.MINUTES).inWholeSeconds
 
