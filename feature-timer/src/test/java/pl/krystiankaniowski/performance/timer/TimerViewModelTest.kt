@@ -1,10 +1,28 @@
 package pl.krystiankaniowski.performance.timer
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class TimerViewModelTest {
+
+    @BeforeEach
+    private fun setup() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+    }
+
+    @AfterEach
+    private fun cleanup() {
+        Dispatchers.resetMain()
+    }
 
     @Test
     fun `WHEN view model is initialized THEN proper state is emitted`() = runBlocking {
@@ -13,7 +31,7 @@ class TimerViewModelTest {
         Assertions.assertEquals(
             viewModel.state.value,
             TimerViewModel.State(
-                counter = "-",
+                counter = "25:00",
                 isTimerActive = false,
                 isStartButtonEnabled = true,
             ),
