@@ -5,20 +5,20 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class TimerViewModelTest {
 
+    @Suppress("UnusedPrivateMember")
     @BeforeEach
     private fun setup() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
     }
 
+    @Suppress("UnusedPrivateMember")
     @AfterEach
     private fun cleanup() {
         Dispatchers.resetMain()
