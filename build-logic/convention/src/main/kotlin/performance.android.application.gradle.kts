@@ -1,9 +1,9 @@
 plugins {
-    id("com.android.library")
+    id("com.android.application")
     kotlin("android")
-    id("rlad.android.hilt")
 }
 
 android {
     configureKotlinAndroid()
+    configureCompose(this)
 }

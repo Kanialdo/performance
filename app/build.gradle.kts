@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 plugins {
     id("performance.android.application")
     kotlin("kapt")
@@ -9,19 +7,12 @@ plugins {
 
 android {
     namespace = "pl.krystiankaniowski.performance"
-    compileSdk = 33
 
     defaultConfig {
         applicationId = "pl.krystiankaniowski.performance"
-        minSdk = 24
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 
     buildTypes {
@@ -34,32 +25,6 @@ android {
                 "proguard-rules.pro",
             )
         }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    packagingOptions {
-        resources.excludes.add("/META-INF/*")
     }
 }
 

@@ -37,6 +37,7 @@ internal fun CommonExtension<*, *, *, *>.configureKotlinAndroid() {
             excludes += listOf(
                 "META-INF/LICENSE.md",
                 "META-INF/LICENSE-notice.md",
+                // "/META-INF/*",
             )
         }
     }
