@@ -1,9 +1,8 @@
 import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 plugins {
+    id("performance.android.application")
     kotlin("kapt")
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
     alias(libs.plugins.hilt)
     alias(libs.plugins.junit5)
 }
@@ -69,9 +68,9 @@ kapt {
 }
 
 dependencies {
-    implementation(projects.featureTimer)
-    implementation(projects.featureSettings)
-    implementation(projects.ui)
+    implementation(projects.core.ui)
+    implementation(projects.feature.timer)
+    implementation(projects.feature.settings)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.core)

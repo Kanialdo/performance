@@ -1,6 +1,7 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
@@ -18,6 +19,14 @@ dependencyResolutionManagement {
 
 rootProject.name = "performance"
 include(":app")
-include(":feature-timer")
-include(":feature-settings")
-include(":ui")
+includeAll(directory = "core")
+includeAll(directory = "feature")
+
+fun includeAll(directory: String, moduleName: String = directory) {
+    file(directory).listFiles()!!.forEach { file ->
+        when {
+            file.isDirectory -> includeAll(directory = file.path, moduleName = "$moduleName:${file.name}")
+            file.name == "build.gradle.kts" -> include(moduleName)
+        }
+    }
+}

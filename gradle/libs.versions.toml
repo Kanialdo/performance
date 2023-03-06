@@ -6,6 +6,7 @@ junit5 = "5.8.2"
 kotlin = "1.8.10"
 lifecycle = "2.5.1"
 material3 = "1.1.0-alpha06"
+androidxComposeCompiler = "1.4.3"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version = "1.6.1" }

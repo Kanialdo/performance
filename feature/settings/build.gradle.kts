@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "pl.krystiankaniowski.performance.timer"
+    namespace = "pl.krystiankaniowski.performance.settings"
     compileSdk = 33
 
     defaultConfig {
@@ -62,7 +62,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.ui)
+    implementation(projects.core.ui)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.core)
