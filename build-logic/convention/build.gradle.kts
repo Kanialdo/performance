@@ -11,4 +11,5 @@ dependencies {
     implementation(libs.android.gradlePlugin)
     implementation(libs.hilt.gradlePlugin)
     implementation(libs.kotlin.gradlePlugin)
+    implementation(libs.junit5.gradlePlugin)
 }
