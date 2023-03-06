@@ -19,7 +19,4 @@ dependencies {
     androidTestImplementation(libs.findLibrary("androidx.compose.ui.test.junit4").get())
     debugImplementation(libs.findLibrary("androidx.compose.ui.tooling").get())
     debugImplementation(libs.findLibrary("androidx.compose.ui.testManifest").get())
-//    implementation(libs.findLibrary("androidx.compose.foundation").get())
-//    implementation(libs.findLibrary("androidx.compose.material").get())
-//    implementation(libs.findLibrary("androidx.compose.material.icons").get())
 }
