@@ -28,7 +28,6 @@ internal fun CommonExtension<*, *, *, *>.configureKotlinAndroid() {
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
             "-opt-in=kotlinx.coroutines.FlowPreview",
             "-opt-in=kotlin.Experimental",
-            "-opt-in=androidx.paging.ExperimentalPagingApi",
         )
     }
 

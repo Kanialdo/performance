@@ -34,7 +34,4 @@ dependencies {
     implementation(projects.core.ui)
     implementation(projects.feature.timer)
     implementation(projects.feature.settings)
-
-    androidTestImplementation(libs.androidx.test.ext)
-    androidTestImplementation(libs.androidx.test.espresso.core)
 }

@@ -1,7 +1,6 @@
 plugins {
     id("performance.android.library")
     id("performance.android.library.compose")
-    alias(libs.plugins.junit5)
 }
 
 android {
@@ -21,8 +20,5 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.junit5.jupiter.api)
-    testRuntimeOnly(libs.junit5.jupiter.engine)
-    androidTestImplementation(libs.androidx.test.ext)
-    androidTestImplementation(libs.androidx.test.espresso.core)
+    implementation(libs.androidx.core)
 }
