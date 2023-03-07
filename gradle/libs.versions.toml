@@ -3,9 +3,11 @@ androidGradlePlugin = "7.4.2"
 detekt = "1.22.0"
 hilt = "2.44"
 junit5 = "5.8.2"
+junit5GradlePlugin = "1.8.2.1"
 kotlin = "1.8.10"
 lifecycle = "2.5.1"
 material3 = "1.1.0-alpha06"
+androidxComposeCompiler = "1.4.3"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version = "1.6.1" }
@@ -32,11 +34,16 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 
 detekt-plugins-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+junit5-gradlePlugin = { group = "de.mannodermaus.gradle.plugins", name = "android-junit5", version.ref = "junit5GradlePlugin" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-junit5 = { id = "de.mannodermaus.android-junit5", version = "1.8.2.1" }
+junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "junit5GradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
