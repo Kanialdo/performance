@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "pl.krystiankaniowski.performance.model"
+    namespace = "pl.krystiankaniowski.performance.domain"
 }
 
 dependencies {

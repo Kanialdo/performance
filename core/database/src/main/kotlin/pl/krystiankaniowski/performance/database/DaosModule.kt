@@ -4,14 +4,14 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import pl.krystiankaniowski.performance.database.dao.WorkLogDao
+import pl.krystiankaniowski.performance.database.dao.FocusDao
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DaosModule {
 
     @Provides
-    fun providesWorkLogDao(
+    fun providesFocusDao(
         database: PerformanceDatabase,
-    ): WorkLogDao = database.workLogDao()
+    ): FocusDao = database.focusDao()
 }
