@@ -10,8 +10,6 @@ android {
 
 dependencies {
 
-    implementation(libs.kotlinx.datetime)
-
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
 

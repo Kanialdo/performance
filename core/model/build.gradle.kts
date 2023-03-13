@@ -5,7 +5,3 @@ plugins {
 android {
     namespace = "pl.krystiankaniowski.performance.model"
 }
-
-dependencies {
-    implementation(libs.kotlinx.datetime)
-}

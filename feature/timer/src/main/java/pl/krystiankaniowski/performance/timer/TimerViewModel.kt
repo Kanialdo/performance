@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import pl.krystiankaniowski.performance.domain.usecase.SaveFocusUseCase
 import pl.krystiankaniowski.performance.model.Focus
 import javax.inject.Inject
@@ -39,6 +40,7 @@ class TimerViewModel @Inject constructor(
     val state: StateFlow<State> = _state
 
     private var job: Job? = null
+    private var dateStart: Instant? = null
 
     fun onEvent(event: Event) = when (event) {
         Event.Start -> onStart()
@@ -46,6 +48,7 @@ class TimerViewModel @Inject constructor(
     }
 
     private fun onStart() {
+        dateStart = Clock.System.now()
         job = viewModelScope.launch {
             (seconds - 1 downTo 0)
                 .asFlow() // Emit total - 1 because the first was emitted onStart
@@ -59,7 +62,7 @@ class TimerViewModel @Inject constructor(
                         isStopButtonEnabled = false,
                     )
                     viewModelScope.launch(Dispatchers.IO) {
-                        saveFocusUseCases(Focus(Clock.System.now(), Clock.System.now()))
+                        saveFocusUseCases(Focus(requireNotNull(dateStart), Clock.System.now()))
                     }
                 }
                 .conflate() // In case the creating of State takes some time, conflate keeps the time ticking separately

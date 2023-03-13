@@ -8,7 +8,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.kotlinx.datetime)
     implementation(projects.core.domain)
     implementation(projects.core.database)
     implementation(projects.core.model)

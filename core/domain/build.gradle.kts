@@ -7,6 +7,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.kotlinx.datetime)
     implementation(projects.core.model)
 }

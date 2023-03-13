@@ -7,3 +7,7 @@ plugins {
 android {
     configureKotlinAndroid()
 }
+
+dependencies {
+    commonDependencies()
+}

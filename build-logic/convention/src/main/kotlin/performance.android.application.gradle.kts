@@ -11,5 +11,6 @@ android {
 }
 
 dependencies {
+    commonDependencies()
     shared()
 }

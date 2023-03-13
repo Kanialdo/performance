@@ -8,6 +8,7 @@ junit5GradlePlugin = "1.8.2.1"
 kotlin = "1.8.10"
 lifecycle = "2.5.1"
 material3 = "1.1.0-alpha06"
+mockk = "1.13.4"
 room = "2.5.0"
 
 [libraries]
@@ -33,6 +34,8 @@ junit5-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", 
 junit5-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit5" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.6.4" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version = "0.4.0" }
+mock-core = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+mock-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
 
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }

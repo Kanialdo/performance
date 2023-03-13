@@ -1,5 +1,6 @@
 package pl.krystiankaniowski.performance.timer
 
+import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import pl.krystiankaniowski.performance.domain.usecase.SaveFocusUseCase
 
 class TimerViewModelTest {
 
@@ -25,9 +27,11 @@ class TimerViewModelTest {
         Dispatchers.resetMain()
     }
 
+    private val saveFocusUseCase: SaveFocusUseCase = mockk()
+
     @Test
     fun `WHEN view model is initialized THEN proper state is emitted`() = runBlocking {
-        val viewModel = TimerViewModel()
+        val viewModel = TimerViewModel(saveFocusUseCase)
 
         Assertions.assertEquals(
             viewModel.state.value,
@@ -42,7 +46,7 @@ class TimerViewModelTest {
 
     @Test
     fun `WHEN start is requested THEN timer is active`() = runBlocking {
-        val viewModel = TimerViewModel()
+        val viewModel = TimerViewModel(saveFocusUseCase)
 
         viewModel.onEvent(TimerViewModel.Event.Start)
 
@@ -53,7 +57,7 @@ class TimerViewModelTest {
 
     @Test
     fun `WHEN stop is requested during pending timer THEN timer is not active and start button enabled`() = runBlocking {
-        val viewModel = TimerViewModel()
+        val viewModel = TimerViewModel(saveFocusUseCase)
 
         viewModel.onEvent(TimerViewModel.Event.Start)
         delay(5000)
