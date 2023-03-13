@@ -45,7 +45,7 @@ android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", ver
 hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 junit5-gradlePlugin = { group = "de.mannodermaus.gradle.plugins", name = "android-junit5", version.ref = "junit5GradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version = "1.8.0-1.0.8" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version = "1.8.10-1.0.9" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

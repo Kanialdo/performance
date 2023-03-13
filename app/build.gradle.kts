@@ -32,6 +32,8 @@ kapt {
 
 dependencies {
     implementation(projects.core.database)
+    implementation(projects.core.domain)
+    implementation(projects.core.infrastructure)
     implementation(projects.core.model)
     implementation(projects.core.ui)
     implementation(projects.feature.timer)
