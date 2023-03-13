@@ -3,7 +3,6 @@ package pl.krystiankaniowski.performance.timer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,7 +60,7 @@ class TimerViewModel @Inject constructor(
                         isStartButtonEnabled = true,
                         isStopButtonEnabled = false,
                     )
-                    viewModelScope.launch(Dispatchers.IO) {
+                    viewModelScope.launch {
                         saveFocusUseCases(Focus(requireNotNull(dateStart), Clock.System.now()))
                     }
                 }

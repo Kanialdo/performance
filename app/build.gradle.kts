@@ -38,4 +38,5 @@ dependencies {
     implementation(projects.core.ui)
     implementation(projects.feature.timer)
     implementation(projects.feature.settings)
+    implementation(projects.feature.stats)
 }
