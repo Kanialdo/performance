@@ -7,7 +7,7 @@ import kotlinx.datetime.Instant
 
 @Entity("focus")
 data class FocusEntity(
-    @PrimaryKey val uid: Int,
+    @PrimaryKey(autoGenerate = true) val uid: Int,
     @ColumnInfo(name = "date_start") val dateStart: Instant,
     @ColumnInfo(name = "date_end") val dateEnd: Instant,
 )
