@@ -34,6 +34,6 @@ jobs:
       - name: Detekt
         run: ./gradlew detekt
       - name: Assemble
-        run: ./gradlew assemble
+        run: ./gradlew assembleDebug
       - name: Test
-        run: ./gradlew test
+        run: ./gradlew testDebugUntiTest
