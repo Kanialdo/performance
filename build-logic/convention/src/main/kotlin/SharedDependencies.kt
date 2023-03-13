@@ -15,8 +15,18 @@ internal fun Project.shared() {
         add("implementation", libs.findLibrary("androidx.navigation.compose").get())
 
         add("testImplementation", libs.findLibrary("kotlinx.coroutines.test").get())
+        add("testImplementation", libs.findLibrary("mock.core").get())
 
+        add("androidTestImplementation", libs.findLibrary("mock.android").get())
         add("androidTestImplementation", libs.findLibrary("androidx.test.ext").get())
         add("androidTestImplementation", libs.findLibrary("androidx.test.espresso.core").get())
+    }
+}
+
+internal fun Project.commonDependencies() {
+    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
+    dependencies {
+        add("implementation", libs.findLibrary("kotlinx.datetime").get())
     }
 }

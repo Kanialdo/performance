@@ -3,6 +3,7 @@ package pl.krystiankaniowski.performance.timer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,12 +14,18 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import pl.krystiankaniowski.performance.domain.usecase.SaveFocusUseCase
+import pl.krystiankaniowski.performance.model.Focus
 import javax.inject.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 @HiltViewModel
-class TimerViewModel @Inject constructor() : ViewModel() {
+class TimerViewModel @Inject constructor(
+    private val saveFocusUseCases: SaveFocusUseCase,
+) : ViewModel() {
 
     private val seconds = 25.toDuration(DurationUnit.MINUTES).inWholeSeconds
 
@@ -33,6 +40,7 @@ class TimerViewModel @Inject constructor() : ViewModel() {
     val state: StateFlow<State> = _state
 
     private var job: Job? = null
+    private var dateStart: Instant? = null
 
     fun onEvent(event: Event) = when (event) {
         Event.Start -> onStart()
@@ -40,6 +48,7 @@ class TimerViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun onStart() {
+        dateStart = Clock.System.now()
         job = viewModelScope.launch {
             (seconds - 1 downTo 0)
                 .asFlow() // Emit total - 1 because the first was emitted onStart
@@ -52,6 +61,9 @@ class TimerViewModel @Inject constructor() : ViewModel() {
                         isStartButtonEnabled = true,
                         isStopButtonEnabled = false,
                     )
+                    viewModelScope.launch(Dispatchers.IO) {
+                        saveFocusUseCases(Focus(requireNotNull(dateStart), Clock.System.now()))
+                    }
                 }
                 .conflate() // In case the creating of State takes some time, conflate keeps the time ticking separately
                 .collect {
