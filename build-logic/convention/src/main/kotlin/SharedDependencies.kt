@@ -16,6 +16,7 @@ internal fun Project.shared() {
 
         add("testImplementation", libs.findLibrary("kotlinx.coroutines.test").get())
         add("testImplementation", libs.findLibrary("mock.core").get())
+        add("testImplementation", project(":core:testing"))
 
         add("androidTestImplementation", libs.findLibrary("mock.android").get())
         add("androidTestImplementation", libs.findLibrary("androidx.test.ext").get())
