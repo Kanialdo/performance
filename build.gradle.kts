@@ -14,7 +14,7 @@ plugins {
 
 allprojects {
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
 
@@ -43,7 +43,7 @@ subprojects {
 
     tasks {
         withType<Detekt> {
-            this.jvmTarget = "1.8"
+            this.jvmTarget = JavaVersion.VERSION_11.toString()
             reports {
                 html.required.set(true)
             }
