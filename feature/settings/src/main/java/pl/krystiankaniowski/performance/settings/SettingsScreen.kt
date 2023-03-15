@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import pl.krystiankaniowski.performance.ui.components.PerformanceLoadingScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,13 +45,19 @@ fun SettingsScreen(
         },
     ) {
         Box(modifier = Modifier.padding(it)) {
-            SettingsScreenContent(viewModel.state.collectAsState().value)
+            when (val state = viewModel.state.collectAsState().value) {
+                is SettingsViewModel.State.Loaded -> SettingsScreenContent(state, viewModel::onDndChanged)
+                SettingsViewModel.State.Loading -> PerformanceLoadingScreen()
+            }
         }
     }
 }
 
 @Composable
-fun SettingsScreenContent(state: SettingsViewModel.State) {
+fun SettingsScreenContent(
+    state: SettingsViewModel.State.Loaded,
+    onDndChanged: (Boolean) -> Unit,
+) {
     LazyColumn {
         item {
 
@@ -60,14 +67,13 @@ fun SettingsScreenContent(state: SettingsViewModel.State) {
                 trailingContent = {
                     val interactionSource = remember { MutableInteractionSource() }
                     Switch(
-                        checked = true,
-                        onCheckedChange = {},
+                        checked = state.isDndEnabled,
+                        onCheckedChange = onDndChanged,
                         thumbContent = null,
                         enabled = true,
                         interactionSource = interactionSource,
-//                        colors = colors
                     )
-                }
+                },
             )
             Divider()
             ListItem(
@@ -83,9 +89,11 @@ fun SettingsScreenContent(state: SettingsViewModel.State) {
 fun SettingsScreenContentPreview() {
     PerformanceTheme {
         SettingsScreenContent(
-            SettingsViewModel.State(
+            SettingsViewModel.State.Loaded(
                 appVersion = "1.0.0",
+                isDndEnabled = false,
             ),
+            onDndChanged = {},
         )
     }
 }
