@@ -27,6 +27,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
+          cache: gradle
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
       - name: Init gradle
