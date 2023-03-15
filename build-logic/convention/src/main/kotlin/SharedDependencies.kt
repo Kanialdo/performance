@@ -14,6 +14,7 @@ internal fun Project.shared() {
         add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
         add("implementation", libs.findLibrary("androidx.navigation.compose").get())
 
+        add("testImplementation", libs.findLibrary("kotlinx.coroutines.test").get())
         add("testImplementation", libs.findLibrary("mockk.core").get())
         add("testImplementation", project(":core:testing"))
 
