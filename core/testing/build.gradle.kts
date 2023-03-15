@@ -7,9 +7,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core)
     implementation(libs.junit5.jupiter.api)
     implementation(libs.junit5.jupiter.engine)
     implementation(libs.kotlinx.coroutines.test)
-    implementation(libs.mock.core)
+    implementation(libs.mockk.core)
 }
