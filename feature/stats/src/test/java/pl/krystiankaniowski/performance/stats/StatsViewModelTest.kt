@@ -3,30 +3,15 @@ package pl.krystiankaniowski.performance.stats
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import pl.krystiankaniowski.performance.domain.usecase.GetFocusListUseCase
+import pl.krystiankaniowski.performance.testing.rule.InstantDispatcherExtension
 
+@ExtendWith(InstantDispatcherExtension::class)
 class StatsViewModelTest {
-
-    @Suppress("UnusedPrivateMember")
-    @BeforeEach
-    private fun setup() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-    }
-
-    @Suppress("UnusedPrivateMember")
-    @AfterEach
-    private fun cleanup() {
-        Dispatchers.resetMain()
-    }
 
     private val getFocusListUseCase: GetFocusListUseCase = mockk()
 

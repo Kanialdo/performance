@@ -15,9 +15,10 @@ internal fun Project.shared() {
         add("implementation", libs.findLibrary("androidx.navigation.compose").get())
 
         add("testImplementation", libs.findLibrary("kotlinx.coroutines.test").get())
-        add("testImplementation", libs.findLibrary("mock.core").get())
+        add("testImplementation", libs.findLibrary("mockk.core").get())
+        add("testImplementation", project(":core:testing"))
 
-        add("androidTestImplementation", libs.findLibrary("mock.android").get())
+        add("androidTestImplementation", libs.findLibrary("mockk.android").get())
         add("androidTestImplementation", libs.findLibrary("androidx.test.ext").get())
         add("androidTestImplementation", libs.findLibrary("androidx.test.espresso.core").get())
     }

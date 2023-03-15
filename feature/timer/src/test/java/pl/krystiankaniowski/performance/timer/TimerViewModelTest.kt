@@ -1,31 +1,16 @@
 package pl.krystiankaniowski.performance.timer
 
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import pl.krystiankaniowski.performance.domain.usecase.SaveFocusUseCase
+import pl.krystiankaniowski.performance.testing.rule.InstantDispatcherExtension
 
+@ExtendWith(InstantDispatcherExtension::class)
 class TimerViewModelTest {
-
-    @Suppress("UnusedPrivateMember")
-    @BeforeEach
-    private fun setup() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-    }
-
-    @Suppress("UnusedPrivateMember")
-    @AfterEach
-    private fun cleanup() {
-        Dispatchers.resetMain()
-    }
 
     private val saveFocusUseCase: SaveFocusUseCase = mockk()
 
