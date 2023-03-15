@@ -8,6 +8,11 @@ android {
     namespace = "pl.krystiankaniowski.performance.database"
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+    arg("room.incremental", "true")
+}
+
 dependencies {
 
     implementation(libs.androidx.room.runtime)
