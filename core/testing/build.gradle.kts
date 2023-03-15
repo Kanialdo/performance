@@ -1,9 +1,5 @@
 plugins {
-    id("performance.android.library")
-}
-
-android {
-    namespace = "pl.krystiankaniowski.performance.testing"
+    id("performance.kotlin.library")
 }
 
 dependencies {
