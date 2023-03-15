@@ -96,3 +96,11 @@ class TimerViewModel @Inject constructor(
 
     sealed class Effect
 }
+
+interface WithState<State>{
+
+    protected val _state: MutableStateFlow<State> = MutableStateFlow()
+    val state: StateFlow<TimerViewModel.State> = _state
+}
+
+private State : Delega
