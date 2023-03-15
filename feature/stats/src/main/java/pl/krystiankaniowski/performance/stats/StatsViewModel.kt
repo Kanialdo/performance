@@ -1,26 +1,23 @@
 package pl.krystiankaniowski.performance.stats
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import pl.krystiankaniowski.performance.domain.usecase.GetFocusListUseCase
+import pl.krystiankaniowski.performance.ui.arch.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class StatsViewModel @Inject constructor(
     val getFocusListUseCase: GetFocusListUseCase,
-) : ViewModel() {
+) : BaseViewModel<StatsViewModel.State, Nothing>() {
 
     private var reloadJob: Job? = null
 
-    private val _state: MutableStateFlow<State> = MutableStateFlow(State.Loading)
-    val state: StateFlow<State> = _state
+    override fun initState() = State.Loading
 
     fun onEvent(event: Event) = when (event) {
         Event.Refresh -> loadData()

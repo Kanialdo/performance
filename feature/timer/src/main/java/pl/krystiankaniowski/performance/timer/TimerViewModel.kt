@@ -1,12 +1,9 @@
 package pl.krystiankaniowski.performance.timer
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.onCompletion
@@ -17,6 +14,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import pl.krystiankaniowski.performance.domain.usecase.SaveFocusUseCase
 import pl.krystiankaniowski.performance.model.Focus
+import pl.krystiankaniowski.performance.ui.arch.BaseViewModel
 import javax.inject.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
@@ -24,19 +22,16 @@ import kotlin.time.toDuration
 @HiltViewModel
 class TimerViewModel @Inject constructor(
     private val saveFocusUseCases: SaveFocusUseCase,
-) : ViewModel() {
+) : BaseViewModel<TimerViewModel.State, Nothing>() {
 
     private val seconds = 25.toDuration(DurationUnit.MINUTES).inWholeSeconds
 
-    private val _state: MutableStateFlow<State> = MutableStateFlow(
-        State(
-            counter = seconds.toTextTime(),
-            isTimerActive = false,
-            isStartButtonEnabled = true,
-            isStopButtonEnabled = false,
-        ),
+    override fun initState() = State(
+        counter = seconds.toTextTime(),
+        isTimerActive = false,
+        isStartButtonEnabled = true,
+        isStopButtonEnabled = false,
     )
-    val state: StateFlow<State> = _state
 
     private var job: Job? = null
     private var dateStart: Instant? = null
@@ -96,11 +91,3 @@ class TimerViewModel @Inject constructor(
 
     sealed class Effect
 }
-
-interface WithState<State>{
-
-    protected val _state: MutableStateFlow<State> = MutableStateFlow()
-    val state: StateFlow<TimerViewModel.State> = _state
-}
-
-private State : Delega
