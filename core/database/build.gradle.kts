@@ -1,16 +1,11 @@
 plugins {
     id("performance.android.library")
     id("performance.android.hilt")
-    id("performance.ksp")
+    id("performance.android.room")
 }
 
 android {
     namespace = "pl.krystiankaniowski.performance.database"
-}
-
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-    arg("room.incremental", "true")
 }
 
 dependencies {

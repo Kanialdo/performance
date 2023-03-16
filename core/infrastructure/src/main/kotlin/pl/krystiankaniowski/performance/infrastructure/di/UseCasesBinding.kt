@@ -14,8 +14,8 @@ import pl.krystiankaniowski.performance.infrastructure.usecase.SaveFocusUseCaseI
 interface UseCasesBinding {
 
     @Binds
-    fun bindSaveFocusUseCase(impl: SaveFocusUseCaseImpl): SaveFocusUseCase
+    fun SaveFocusUseCaseImpl.bindSaveFocusUseCase(): SaveFocusUseCase
 
     @Binds
-    fun bindGetFocusListUseCase(impl: GetFocusListUseCaseImpl): GetFocusListUseCase
+    fun GetFocusListUseCaseImpl.bindGetFocusListUseCase(): GetFocusListUseCase
 }
