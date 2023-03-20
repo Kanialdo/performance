@@ -1,31 +1,29 @@
 package pl.krystiankaniowski.performance.datastore
 
 import android.content.Context
-import androidx.datastore.core.CorruptionException
-import androidx.datastore.core.DataStore
-import androidx.datastore.core.Serializer
-import androidx.datastore.dataStore
-import java.io.InputStream
-import java.io.OutputStream
+import androidx.datastore.preferences.preferencesDataStore
+import dagger.hilt.android.qualifiers.ApplicationContext
+import pl.krystiankaniowski.performance.domain.repository.AppSettingsRepository
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object SettingsSerializer : Serializer<UserSettings> {
-    override val defaultValue: UserSettings = UserSettings.getDefaultInstance()
+private const val USER_PREFERENCES_NAME = "user_preferences"
 
-    override suspend fun readFrom(input: InputStream): UserSettings {
-        try {
-            return UserSettings.parseFrom(input)
-        } catch (exception: InvalidProtocolBufferException) {
-            throw CorruptionException("Cannot read proto.", exception)
-        }
+private val Context.dataStore by preferencesDataStore(
+    name = USER_PREFERENCES_NAME,
+)
+
+@Singleton
+class PerformanceDataStore @Inject constructor(@ApplicationContext context: Context) : AppSettingsRepository {
+
+    private val dataStore = context.dataStore
+
+    override val isDndEnabled = dataStore.readBool(PreferencesKeys.IS_DND_ENABLED)
+    override suspend fun updateIsDndEnabled(value: Boolean) {
+        dataStore.writeBool(PreferencesKeys.IS_DND_ENABLED, value)
     }
-
-    override suspend fun writeTo(
-        t: UserSettings,
-        output: OutputStream
-    ) = t.writeTo(output)
 }
 
-val Context.settingsDataStore: DataStore<UserSettings> by dataStore(
-    fileName = "user_settings.proto",
-    serializer = SettingsSerializer
-)
+internal object PreferencesKeys {
+    const val IS_DND_ENABLED = "is_dnd_enabled"
+}

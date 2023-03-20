@@ -1,5 +1,10 @@
 package pl.krystiankaniowski.performance.domain.repository
 
+import kotlinx.coroutines.flow.Flow
+
 interface AppSettingsRepository {
-    var isDndEnabled: Boolean
+
+    val isDndEnabled: Flow<Boolean>
+
+    suspend fun updateIsDndEnabled(value: Boolean)
 }

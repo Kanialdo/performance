@@ -32,6 +32,7 @@ kapt {
 
 dependencies {
     implementation(projects.core.database)
+    implementation(projects.core.datastore)
     implementation(projects.core.domain)
     implementation(projects.core.infrastructure)
     implementation(projects.core.model)
