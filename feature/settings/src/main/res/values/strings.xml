@@ -2,4 +2,6 @@
 <resources>
     <string name="settings_title">Settings</string>
     <string name="title_app_version">App version</string>
+    <string name="do_not_disturbed">Do not Disturb</string>
+    <string name="turn_on_do_not_disturbed_in_focus_time">Turn on \"Do not Disturb\" mode when timer is active</string>
 </resources>
