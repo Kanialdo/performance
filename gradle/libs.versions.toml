@@ -9,6 +9,7 @@ kotlin = "1.8.10"
 lifecycle = "2.6.0"
 material3 = "1.1.0-alpha06"
 mockk = "1.13.4"
+protobuf = "3.21.12"
 room = "2.5.0"
 
 [libraries]
@@ -22,6 +23,7 @@ androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-t
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-core = { group = "androidx.core", name = "core-ktx", version = "1.9.0" }
+androidx-datastore = { group = "androidx.datastore", name = "datastore", version = "1.0.0" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.0.0" }
 androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version = "2.5.3" }
@@ -40,6 +42,8 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version = "0.4.0" }
 mockk-core = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
+protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 
 detekt-plugins-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
@@ -57,3 +61,4 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "junit5GradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+protobuf = { id = "com.google.protobuf", version = "0.8.19" }
