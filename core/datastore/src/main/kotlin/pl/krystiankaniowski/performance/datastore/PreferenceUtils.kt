@@ -17,10 +17,8 @@ internal suspend fun DataStore<Preferences>.writeString(key: String, value: Stri
 }
 
 /** Read string from the data store preferences */
-internal fun DataStore<Preferences>.readString(key: String): Flow<String> {
-    return data.map { pref ->
-        pref[stringPreferencesKey(key)] ?: ""
-    }
+internal fun DataStore<Preferences>.readString(key: String): Flow<String> = data.map { pref ->
+    pref[stringPreferencesKey(key)] ?: ""
 }
 
 /** Add Integer to the data store */
@@ -29,10 +27,8 @@ internal suspend fun DataStore<Preferences>.writeInt(key: String, value: Int) {
 }
 
 /** Reading the Int value from the data store */
-internal fun DataStore<Preferences>.readInt(key: String): Flow<Int> {
-    return data.map { pref ->
-        pref[intPreferencesKey(key)] ?: 0
-    }
+internal fun DataStore<Preferences>.readInt(key: String): Flow<Int> = data.map { pref ->
+    pref[intPreferencesKey(key)] ?: 0
 }
 
 /** Adding Double to the data store */
@@ -41,10 +37,8 @@ internal suspend fun DataStore<Preferences>.writeDouble(key: String, value: Doub
 }
 
 /** Reading the double value from the data store */
-internal fun DataStore<Preferences>.readDouble(key: String): Flow<Double> {
-    return data.map { pref ->
-        pref[doublePreferencesKey(key)] ?: 0.0
-    }
+internal fun DataStore<Preferences>.readDouble(key: String): Flow<Double> = data.map { pref ->
+    pref[doublePreferencesKey(key)] ?: 0.0
 }
 
 /** Add Long to the data store */
@@ -53,12 +47,9 @@ internal suspend fun DataStore<Preferences>.writeLong(key: String, value: Long) 
 }
 
 /** Reading the long from the data store */
-internal fun DataStore<Preferences>.readLong(key: String): Flow<Long> {
-    return data.map { pref ->
-        pref[longPreferencesKey(key)] ?: 0L
-    }
+internal fun DataStore<Preferences>.readLong(key: String): Flow<Long> = data.map { pref ->
+    pref[longPreferencesKey(key)] ?: 0L
 }
-
 
 /** Add Boolean to the data store */
 internal suspend fun DataStore<Preferences>.writeBool(key: String, value: Boolean) {
@@ -66,8 +57,6 @@ internal suspend fun DataStore<Preferences>.writeBool(key: String, value: Boolea
 }
 
 /** Reading the Boolean from the data store */
-internal fun DataStore<Preferences>.readBool(key: String): Flow<Boolean> {
-    return data.map { pref ->
-        pref[booleanPreferencesKey(key)] ?: false
-    }
+internal fun DataStore<Preferences>.readBool(key: String): Flow<Boolean> = data.map { pref ->
+    pref[booleanPreferencesKey(key)] ?: false
 }
