@@ -4,29 +4,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import pl.krystiankaniowski.performance.domain.usecase.SaveFocusUseCase
-import pl.krystiankaniowski.performance.model.Focus
+import pl.krystiankaniowski.performance.model.Seconds
 import javax.inject.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 @HiltViewModel
 class TimerViewModel @Inject constructor(
-    private val saveFocusUseCases: SaveFocusUseCase,
+    private val onFocusStartUseCase: OnFocusStartUseCase,
+    private val onFocusEndUseCase: OnFocusEndUseCase,
+    private val getFocusCounterUseCase: GetFocusCounterUseCase,
 ) : ViewModel() {
 
-    private val seconds = 25.toDuration(DurationUnit.MINUTES).inWholeSeconds
+    private val seconds = 25.toDuration(DurationUnit.SECONDS).inWholeSeconds
 
     private val _state: MutableStateFlow<State> = MutableStateFlow(
         State(
@@ -39,7 +33,10 @@ class TimerViewModel @Inject constructor(
     val state: StateFlow<State> = _state
 
     private var job: Job? = null
-    private var dateStart: Instant? = null
+
+    init {
+        observeTimer()
+    }
 
     fun onEvent(event: Event) = when (event) {
         Event.Start -> onStart()
@@ -47,37 +44,39 @@ class TimerViewModel @Inject constructor(
     }
 
     private fun onStart() {
-        dateStart = Clock.System.now()
+        viewModelScope.launch {
+            onFocusStartUseCase(Seconds(seconds))
+            observeTimer()
+        }
+    }
+
+    private fun onStop() {
+        viewModelScope.launch {
+            job?.cancel()
+            onFocusEndUseCase()
+        }
+    }
+
+    private fun observeTimer() {
         job = viewModelScope.launch {
-            (seconds - 1 downTo 0)
-                .asFlow() // Emit total - 1 because the first was emitted onStart
-                .onEach { delay(1000) } // Each second later emit a number
-                .onStart { emit(seconds) } // Emit total seconds immediately
-                .onCompletion {
+            getFocusCounterUseCase()
+                ?.onCompletion {
                     _state.value = State(
                         counter = seconds.toTextTime(),
                         isTimerActive = false,
                         isStartButtonEnabled = true,
                         isStopButtonEnabled = false,
                     )
-                    viewModelScope.launch {
-                        saveFocusUseCases(Focus(requireNotNull(dateStart), Clock.System.now()))
-                    }
                 }
-                .conflate() // In case the creating of State takes some time, conflate keeps the time ticking separately
-                .collect {
+                ?.collect {
                     _state.value = State(
-                        counter = it.toTextTime(),
+                        counter = it.value.toTextTime(),
                         isTimerActive = true,
                         isStartButtonEnabled = false,
                         isStopButtonEnabled = true,
                     )
                 }
         }
-    }
-
-    private fun onStop() {
-        job?.cancel()
     }
 
     private fun Long.toTextTime() = "${this / 60}:${(this % 60).toString().padStart(2, '0')}"
