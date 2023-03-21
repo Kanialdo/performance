@@ -8,13 +8,20 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import pl.krystiankaniowski.performance.domain.usecase.SaveFocusUseCase
+import pl.krystiankaniowski.performance.model.Focus
 import pl.krystiankaniowski.performance.model.Seconds
 import javax.inject.Inject
 
-class PerformanceTimerImpl @Inject constructor() : PerformanceTimer {
+class PerformanceTimerImpl @Inject constructor(
+    private val saveFocusUseCase: SaveFocusUseCase,
+) : PerformanceTimer {
 
     private val scope = MainScope()
 
@@ -22,6 +29,8 @@ class PerformanceTimerImpl @Inject constructor() : PerformanceTimer {
     override val state: Flow<PerformanceTimer.State> = _state
 
     private var job: Job? = null
+
+    private var startDate: Instant? = null
 
     init {
         scope.launch {
@@ -31,17 +40,21 @@ class PerformanceTimerImpl @Inject constructor() : PerformanceTimer {
 
     override fun start(seconds: Seconds) {
         job = scope.launch {
+            startDate = Clock.System.now()
             (seconds.value - 1 downTo 0)
                 .asFlow() // Emit total - 1 because the first was emitted onStart
                 .onEach { delay(1000) } // Each second later emit a number
                 .map { Seconds(it) }
                 .onStart { emit(seconds) } // Emit total seconds immediately
                 .conflate() // In case the creating of State takes some time, conflate keeps the time ticking separately
+                .onCompletion {
+                    stop()
+                }
                 .collect {
                     _state.emit(
                         PerformanceTimer.State.Pending(
-                            elapsedSeconds = it,
-                            leftSeconds = seconds - it,
+                            elapsedSeconds = seconds - it,
+                            leftSeconds = it,
                         ),
                     )
                 }
@@ -51,6 +64,13 @@ class PerformanceTimerImpl @Inject constructor() : PerformanceTimer {
     override fun stop() {
         job?.cancel()
         scope.launch {
+            saveFocusUseCase(
+                Focus(
+                    startDate = requireNotNull(startDate),
+                    endDate = Clock.System.now(),
+                ),
+            )
+            startDate = null
             _state.emit(PerformanceTimer.State.NotStarted)
         }
     }

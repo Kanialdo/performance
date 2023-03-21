@@ -13,9 +13,7 @@ import kotlin.time.toDuration
 
 @HiltViewModel
 class TimerViewModel @Inject constructor(
-    private val onFocusStartUseCase: OnFocusStartUseCase,
-    private val onFocusEndUseCase: OnFocusEndUseCase,
-    private val getTimerUseCase: GetTimerUseCase,
+    private val timer: PerformanceTimer,
 ) : ViewModel() {
 
     private val seconds = 25.toDuration(DurationUnit.SECONDS).inWholeSeconds
@@ -32,7 +30,7 @@ class TimerViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getTimerUseCase().state.collect { timerState ->
+            timer.state.collect { timerState ->
                 _state.value = when (timerState) {
                     PerformanceTimer.State.NotStarted -> State(
                         counter = seconds.toTextTime(),
@@ -58,13 +56,13 @@ class TimerViewModel @Inject constructor(
 
     private fun onStart() {
         viewModelScope.launch {
-            onFocusStartUseCase(Seconds(seconds))
+            timer.start(Seconds(seconds))
         }
     }
 
     private fun onStop() {
         viewModelScope.launch {
-            onFocusEndUseCase()
+            timer.stop()
         }
     }
 
