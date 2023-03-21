@@ -17,7 +17,7 @@ import kotlin.time.toDuration
 class TimerViewModel @Inject constructor(
     private val onFocusStartUseCase: OnFocusStartUseCase,
     private val onFocusEndUseCase: OnFocusEndUseCase,
-    private val getFocusCounterUseCase: GetFocusCounterUseCase,
+    private val getTimerUseCase: GetTimerUseCase,
 ) : ViewModel() {
 
     private val seconds = 25.toDuration(DurationUnit.SECONDS).inWholeSeconds
@@ -35,6 +35,11 @@ class TimerViewModel @Inject constructor(
     private var job: Job? = null
 
     init {
+        viewModelScope.launch {
+            getTimerUseCase().state.collect {
+                
+            }
+        }
         observeTimer()
     }
 
