@@ -7,10 +7,12 @@ interface PerformanceTimer {
 
     val state: Flow<State>
 
-    fun startTimer(seconds: Seconds)
+    fun start(seconds: Seconds)
+
+    fun stop()
 
     sealed interface State {
-        object Disabled : State
+        object NotStarted : State
         data class Pending(
             val elapsedSeconds: Seconds,
             val leftSeconds: Seconds,

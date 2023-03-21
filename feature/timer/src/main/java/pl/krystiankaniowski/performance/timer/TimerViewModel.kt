@@ -3,10 +3,8 @@ package pl.krystiankaniowski.performance.timer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.model.Seconds
 import javax.inject.Inject
@@ -32,15 +30,25 @@ class TimerViewModel @Inject constructor(
     )
     val state: StateFlow<State> = _state
 
-    private var job: Job? = null
-
     init {
         viewModelScope.launch {
-            getTimerUseCase().state.collect {
-                
+            getTimerUseCase().state.collect { timerState ->
+                _state.value = when (timerState) {
+                    PerformanceTimer.State.NotStarted -> State(
+                        counter = seconds.toTextTime(),
+                        isTimerActive = false,
+                        isStartButtonEnabled = true,
+                        isStopButtonEnabled = false,
+                    )
+                    is PerformanceTimer.State.Pending -> State(
+                        counter = timerState.leftSeconds.value.toTextTime(),
+                        isTimerActive = true,
+                        isStartButtonEnabled = false,
+                        isStopButtonEnabled = true,
+                    )
+                }
             }
         }
-        observeTimer()
     }
 
     fun onEvent(event: Event) = when (event) {
@@ -51,36 +59,12 @@ class TimerViewModel @Inject constructor(
     private fun onStart() {
         viewModelScope.launch {
             onFocusStartUseCase(Seconds(seconds))
-            observeTimer()
         }
     }
 
     private fun onStop() {
         viewModelScope.launch {
-            job?.cancel()
             onFocusEndUseCase()
-        }
-    }
-
-    private fun observeTimer() {
-        job = viewModelScope.launch {
-            getFocusCounterUseCase()
-                ?.onCompletion {
-                    _state.value = State(
-                        counter = seconds.toTextTime(),
-                        isTimerActive = false,
-                        isStartButtonEnabled = true,
-                        isStopButtonEnabled = false,
-                    )
-                }
-                ?.collect {
-                    _state.value = State(
-                        counter = it.value.toTextTime(),
-                        isTimerActive = true,
-                        isStartButtonEnabled = false,
-                        isStopButtonEnabled = true,
-                    )
-                }
         }
     }
 
