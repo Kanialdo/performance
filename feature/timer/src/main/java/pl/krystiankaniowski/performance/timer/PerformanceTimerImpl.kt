@@ -74,5 +74,4 @@ class PerformanceTimerImpl @Inject constructor(
             _state.emit(PerformanceTimer.State.NotStarted)
         }
     }
-
 }
