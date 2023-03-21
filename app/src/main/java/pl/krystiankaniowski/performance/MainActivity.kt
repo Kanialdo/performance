@@ -7,21 +7,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import pl.krystiankaniowski.performance.notification.StartForegroundServiceUseCase
-import pl.krystiankaniowski.performance.notification.StopForegroundServiceUseCase
 import pl.krystiankaniowski.performance.settings.SettingsScreen
 import pl.krystiankaniowski.performance.stats.StatsScreen
 import pl.krystiankaniowski.performance.timer.TimerScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var startForegroundServiceUseCase: StartForegroundServiceUseCase
-    @Inject
-    lateinit var stopForegroundServiceUseCase: StopForegroundServiceUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,15 +44,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        startForegroundServiceUseCase()
-    }
-
-    override fun onStop() {
-        stopForegroundServiceUseCase()
-        super.onStop()
     }
 }

@@ -27,6 +27,7 @@ class ForegroundService : Service() {
             .setSmallIcon(R.drawable.ic_stat_name)
             .setContentIntent(pendingIntent)
             .setTicker("TypedArrayUtils.getText(R.string.ticker_text)")
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .build()
 
         // Notification ID cannot be 0.

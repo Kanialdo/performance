@@ -15,12 +15,18 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import pl.krystiankaniowski.performance.domain.usecase.SaveFocusUseCase
+import pl.krystiankaniowski.performance.domain.usecase.notification.StartForegroundServiceUseCase
+import pl.krystiankaniowski.performance.domain.usecase.notification.StopForegroundServiceUseCase
 import pl.krystiankaniowski.performance.model.Focus
 import pl.krystiankaniowski.performance.model.Seconds
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class PerformanceTimerImpl @Inject constructor(
     private val saveFocusUseCase: SaveFocusUseCase,
+    private val startForegroundServiceUseCase: StartForegroundServiceUseCase,
+    private val stopForegroundServiceUseCase: StopForegroundServiceUseCase,
 ) : PerformanceTimer {
 
     private val scope = MainScope()
@@ -40,6 +46,7 @@ class PerformanceTimerImpl @Inject constructor(
 
     override fun start(seconds: Seconds) {
         job = scope.launch {
+            startForegroundServiceUseCase()
             startDate = Clock.System.now()
             (seconds.value - 1 downTo 0)
                 .asFlow() // Emit total - 1 because the first was emitted onStart
@@ -71,6 +78,7 @@ class PerformanceTimerImpl @Inject constructor(
                 ),
             )
             startDate = null
+            stopForegroundServiceUseCase()
             _state.emit(PerformanceTimer.State.NotStarted)
         }
     }
