@@ -4,18 +4,6 @@ plugins {
 
 android {
     namespace = "pl.krystiankaniowski.performance.settings"
-
-    buildTypes {
-        debug {
-        }
-        named("release") {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
-        }
-    }
 }
 
 dependencies {
