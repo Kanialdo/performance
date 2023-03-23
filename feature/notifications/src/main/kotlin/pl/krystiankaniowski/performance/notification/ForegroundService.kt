@@ -22,19 +22,20 @@ class ForegroundService : Service() {
             }
 
         val notification: Notification = NotificationCompat.Builder(this, Constants.CHANNEL_TIMER)
-            .setContentTitle("Notification")
-            .setContentText("Timer")
-            .setSmallIcon(R.drawable.ic_stat_name)
+            .setContentTitle(getString(R.string.notification_foreground_title))
+            .setContentText(getString(R.string.notification_foreground_description))
+            .setSmallIcon(R.drawable.ic_notification)
             .setContentIntent(pendingIntent)
-            .setTicker("TypedArrayUtils.getText(R.string.ticker_text)")
+            .setTicker(getString(R.string.notification_foreground_description))
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .build()
 
-        // Notification ID cannot be 0.
         startForeground(Constants.ONGOING_NOTIFICATION_ID, notification)
 
         return START_STICKY;
     }
 
     override fun onBind(p0: Intent?) = null
+
+
 }

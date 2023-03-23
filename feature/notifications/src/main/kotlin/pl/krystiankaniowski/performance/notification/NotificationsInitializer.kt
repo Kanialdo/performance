@@ -19,7 +19,7 @@ class NotificationsInitializer @Inject constructor(
             // Create the NotificationChannel.
             val name = context.getString(R.string.channel_name)
             val descriptionText = context.getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_HIGH
+            val importance = NotificationManager.IMPORTANCE_MIN
             val mChannel = NotificationChannel(Constants.CHANNEL_TIMER, name, importance)
             mChannel.description = descriptionText
             // Register the channel with the system. You can't change the importance

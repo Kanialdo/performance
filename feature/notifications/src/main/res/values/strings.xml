@@ -2,4 +2,6 @@
 <resources>
     <string name="channel_name">Timer channel</string>
     <string name="channel_description">Main timer channel</string>
+    <string name="notification_foreground_title">Timer</string>
+    <string name="notification_foreground_description">Timer is running in background</string>
 </resources>
