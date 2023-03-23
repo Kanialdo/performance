@@ -2,6 +2,7 @@ package pl.krystiankaniowski.performance.notification
 
 import android.content.Context
 import android.content.Intent
+import androidx.core.content.ContextCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.krystiankaniowski.performance.domain.usecase.notification.StartForegroundServiceUseCase
 import javax.inject.Inject
@@ -11,8 +12,6 @@ class StartForegroundServiceUseCaseImpl @Inject constructor(
 ) : StartForegroundServiceUseCase {
 
     override operator fun invoke() {
-        Intent(context, ForegroundService::class.java).also { intent ->
-            context.startService(intent)
-        }
+        ContextCompat.startForegroundService(context, Intent(context, ForegroundService::class.java))
     }
 }

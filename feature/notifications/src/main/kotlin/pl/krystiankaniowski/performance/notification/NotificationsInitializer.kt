@@ -15,17 +15,19 @@ class NotificationsInitializer @Inject constructor(
 ) : Initializer {
 
     override fun init() {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create the NotificationChannel.
-            val name = context.getString(R.string.channel_name)
-            val descriptionText = context.getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_MIN
-            val mChannel = NotificationChannel(Constants.CHANNEL_TIMER, name, importance)
-            mChannel.description = descriptionText
-            // Register the channel with the system. You can't change the importance
-            // or other notification behaviors after this.
+            val channel = NotificationChannel(
+                Constants.CHANNEL_TIMER,
+                context.getString(R.string.channel_name),
+                NotificationManager.IMPORTANCE_MIN,
+            ).apply {
+                description = context.getString(R.string.channel_description)
+                setShowBadge(false)
+            }
+
             val notificationManager = requireNotNull(context.getSystemService<NotificationManager>())
-            notificationManager.createNotificationChannel(mChannel)
+            notificationManager.createNotificationChannel(channel)
         }
     }
 }

@@ -28,6 +28,8 @@ class ForegroundService : Service() {
             .setContentIntent(pendingIntent)
             .setTicker(getString(R.string.notification_foreground_description))
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+            .setPriority(NotificationCompat.PRIORITY_MIN)
+            .setOngoing(true)
             .build()
 
         startForeground(Constants.ONGOING_NOTIFICATION_ID, notification)
@@ -36,6 +38,4 @@ class ForegroundService : Service() {
     }
 
     override fun onBind(p0: Intent?) = null
-
-
 }
