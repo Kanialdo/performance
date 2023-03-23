@@ -15,10 +15,7 @@ class ForegroundService : Service() {
 
         val pendingIntent: PendingIntent =
             Intent(this, Class.forName("pl.krystiankaniowski.performance.MainActivity")).let { notificationIntent ->
-                PendingIntent.getActivity(
-                    this, 0, notificationIntent,
-                    PendingIntent.FLAG_IMMUTABLE,
-                )
+                PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
             }
 
         val notification: Notification = NotificationCompat.Builder(this, Constants.CHANNEL_TIMER)
@@ -34,7 +31,7 @@ class ForegroundService : Service() {
 
         startForeground(Constants.ONGOING_NOTIFICATION_ID, notification)
 
-        return START_STICKY;
+        return START_STICKY
     }
 
     override fun onBind(p0: Intent?) = null
