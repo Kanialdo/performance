@@ -4,9 +4,6 @@ plugins {
 }
 
 android {
-    defaultConfig {
-        consumerProguardFiles("consumer-proguard-rules.pro")
-    }
     namespace = "pl.krystiankaniowski.performance.datastore"
 }
 
