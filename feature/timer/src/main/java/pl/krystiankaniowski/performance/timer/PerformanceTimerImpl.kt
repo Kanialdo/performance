@@ -1,5 +1,6 @@
 package pl.krystiankaniowski.performance.timer
 
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -42,13 +43,13 @@ class PerformanceTimerImpl @Inject constructor(
         job = scope.launch {
             startDate = Clock.System.now()
             (seconds.value - 1 downTo 0)
-                .asFlow() // Emit total - 1 because the first was emitted onStart
-                .onEach { delay(1000) } // Each second later emit a number
+                .asFlow()
+                .onEach { delay(1000) }
                 .map { Seconds(it) }
-                .onStart { emit(seconds) } // Emit total seconds immediately
-                .conflate() // In case the creating of State takes some time, conflate keeps the time ticking separately
+                .onStart { emit(seconds) }
+                .conflate()
                 .onCompletion {
-                    stop()
+                    onCompletion()
                 }
                 .collect {
                     _state.emit(
@@ -62,7 +63,10 @@ class PerformanceTimerImpl @Inject constructor(
     }
 
     override fun stop() {
-        job?.cancel()
+        job?.cancel(CancellationException())
+    }
+
+    private fun onCompletion() {
         scope.launch {
             saveFocusUseCase(
                 Focus(

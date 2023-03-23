@@ -16,7 +16,7 @@ class TimerViewModel @Inject constructor(
     private val timer: PerformanceTimer,
 ) : ViewModel() {
 
-    private val seconds = 25.toDuration(DurationUnit.MINUTES).inWholeSeconds
+    private val seconds = 25.toDuration(DurationUnit.SECONDS).inWholeSeconds
 
     private val _state: MutableStateFlow<State> = MutableStateFlow(
         State(
