@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AppSettingsRepository {
 
-    val isDndEnabled: Flow<Boolean>
+    fun getBoolean(key: String): Flow<Boolean>
 
-    suspend fun updateIsDndEnabled(value: Boolean)
+    suspend fun updateBoolean(key: String, value: Boolean)
 }
