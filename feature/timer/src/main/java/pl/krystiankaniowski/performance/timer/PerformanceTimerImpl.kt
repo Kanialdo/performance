@@ -16,6 +16,9 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import pl.krystiankaniowski.performance.domain.usecase.SaveFocusUseCase
+import pl.krystiankaniowski.performance.domain.usecase.dnd.IsDoNotDisturbEnabledUseCase
+import pl.krystiankaniowski.performance.domain.usecase.dnd.TurnOffDoNotDisturbUseCase
+import pl.krystiankaniowski.performance.domain.usecase.dnd.TurnOnDoNotDisturbUseCase
 import pl.krystiankaniowski.performance.domain.usecase.notification.StartForegroundServiceUseCase
 import pl.krystiankaniowski.performance.domain.usecase.notification.StopForegroundServiceUseCase
 import pl.krystiankaniowski.performance.model.Focus
@@ -28,6 +31,9 @@ class PerformanceTimerImpl @Inject constructor(
     private val saveFocusUseCase: SaveFocusUseCase,
     private val startForegroundServiceUseCase: StartForegroundServiceUseCase,
     private val stopForegroundServiceUseCase: StopForegroundServiceUseCase,
+    private val isDoNotDisturbEnabledUseCase: IsDoNotDisturbEnabledUseCase,
+    private val turnOnDoNotDisturbUseCase: TurnOnDoNotDisturbUseCase,
+    private val turnOffDoNotDisturbUseCase: TurnOffDoNotDisturbUseCase,
 ) : PerformanceTimer {
 
     private val scope = MainScope()
@@ -49,6 +55,9 @@ class PerformanceTimerImpl @Inject constructor(
         job = scope.launch {
             startForegroundServiceUseCase()
             startDate = Clock.System.now()
+            if (isDoNotDisturbEnabledUseCase()) {
+                turnOnDoNotDisturbUseCase()
+            }
             (seconds.value - 1 downTo 0)
                 .asFlow()
                 .onEach { delay(1000) }
@@ -75,6 +84,9 @@ class PerformanceTimerImpl @Inject constructor(
 
     private fun onCompletion() {
         scope.launch {
+            if (isDoNotDisturbEnabledUseCase()) {
+                turnOffDoNotDisturbUseCase()
+            }
             saveFocusUseCase(
                 Focus(
                     startDate = requireNotNull(startDate),
