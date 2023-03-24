@@ -55,7 +55,7 @@ class PerformanceTimerImpl @Inject constructor(
         job = scope.launch {
             startForegroundServiceUseCase()
             startDate = Clock.System.now()
-            if (isDoNotDisturbEnabledUseCase()){
+            if (isDoNotDisturbEnabledUseCase()) {
                 turnOnDoNotDisturbUseCase()
             }
             (seconds.value - 1 downTo 0)
@@ -84,7 +84,7 @@ class PerformanceTimerImpl @Inject constructor(
 
     private fun onCompletion() {
         scope.launch {
-            if (isDoNotDisturbEnabledUseCase()){
+            if (isDoNotDisturbEnabledUseCase()) {
                 turnOffDoNotDisturbUseCase()
             }
             saveFocusUseCase(

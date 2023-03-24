@@ -12,7 +12,6 @@ class TurnOnDoNotDisturbUseCaseImpl @Inject constructor(
 ) : TurnOnDoNotDisturbUseCase {
 
     override operator fun invoke() {
-
         val notificationManager = requireNotNull(getSystemService(context, NotificationManager::class.java))
         val isGranted = notificationManager.isNotificationPolicyAccessGranted
         if (isGranted) {
