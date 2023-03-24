@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.performance.infrastructure.usecase
+package pl.krystiankaniowski.performance.dnd.usecase
 
 import pl.krystiankaniowski.performance.domain.repository.AppSettingsRepository
 import pl.krystiankaniowski.performance.domain.usecase.dnd.SetDoNotDisturbEnabledUseCase

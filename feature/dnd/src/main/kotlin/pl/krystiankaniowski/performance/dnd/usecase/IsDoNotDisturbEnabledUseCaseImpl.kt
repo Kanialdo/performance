@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.performance.infrastructure.usecase
+package pl.krystiankaniowski.performance.dnd.usecase
 
 import kotlinx.coroutines.flow.first
 import pl.krystiankaniowski.performance.domain.repository.AppSettingsRepository
