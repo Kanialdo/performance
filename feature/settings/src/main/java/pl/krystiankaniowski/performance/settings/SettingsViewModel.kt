@@ -6,8 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import pl.krystiankaniowski.performance.domain.usecase.IsDoNotDisturbEnabledUseCase
-import pl.krystiankaniowski.performance.domain.usecase.SetDoNotDisturbEnabledUseCase
+import pl.krystiankaniowski.performance.domain.usecase.dnd.IsDoNotDisturbEnabledUseCase
+import pl.krystiankaniowski.performance.domain.usecase.dnd.SetDoNotDisturbEnabledUseCase
 import javax.inject.Inject
 import javax.inject.Named
 

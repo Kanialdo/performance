@@ -7,8 +7,8 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import pl.krystiankaniowski.performance.domain.usecase.IsDoNotDisturbEnabledUseCase
-import pl.krystiankaniowski.performance.domain.usecase.SetDoNotDisturbEnabledUseCase
+import pl.krystiankaniowski.performance.domain.usecase.dnd.IsDoNotDisturbEnabledUseCase
+import pl.krystiankaniowski.performance.domain.usecase.dnd.SetDoNotDisturbEnabledUseCase
 import pl.krystiankaniowski.performance.testing.rule.InstantDispatcherExtension
 
 @ExtendWith(InstantDispatcherExtension::class)
