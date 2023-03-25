@@ -4,9 +4,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,13 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import pl.krystiankaniowski.performance.domain.settings.SettingsItem
 import pl.krystiankaniowski.performance.ui.components.PerformanceLoadingScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(
-    viewModel: SettingsViewModel = hiltViewModel(),
+fun SettingsScreen2(
+    viewModel: SettingsViewModel2 = hiltViewModel(),
     navigateUp: () -> Unit,
 ) {
     Scaffold(
@@ -46,8 +47,8 @@ fun SettingsScreen(
     ) {
         Box(modifier = Modifier.padding(it)) {
             when (val state = viewModel.state.collectAsState().value) {
-                is SettingsViewModel.State.Loaded -> SettingsScreenContent(state, viewModel::onDndChanged)
-                SettingsViewModel.State.Loading -> PerformanceLoadingScreen()
+                is SettingsViewModel2.State.Loaded -> SettingsScreenContent(state)
+                SettingsViewModel2.State.Loading -> PerformanceLoadingScreen()
             }
         }
     }
@@ -55,31 +56,28 @@ fun SettingsScreen(
 
 @Composable
 private fun SettingsScreenContent(
-    state: SettingsViewModel.State.Loaded,
-    onDndChanged: (Boolean) -> Unit,
+    state: SettingsViewModel2.State.Loaded,
 ) {
     LazyColumn {
-        item {
-
-            ListItem(
-                headlineText = { Text(stringResource(R.string.do_not_disturbed)) },
-                supportingText = { Text(text = stringResource(R.string.turn_on_do_not_disturbed_in_focus_time)) },
-                trailingContent = {
-                    val interactionSource = remember { MutableInteractionSource() }
-                    Switch(
-                        checked = state.isDndEnabled,
-                        onCheckedChange = onDndChanged,
-                        thumbContent = null,
-                        enabled = true,
-                        interactionSource = interactionSource,
+        items(state.items) {
+            when (it) {
+                is SettingsItem.Switch -> {
+                    ListItem(
+                        headlineText = { Text(it.title) },
+                        supportingText = it.description?.let { { Text(it) } },
+                        trailingContent = {
+                            val interactionSource = remember { MutableInteractionSource() }
+                            Switch(
+                                checked = it.value,
+                                onCheckedChange = it.onValueChanged,
+                                thumbContent = null,
+                                enabled = it.isEnabled,
+                                interactionSource = interactionSource,
+                            )
+                        },
                     )
-                },
-            )
-            Divider()
-            ListItem(
-                headlineText = { Text(stringResource(R.string.title_app_version)) },
-                supportingText = { Text(text = state.appVersion) },
-            )
+                }
+            }
         }
     }
 }
@@ -89,11 +87,9 @@ private fun SettingsScreenContent(
 private fun SettingsScreenContentPreview() {
     PerformanceTheme {
         SettingsScreenContent(
-            SettingsViewModel.State.Loaded(
-                appVersion = "1.0.0",
-                isDndEnabled = false,
+            SettingsViewModel2.State.Loaded(
+               emptyList()
             ),
-            onDndChanged = {},
         )
     }
 }
