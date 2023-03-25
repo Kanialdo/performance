@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.performance.dnd
+package pl.krystiankaniowski.performance.dnd.usecase
 
 import android.app.NotificationManager
 import android.content.Context
