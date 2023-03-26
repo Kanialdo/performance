@@ -13,6 +13,12 @@ sealed interface SettingsItem {
     val title: String
     val description: String?
 
+    data class Simple(
+        override val order: Int,
+        override val title: String,
+        override val description: String? = null,
+    ) : SettingsItem
+
     data class Switch(
         override val order: Int,
         override val title: String,

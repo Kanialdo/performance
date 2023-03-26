@@ -6,7 +6,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import pl.krystiankaniowski.performance.dnd.settings.DndSettingsProvider
-import pl.krystiankaniowski.performance.dnd.settings.DndSettingsProvider2
 import pl.krystiankaniowski.performance.dnd.usecase.IsDoNotDisturbEnabledUseCaseImpl
 import pl.krystiankaniowski.performance.dnd.usecase.SetDoNotDisturbEnabledUseCaseImpl
 import pl.krystiankaniowski.performance.dnd.usecase.TurnOffDoNotDisturbUseCaseImpl
@@ -36,8 +35,4 @@ interface DndModule {
     @Binds
     @IntoSet
     fun DndSettingsProvider.bindDndSettingsProvider(): SettingsItemsProvider
-
-    @Binds
-    @IntoSet
-    fun DndSettingsProvider2.bindDndSettingsProvider2(): SettingsItemsProvider
 }

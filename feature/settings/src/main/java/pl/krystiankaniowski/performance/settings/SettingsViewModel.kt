@@ -5,17 +5,15 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import pl.krystiankaniowski.performance.domain.usecase.dnd.IsDoNotDisturbEnabledUseCase
-import pl.krystiankaniowski.performance.domain.usecase.dnd.SetDoNotDisturbEnabledUseCase
+import pl.krystiankaniowski.performance.domain.settings.SettingsItem
+import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    @Named("appVersion") private val applicationVersion: String,
-    private val isDoNotDisturbEnabledUseCase: IsDoNotDisturbEnabledUseCase,
-    private val setDoNotDisturbEnabledUseCase: SetDoNotDisturbEnabledUseCase,
+    private val providers: Set<@JvmSuppressWildcards SettingsItemsProvider>,
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<State> = MutableStateFlow(State.Loading)
@@ -23,25 +21,18 @@ class SettingsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _state.value = State.Loaded(
-                appVersion = applicationVersion,
-                isDndEnabled = isDoNotDisturbEnabledUseCase(),
-            )
+            combine(flows = providers.map { it.items }, transform = { it }).collect { items ->
+                _state.value = State.Loaded(
+                    items = items.toList().flatten().sortedBy { it.order },
+                )
+            }
         }
-    }
-
-    fun onDndChanged(value: Boolean) = viewModelScope.launch {
-        setDoNotDisturbEnabledUseCase(value)
-        _state.value = (_state.value as State.Loaded).copy(
-            isDndEnabled = isDoNotDisturbEnabledUseCase(),
-        )
     }
 
     sealed interface State {
         object Loading : State
         data class Loaded(
-            val appVersion: String,
-            val isDndEnabled: Boolean,
+            val items: List<SettingsItem>,
         ) : State
     }
 }

@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import pl.krystiankaniowski.performance.settings.SettingsScreen2
+import pl.krystiankaniowski.performance.settings.SettingsScreen
 import pl.krystiankaniowski.performance.stats.StatsScreen
 import pl.krystiankaniowski.performance.timer.TimerScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable("settings") {
-                        SettingsScreen2(
+                        SettingsScreen(
                             navigateUp = navController::navigateUp,
                         )
                     }
