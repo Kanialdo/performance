@@ -13,4 +13,7 @@ interface FocusDao {
 
     @Query("SELECT * FROM focus")
     suspend fun getAll(): List<FocusEntity>
+
+    @Query("DELETE FROM focus")
+    suspend fun deleteAll()
 }
