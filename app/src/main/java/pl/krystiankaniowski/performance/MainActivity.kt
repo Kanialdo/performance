@@ -7,13 +7,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import pl.krystiankaniowski.performance.navigation.AndroidNavigator
 import pl.krystiankaniowski.performance.settings.SettingsScreen
 import pl.krystiankaniowski.performance.stats.StatsScreen
 import pl.krystiankaniowski.performance.timer.TimerScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var androidNavigator: AndroidNavigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,5 +49,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        androidNavigator.activity = this
+    }
+
+    override fun onDestroy() {
+        androidNavigator.activity = null
+        super.onDestroy()
     }
 }
