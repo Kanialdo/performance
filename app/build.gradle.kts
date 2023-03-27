@@ -38,6 +38,7 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.core.ui)
     implementation(projects.feature.about)
+    implementation(projects.feature.account)
     implementation(projects.feature.dnd)
     implementation(projects.feature.notifications)
     implementation(projects.feature.timer)
