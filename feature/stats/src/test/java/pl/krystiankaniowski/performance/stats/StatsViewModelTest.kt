@@ -14,15 +14,16 @@ import pl.krystiankaniowski.performance.testing.rule.InstantDispatcherExtension
 class StatsViewModelTest {
 
     private val getFocusListUseCase: GetFocusListUseCase = mockk()
+    private val durationTimeFormatter: DurationTimeFormatter = mockk()
 
     @Test
     fun `WHEN view model is initialized THEN proper state is emitted`() = runTest {
-        val viewModel = StatsViewModel(getFocusListUseCase)
+        val sut = createSut()
 
         coVerify { getFocusListUseCase.invoke() }
 
         Assertions.assertEquals(
-            viewModel.state.value,
+            sut.state.value,
             StatsViewModel.State.Loading,
         )
     }
@@ -31,20 +32,25 @@ class StatsViewModelTest {
     fun `WHEN use case provided data THEN proper state is emitted`() = runTest {
         coEvery { getFocusListUseCase.invoke() }.returns(emptyList())
 
-        val viewModel = StatsViewModel(getFocusListUseCase)
+        val sut = createSut()
 
         Assertions.assertEquals(
-            viewModel.state.value,
-            StatsViewModel.State.Loaded(items = emptyList()),
+            sut.state.value,
+            StatsViewModel.State.Loaded(items = emptyMap()),
         )
     }
 
     @Test
     fun `WHEN refresh is requested THEN perform reload`() = runTest {
-        val viewModel = StatsViewModel(getFocusListUseCase)
+        val sut = createSut()
 
-        viewModel.onEvent(StatsViewModel.Event.Refresh)
+        sut.onEvent(StatsViewModel.Event.Refresh)
 
         coVerify(atLeast = 2) { getFocusListUseCase.invoke() }
     }
+
+    private fun createSut() = StatsViewModel(
+        getFocusListUseCase = getFocusListUseCase,
+        durationTimeFormatter = durationTimeFormatter,
+    )
 }
