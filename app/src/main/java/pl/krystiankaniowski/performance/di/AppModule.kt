@@ -7,7 +7,6 @@ import dagger.hilt.components.SingletonComponent
 import pl.krystiankaniowski.performance.domain.navigation.Navigator
 import pl.krystiankaniowski.performance.navigation.AndroidNavigator
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 interface AppModule {

@@ -22,6 +22,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        androidNavigator.activity = this
         setContent {
             PerformanceTheme {
                 val navController = rememberNavController()
@@ -49,7 +50,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        androidNavigator.activity = this
     }
 
     override fun onDestroy() {
