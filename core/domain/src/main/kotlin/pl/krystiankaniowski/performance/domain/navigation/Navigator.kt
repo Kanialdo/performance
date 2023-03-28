@@ -7,6 +7,7 @@ interface Navigator {
 
 sealed interface Destination {
     sealed interface Android : Destination {
+        object AppNotificationsSettings : Android
         object NotificationPolicyAccessSettings : Android
     }
 }

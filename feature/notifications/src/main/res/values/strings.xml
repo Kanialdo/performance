@@ -5,4 +5,5 @@
     <string name="notification_foreground_title">Timer</string>
     <string name="notification_foreground_description">Timer is running in background</string>
     <string name="service_name">Performance Timer</string>
+    <string name="app_notifications_settings">App notifications settings</string>
 </resources>
