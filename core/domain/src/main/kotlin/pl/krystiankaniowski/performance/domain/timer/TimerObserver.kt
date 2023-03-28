@@ -5,5 +5,6 @@ interface TimerObserver {
     val priority: Int
 
     suspend fun onStart()
+
     suspend fun onStop()
 }

@@ -1,6 +1,7 @@
 package pl.krystiankaniowski.performance.dnd.timer
 
 import pl.krystiankaniowski.performance.domain.timer.TimerObserver
+import pl.krystiankaniowski.performance.domain.timer.TimerObserverPriority
 import pl.krystiankaniowski.performance.domain.usecase.dnd.IsDoNotDisturbEnabledUseCase
 import pl.krystiankaniowski.performance.domain.usecase.dnd.TurnOffDoNotDisturbUseCase
 import pl.krystiankaniowski.performance.domain.usecase.dnd.TurnOnDoNotDisturbUseCase
@@ -12,8 +13,7 @@ class DndTimerObserver @Inject constructor(
     private val turnOffDoNotDisturbUseCase: TurnOffDoNotDisturbUseCase,
 ) : TimerObserver {
 
-    override val priority: Int
-        get() = TODO("Not yet implemented")
+    override val priority: Int = TimerObserverPriority.DND
 
     override suspend fun onStart() {
         if (isDoNotDisturbEnabledUseCase()) {
