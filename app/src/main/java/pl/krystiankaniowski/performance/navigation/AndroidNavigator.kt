@@ -38,6 +38,5 @@ class AndroidNavigator @Inject constructor(@ApplicationContext private val conte
 
     private fun openNotificationPolicyAccessSettings() {
         activity?.startActivity(Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS))
-
     }
 }
