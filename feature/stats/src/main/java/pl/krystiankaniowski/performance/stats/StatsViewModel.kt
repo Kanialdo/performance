@@ -7,10 +7,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import pl.krystiankaniowski.performance.domain.usecase.GetFocusListUseCase
-import java.util.SortedMap
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,13 +38,14 @@ class StatsViewModel @Inject constructor(
                     getFocusListUseCase()
                         .groupBy { it.startDate.toLocalDateTime(kotlinx.datetime.TimeZone.Companion.currentSystemDefault()).date }
                         .map {
-                            State.Loaded.Item.Header(it.key.toString()) to it.value.map {
+                            State.Loaded.Item.Header(it.key.toString()) to it.value.sortedByDescending { it.startDate }.map {
                                 State.Loaded.Item.Focus(
                                     duration = durationTimeFormatter.format(from = it.startDate, to = it.endDate),
                                 )
                             }
                         }
                         .toMap()
+                        .toSortedMap { a, b -> b.date.compareTo(a.date) }
                 },
             )
         }
