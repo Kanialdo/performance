@@ -17,6 +17,7 @@ sealed interface SettingsItem {
         override val order: Int,
         override val title: String,
         override val description: String? = null,
+        val onClick: (() -> Unit)? = null,
     ) : SettingsItem
 
     data class Switch(

@@ -1,11 +1,13 @@
 package pl.krystiankaniowski.performance.settings
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
@@ -15,6 +17,7 @@ internal fun SettingsScreenListItem_Simple(
     item: SettingsItem.Simple,
 ) {
     ListItem(
+        modifier = Modifier.clickable(enabled = item.onClick != null, onClick = { item.onClick?.invoke() }),
         headlineText = { Text(item.title) },
         supportingText = item.description?.let { { Text(it) } },
     )
