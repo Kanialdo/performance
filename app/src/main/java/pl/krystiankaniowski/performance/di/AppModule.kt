@@ -1,18 +1,17 @@
 package pl.krystiankaniowski.performance.di
 
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import pl.krystiankaniowski.performance.BuildConfig
-import javax.inject.Named
+import pl.krystiankaniowski.performance.domain.navigation.Navigator
+import pl.krystiankaniowski.performance.navigation.AndroidNavigator
 
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+interface AppModule {
 
-    @Named("appVersion")
-    @Provides
-    fun provideAndroidNavigator() = BuildConfig.VERSION_NAME
+    @Binds
+    fun AndroidNavigator.bindAndroidNavigator(): Navigator
 }

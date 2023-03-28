@@ -2,4 +2,5 @@
 <resources>
     <string name="do_not_disturbed">Do not Disturb</string>
     <string name="turn_on_do_not_disturbed_in_focus_time">Turn on \"Do not Disturb\" mode when timer is active</string>
+    <string name="do_not_disturbed_android_settings">Open dnd android settings</string>
 </resources>
