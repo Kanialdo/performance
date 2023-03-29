@@ -2,7 +2,6 @@ package pl.krystiankaniowski.performance.dnd.usecase
 
 import pl.krystiankaniowski.performance.dnd.PreferencesKeys
 import pl.krystiankaniowski.performance.domain.repository.AppSettingsRepository
-import pl.krystiankaniowski.performance.domain.usecase.dnd.SetDoNotDisturbEnabledUseCase
 import javax.inject.Inject
 
 class SetDoNotDisturbEnabledUseCaseImpl @Inject constructor(
