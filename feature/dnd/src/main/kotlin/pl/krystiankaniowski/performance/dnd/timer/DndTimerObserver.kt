@@ -1,10 +1,10 @@
 package pl.krystiankaniowski.performance.dnd.timer
 
+import pl.krystiankaniowski.performance.dnd.usecase.IsDoNotDisturbEnabledUseCase
+import pl.krystiankaniowski.performance.dnd.usecase.TurnOffDoNotDisturbUseCase
+import pl.krystiankaniowski.performance.dnd.usecase.TurnOnDoNotDisturbUseCase
 import pl.krystiankaniowski.performance.domain.timer.TimerObserver
 import pl.krystiankaniowski.performance.domain.timer.TimerObserverPriority
-import pl.krystiankaniowski.performance.domain.usecase.dnd.IsDoNotDisturbEnabledUseCase
-import pl.krystiankaniowski.performance.domain.usecase.dnd.TurnOffDoNotDisturbUseCase
-import pl.krystiankaniowski.performance.domain.usecase.dnd.TurnOnDoNotDisturbUseCase
 import javax.inject.Inject
 
 class DndTimerObserver @Inject constructor(
@@ -13,7 +13,7 @@ class DndTimerObserver @Inject constructor(
     private val turnOffDoNotDisturbUseCase: TurnOffDoNotDisturbUseCase,
 ) : TimerObserver {
 
-    override val priority: Int = TimerObserverPriority.DND
+    override val priority: Int = TimerObserverPriority.DO_NOT_DISTURB
 
     override suspend fun onStart() {
         if (isDoNotDisturbEnabledUseCase()) {

@@ -2,8 +2,8 @@ package pl.krystiankaniowski.performance.notification.timer
 
 import pl.krystiankaniowski.performance.domain.timer.TimerObserver
 import pl.krystiankaniowski.performance.domain.timer.TimerObserverPriority
-import pl.krystiankaniowski.performance.domain.usecase.notification.StartForegroundServiceUseCase
-import pl.krystiankaniowski.performance.domain.usecase.notification.StopForegroundServiceUseCase
+import pl.krystiankaniowski.performance.notification.usecase.StartForegroundServiceUseCase
+import pl.krystiankaniowski.performance.notification.usecase.StopForegroundServiceUseCase
 import javax.inject.Inject
 
 class NotificationTimerObserver @Inject constructor(
@@ -11,7 +11,7 @@ class NotificationTimerObserver @Inject constructor(
     private val stopForegroundServiceUseCase: StopForegroundServiceUseCase,
 ) : TimerObserver {
 
-    override val priority: Int = TimerObserverPriority.NOTIFICATION
+    override val priority: Int = TimerObserverPriority.FOREGROUND_NOTIFICATION
 
     override suspend fun onStart() {
         startForegroundServiceUseCase()

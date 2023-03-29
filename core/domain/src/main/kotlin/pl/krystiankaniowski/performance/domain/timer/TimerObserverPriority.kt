@@ -1,7 +1,14 @@
 package pl.krystiankaniowski.performance.domain.timer
 
 object TimerObserverPriority {
-    const val STATS = 3
-    const val NOTIFICATION = 2
-    const val DND = 1
+
+    private var autoPriority: Int = Int.MAX_VALUE
+        get() {
+            field -= 1
+            return field
+        }
+
+    val STATISTICS = autoPriority
+    val FOREGROUND_NOTIFICATION = autoPriority
+    val DO_NOT_DISTURB = autoPriority
 }

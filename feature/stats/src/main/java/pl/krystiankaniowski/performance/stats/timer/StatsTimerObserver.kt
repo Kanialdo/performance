@@ -14,7 +14,7 @@ class StatsTimerObserver @Inject constructor(
 
     private var startDate: Instant? = null
 
-    override val priority: Int = TimerObserverPriority.STATS
+    override val priority: Int = TimerObserverPriority.STATISTICS
 
     override suspend fun onStart() {
         startDate = Clock.System.now()
