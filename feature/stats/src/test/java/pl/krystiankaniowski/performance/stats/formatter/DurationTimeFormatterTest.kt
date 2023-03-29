@@ -1,8 +1,9 @@
-package pl.krystiankaniowski.performance.stats
+package pl.krystiankaniowski.performance.stats.formatter
 
 import kotlinx.datetime.Clock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import pl.krystiankaniowski.performance.stats.formatters.DurationTimeFormatter
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds

@@ -7,14 +7,16 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.toLocalDateTime
 import pl.krystiankaniowski.performance.domain.usecase.GetFocusListUseCase
+import pl.krystiankaniowski.performance.stats.formatters.DateFormatter
+import pl.krystiankaniowski.performance.stats.formatters.DurationTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
 class StatsViewModel @Inject constructor(
     private val getFocusListUseCase: GetFocusListUseCase,
     private val durationTimeFormatter: DurationTimeFormatter,
+    private val dateFormatter: DateFormatter,
 ) : ViewModel() {
 
     private var reloadJob: Job? = null
@@ -34,19 +36,17 @@ class StatsViewModel @Inject constructor(
         reloadJob?.cancel()
         reloadJob = viewModelScope.launch {
             _state.value = State.Loaded(
-                items = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
-                    getFocusListUseCase()
-                        .groupBy { it.startDate.toLocalDateTime(kotlinx.datetime.TimeZone.Companion.currentSystemDefault()).date }
-                        .map {
-                            State.Loaded.Item.Header(it.key.toString()) to it.value.sortedByDescending { it.startDate }.map {
-                                State.Loaded.Item.Focus(
-                                    duration = durationTimeFormatter.format(from = it.startDate, to = it.endDate),
-                                )
-                            }
+                items = getFocusListUseCase()
+                    .groupBy { dateFormatter.format(it.startDate) }
+                    .map {
+                        State.Loaded.Item.Header(it.key) to it.value.sortedByDescending { it.startDate }.map {
+                            State.Loaded.Item.Focus(
+                                duration = durationTimeFormatter.format(from = it.startDate, to = it.endDate),
+                            )
                         }
-                        .toMap()
-                        .toSortedMap { a, b -> b.date.compareTo(a.date) }
-                },
+                    }
+                    .toMap()
+                    .toSortedMap { a, b -> b.date.compareTo(a.date) },
             )
         }
     }

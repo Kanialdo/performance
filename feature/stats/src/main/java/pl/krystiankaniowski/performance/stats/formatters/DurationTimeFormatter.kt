@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.performance.stats
+package pl.krystiankaniowski.performance.stats.formatters
 
 import kotlinx.datetime.Instant
 import javax.inject.Inject
