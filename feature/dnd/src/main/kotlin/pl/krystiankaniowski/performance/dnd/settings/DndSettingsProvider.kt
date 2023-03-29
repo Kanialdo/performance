@@ -4,6 +4,8 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.dnd.R
+import pl.krystiankaniowski.performance.domain.navigation.Destination
+import pl.krystiankaniowski.performance.domain.navigation.Navigator
 import pl.krystiankaniowski.performance.domain.provider.StringsProvider
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider
@@ -13,6 +15,7 @@ import pl.krystiankaniowski.performance.domain.usecase.dnd.SetDoNotDisturbEnable
 import javax.inject.Inject
 
 class DndSettingsProvider @Inject constructor(
+    private val navigator: Navigator,
     private val stringsProvider: StringsProvider,
     private val isDoNotDisturbEnabledUseCase: IsDoNotDisturbEnabledUseCase,
     private val setDoNotDisturbEnabledUseCase: SetDoNotDisturbEnabledUseCase,
@@ -30,6 +33,7 @@ class DndSettingsProvider @Inject constructor(
             items.emit(
                 listOf(
                     buildIsDndEnabled(),
+                    buildOpenNotificationAccessScreen(),
                 ),
             )
         }
@@ -42,6 +46,13 @@ class DndSettingsProvider @Inject constructor(
         value = isDoNotDisturbEnabledUseCase(),
         isEnabled = true,
         onValueChanged = { onDndChanged(it) },
+    )
+
+    private suspend fun buildOpenNotificationAccessScreen() = SettingsItem.Simple(
+        order = SettingsOrder.DND_ANDROID_SETTINGS,
+        title = stringsProvider.getString(R.string.do_not_disturbed_android_settings),
+        description = null,
+        onClick = { navigator.open(Destination.Android.NotificationPolicyAccessSettings) },
     )
 
     private fun onDndChanged(value: Boolean) = scope.launch {
