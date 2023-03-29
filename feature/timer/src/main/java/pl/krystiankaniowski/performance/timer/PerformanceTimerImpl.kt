@@ -5,7 +5,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.map
@@ -26,16 +26,10 @@ class PerformanceTimerImpl @Inject constructor(
 
     private val scope = MainScope()
 
-    private val _state = MutableSharedFlow<PerformanceTimer.State>(extraBufferCapacity = 1)
+    private val _state = MutableStateFlow<PerformanceTimer.State>(PerformanceTimer.State.NotStarted)
     override val state: Flow<PerformanceTimer.State> = _state
 
     private var job: Job? = null
-
-    init {
-        scope.launch {
-            _state.emit(PerformanceTimer.State.NotStarted)
-        }
-    }
 
     override fun start(seconds: Seconds) {
         job = scope.launch {
