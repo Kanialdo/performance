@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.performance.domain.usecase.notification
+package pl.krystiankaniowski.performance.notification.usecase
 
 interface StartForegroundServiceUseCase {
 

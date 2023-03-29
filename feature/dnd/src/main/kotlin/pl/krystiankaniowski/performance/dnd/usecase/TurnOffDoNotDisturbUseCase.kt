@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.performance.domain.usecase.dnd
+package pl.krystiankaniowski.performance.dnd.usecase
 
 interface TurnOffDoNotDisturbUseCase {
     operator fun invoke()

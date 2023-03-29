@@ -1,9 +1,9 @@
-package pl.krystiankaniowski.performance.notification
+package pl.krystiankaniowski.performance.notification.usecase
 
 import android.content.Context
 import android.content.Intent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import pl.krystiankaniowski.performance.domain.usecase.notification.StopForegroundServiceUseCase
+import pl.krystiankaniowski.performance.notification.ForegroundService
 import javax.inject.Inject
 
 class StopForegroundServiceUseCaseImpl @Inject constructor(

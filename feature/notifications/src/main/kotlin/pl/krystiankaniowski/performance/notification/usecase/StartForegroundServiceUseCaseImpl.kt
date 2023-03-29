@@ -1,10 +1,10 @@
-package pl.krystiankaniowski.performance.notification
+package pl.krystiankaniowski.performance.notification.usecase
 
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
-import pl.krystiankaniowski.performance.domain.usecase.notification.StartForegroundServiceUseCase
+import pl.krystiankaniowski.performance.notification.ForegroundService
 import javax.inject.Inject
 
 class StartForegroundServiceUseCaseImpl @Inject constructor(
