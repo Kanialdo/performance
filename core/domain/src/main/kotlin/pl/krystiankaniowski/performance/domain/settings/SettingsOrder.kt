@@ -1,7 +1,16 @@
 package pl.krystiankaniowski.performance.domain.settings
 
 object SettingsOrder {
-    const val DND_ENABLED = 1
-    const val REMOVE_ALL_DATA = 2
-    const val APP_VERSION = 3
+
+    private var autoOrder: Int = 0
+        get() {
+            field += 1
+            return field
+        }
+
+    val DND_ENABLED = autoOrder
+    val DND_ANDROID_SETTINGS = autoOrder
+    val APP_NOTIFICATIONS_SETTINGS = autoOrder
+    val REMOVE_ALL_DATA = autoOrder
+    val APP_VERSION = autoOrder
 }

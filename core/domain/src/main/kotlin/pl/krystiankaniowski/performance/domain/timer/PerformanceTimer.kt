@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.performance.timer
+package pl.krystiankaniowski.performance.domain.timer
 
 import kotlinx.coroutines.flow.Flow
 import pl.krystiankaniowski.performance.model.Seconds
