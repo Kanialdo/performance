@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.domain.timer.PerformanceTimer
+import pl.krystiankaniowski.performance.notification.usecase.IsTimeInNotificationEnabledUseCase
 import pl.krystiankaniowski.performance.notification.utils.TimeFormatter
 import pl.krystiankaniowski.performance.notifications.R
 import javax.inject.Inject
@@ -31,21 +32,26 @@ class ForegroundService : Service() {
     @Inject
     lateinit var timeFormatter: TimeFormatter
 
+    @Inject
+    lateinit var isTimeInNotificationEnabledUseCase: IsTimeInNotificationEnabledUseCase
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         startForeground(Constants.ONGOING_NOTIFICATION_ID, buildNotification(contentMessage = getString(R.string.notification_foreground_description)))
 
         serviceScope.launch {
-            timer.state.collect { state ->
-                notificationManager.notify(
-                    Constants.ONGOING_NOTIFICATION_ID,
-                    buildNotification(
-                        contentMessage = when (state) {
-                            PerformanceTimer.State.NotStarted -> "Not started"
-                            is PerformanceTimer.State.Pending -> "Time left: ${timeFormatter.format(state.leftSeconds)}"
-                        },
-                    ),
-                )
+            if (isTimeInNotificationEnabledUseCase()){
+                timer.state.collect { state ->
+                    notificationManager.notify(
+                        Constants.ONGOING_NOTIFICATION_ID,
+                        buildNotification(
+                            contentMessage = when (state) {
+                                PerformanceTimer.State.NotStarted -> "Not started"
+                                is PerformanceTimer.State.Pending -> "Time left: ${timeFormatter.format(state.leftSeconds)}"
+                            },
+                        ),
+                    )
+                }
             }
         }
 
