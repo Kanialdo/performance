@@ -1,6 +1,16 @@
 package pl.krystiankaniowski.performance.notification.usecase
 
-interface StopForegroundServiceUseCase {
+import android.content.Context
+import android.content.Intent
+import dagger.hilt.android.qualifiers.ApplicationContext
+import pl.krystiankaniowski.performance.notification.ForegroundService
+import javax.inject.Inject
 
-    operator fun invoke()
+class StopForegroundServiceUseCase @Inject constructor(
+    @ApplicationContext private val context: Context,
+) {
+
+    operator fun invoke() {
+        context.stopService(Intent(context, ForegroundService::class.java))
+    }
 }

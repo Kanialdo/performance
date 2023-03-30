@@ -5,5 +5,5 @@ import javax.inject.Inject
 
 class TimeFormatter @Inject constructor() {
 
-    fun format(seconds: Seconds): String = seconds.value.toString()
+    fun format(seconds: Seconds): String = "${seconds.value / 60}:" + "${seconds.value % 60}".padStart(2, '0')
 }
