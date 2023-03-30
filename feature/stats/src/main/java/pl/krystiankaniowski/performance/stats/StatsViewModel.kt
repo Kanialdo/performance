@@ -7,14 +7,16 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import pl.krystiankaniowski.performance.domain.usecase.GetFocusListUseCase
+import pl.krystiankaniowski.performance.stats.formatters.DateFormatter
+import pl.krystiankaniowski.performance.stats.formatters.DurationTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
 class StatsViewModel @Inject constructor(
-    val getFocusListUseCase: GetFocusListUseCase,
+    private val getFocusListUseCase: GetFocusListUseCase,
+    private val durationTimeFormatter: DurationTimeFormatter,
+    private val dateFormatter: DateFormatter,
 ) : ViewModel() {
 
     private var reloadJob: Job? = null
@@ -34,12 +36,17 @@ class StatsViewModel @Inject constructor(
         reloadJob?.cancel()
         reloadJob = viewModelScope.launch {
             _state.value = State.Loaded(
-                items = getFocusListUseCase().map {
-                    State.Loaded.FocusEntry(
-                        startDate = it.startDate.toLocalDateTime(TimeZone.currentSystemDefault()).toString(),
-                        endDate = it.endDate.toLocalDateTime(TimeZone.currentSystemDefault()).toString(),
-                    )
-                },
+                items = getFocusListUseCase()
+                    .groupBy { dateFormatter.format(it.startDate) }
+                    .map {
+                        State.Loaded.Item.Header(it.key) to it.value.sortedByDescending { it.startDate }.map {
+                            State.Loaded.Item.Focus(
+                                duration = durationTimeFormatter.format(from = it.startDate, to = it.endDate),
+                            )
+                        }
+                    }
+                    .toMap()
+                    .toSortedMap { a, b -> b.date.compareTo(a.date) },
             )
         }
     }
@@ -47,12 +54,14 @@ class StatsViewModel @Inject constructor(
     sealed interface State {
         object Loading : State
         data class Loaded(
-            val items: List<FocusEntry>,
+            val items: Map<Item.Header, List<Item.Focus>>,
         ) : State {
-            data class FocusEntry(
-                val startDate: String,
-                val endDate: String,
-            )
+            sealed interface Item {
+                data class Header(val date: String) : Item
+                data class Focus(
+                    val duration: String,
+                ) : Item
+            }
         }
     }
 
