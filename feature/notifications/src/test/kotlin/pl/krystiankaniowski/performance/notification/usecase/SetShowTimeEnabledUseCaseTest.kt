@@ -13,7 +13,7 @@ internal class SetShowTimeEnabledUseCaseTest {
     private val appSettingsRepository: AppSettingsRepository = mockk()
 
     @Test
-    fun `WHEN use case is invoked THEN save value into app settings`() = runTest {
+    fun `WHEN use case is invoked THEN value is saved in app settings`() = runTest {
         coEvery { appSettingsRepository.updateBoolean(any(), any()) } answers {}
 
         val value = true

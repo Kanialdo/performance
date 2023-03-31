@@ -15,7 +15,7 @@ internal class IsShowTimeEnabledUseCaseTest {
     private val appSettingsRepository: AppSettingsRepository = mockk()
 
     @Test
-    fun `WHEN use case is invoked THEN get value from app settings`() = runTest {
+    fun `WHEN use case is invoked THEN value from app settings is returned`() = runTest {
         val value = true
         coEvery { appSettingsRepository.getBoolean(PreferencesKeys.SHOW_TIME_ENABLED) } returns flowOf(value)
         val sut = createSut()
