@@ -10,7 +10,8 @@ object SettingsOrder {
 
     val DND_ENABLED = autoOrder
     val DND_ANDROID_SETTINGS = autoOrder
-    val APP_NOTIFICATIONS_SETTINGS = autoOrder
+    val NOTIFICATION_ANDROID_APP_SETTINGS = autoOrder
+    val NOTIFICATION_SHOW_TIME_ENABLED = autoOrder
     val REMOVE_ALL_DATA = autoOrder
     val APP_VERSION = autoOrder
 }

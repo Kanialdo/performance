@@ -6,4 +6,7 @@
     <string name="notification_foreground_description">Timer is running in background</string>
     <string name="service_name">Performance Timer</string>
     <string name="app_notifications_settings">App notifications settings</string>
+    <string name="notification_timer_description_not_started">Not started</string>
+    <string name="notification_timer_description_time_left">Time left: %1$s</string>
+    <string name="notfication_setting_show_time_title">Show time in notifcation</string>
 </resources>
