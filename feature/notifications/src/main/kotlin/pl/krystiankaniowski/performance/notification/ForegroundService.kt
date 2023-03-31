@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.domain.timer.PerformanceTimer
-import pl.krystiankaniowski.performance.notification.usecase.IsTimeInNotificationEnabledUseCase
+import pl.krystiankaniowski.performance.notification.usecase.IsShowTimeEnabledUseCase
 import pl.krystiankaniowski.performance.notification.utils.TimeFormatter
 import pl.krystiankaniowski.performance.notifications.R
 import javax.inject.Inject
@@ -33,21 +33,21 @@ class ForegroundService : Service() {
     lateinit var timeFormatter: TimeFormatter
 
     @Inject
-    lateinit var isTimeInNotificationEnabledUseCase: IsTimeInNotificationEnabledUseCase
+    lateinit var isShowTimeEnabledUseCase: IsShowTimeEnabledUseCase
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         startForeground(Constants.ONGOING_NOTIFICATION_ID, buildNotification(contentMessage = getString(R.string.notification_foreground_description)))
 
         serviceScope.launch {
-            if (isTimeInNotificationEnabledUseCase()) {
+            if (isShowTimeEnabledUseCase()) {
                 timer.state.collect { state ->
                     notificationManager.notify(
                         Constants.ONGOING_NOTIFICATION_ID,
                         buildNotification(
                             contentMessage = when (state) {
-                                PerformanceTimer.State.NotStarted -> "Not started"
-                                is PerformanceTimer.State.Pending -> "Time left: ${timeFormatter.format(state.leftSeconds)}"
+                                PerformanceTimer.State.NotStarted -> getString(R.string.notification_timer_description_not_started)
+                                is PerformanceTimer.State.Pending -> getString(R.string.notification_timer_description_time_left, timeFormatter.format(state.leftSeconds))
                             },
                         ),
                     )

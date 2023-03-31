@@ -1,14 +1,13 @@
 package pl.krystiankaniowski.performance.notification.usecase
 
+import kotlinx.coroutines.flow.first
 import pl.krystiankaniowski.performance.domain.repository.AppSettingsRepository
 import pl.krystiankaniowski.performance.notification.PreferencesKeys
 import javax.inject.Inject
 
-class SetTimeInNotificationEnabledUseCase @Inject constructor(
+class IsShowTimeEnabledUseCase @Inject constructor(
     private val appSettingsRepository: AppSettingsRepository,
 ) {
 
-    suspend operator fun invoke(value: Boolean) {
-        appSettingsRepository.updateBoolean(PreferencesKeys.IS_TIME_IN_NOTIFICATION_ENABLED, value)
-    }
+    suspend operator fun invoke(): Boolean = appSettingsRepository.getBoolean(PreferencesKeys.SHOW_TIME_ENABLED).first()
 }
