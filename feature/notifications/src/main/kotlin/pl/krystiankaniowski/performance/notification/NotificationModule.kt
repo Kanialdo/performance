@@ -25,7 +25,7 @@ object NotificationModule {
 
     @Module
     @InstallIn(SingletonComponent::class)
-    interface BindingModule{
+    interface BindingModule {
 
         @Binds
         @IntoSet

@@ -40,7 +40,7 @@ class ForegroundService : Service() {
         startForeground(Constants.ONGOING_NOTIFICATION_ID, buildNotification(contentMessage = getString(R.string.notification_foreground_description)))
 
         serviceScope.launch {
-            if (isTimeInNotificationEnabledUseCase()){
+            if (isTimeInNotificationEnabledUseCase()) {
                 timer.state.collect { state ->
                     notificationManager.notify(
                         Constants.ONGOING_NOTIFICATION_ID,
