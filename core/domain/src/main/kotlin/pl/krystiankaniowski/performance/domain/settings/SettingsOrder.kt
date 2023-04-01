@@ -12,6 +12,7 @@ object SettingsOrder {
     val DND_ANDROID_SETTINGS = autoOrder
     val NOTIFICATION_ANDROID_APP_SETTINGS = autoOrder
     val NOTIFICATION_SHOW_TIME_ENABLED = autoOrder
+    val AWAKE_KEEP_AWAKE = autoOrder
     val REMOVE_ALL_DATA = autoOrder
     val APP_VERSION = autoOrder
 }
