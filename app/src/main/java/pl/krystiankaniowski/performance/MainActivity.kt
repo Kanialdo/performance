@@ -1,12 +1,19 @@
 package pl.krystiankaniowski.performance
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.runtime.DisposableEffect
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.navigation.AndroidNavigator
 import pl.krystiankaniowski.performance.settings.SettingsScreen
 import pl.krystiankaniowski.performance.stats.StatsScreen
@@ -17,6 +24,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    private val viewModel: MainActivityViewModel by viewModels()
+
     @Inject
     lateinit var androidNavigator: AndroidNavigator
 
@@ -26,6 +35,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             PerformanceTheme {
                 val navController = rememberNavController()
+                DisposableEffect(navController) {
+                    navController.addOnDestinationChangedListener(viewModel)
+                    onDispose {
+                        navController.removeOnDestinationChangedListener(viewModel)
+                    }
+                }
                 NavHost(navController = navController, startDestination = "timer") {
                     composable("timer") {
                         TimerScreen(
@@ -47,6 +62,16 @@ class MainActivity : ComponentActivity() {
                             navigateUp = navController::navigateUp,
                         )
                     }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.state.map { it.keepAwake }.distinctUntilChanged().collect { keepAwake ->
+                if (keepAwake) {
+                    window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                } else {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 }
             }
         }
