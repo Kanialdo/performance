@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_remove_all_data">Remove all data</string>
+    <string name="settings_remove_history_title">Remove history</string>
 </resources>
