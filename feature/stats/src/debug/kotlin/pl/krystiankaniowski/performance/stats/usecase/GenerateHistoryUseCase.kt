@@ -1,4 +1,10 @@
 package pl.krystiankaniowski.performance.stats.usecase
 
-class GenerateHistoryUseCase {
+import javax.inject.Inject
+
+class GenerateHistoryUseCase @Inject constructor() {
+
+    suspend operator fun invoke() {
+
+    }
 }

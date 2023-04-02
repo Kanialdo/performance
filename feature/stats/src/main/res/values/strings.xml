@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="stats_title">Stats</string>
+    <string name="settings_generate_history_item">Generate history</string>
 </resources>
