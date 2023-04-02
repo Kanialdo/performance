@@ -37,6 +37,7 @@ class AwakeSettingsProvider @Inject constructor(
 
     private suspend fun buildKeepAwakeEnabledItem() = SettingsItem.Switch(
         order = SettingsOrder.AWAKE_KEEP_AWAKE,
+        category = SettingsOrder.Category.OTHERS,
         title = stringsProvider.getString(R.string.awake_settings_keep_awake_title),
         description = null,
         value = isKeepAwakeEnabledUseCase(),

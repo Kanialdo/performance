@@ -10,7 +10,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
+import pl.krystiankaniowski.performance.domain.settings.SettingsOrder
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
+
+//@Composable
+//internal fun SettingsScreenListItem_Header(
+//    item: SettingsItem.Header,
+//) {
+//    ListItem(
+//        headlineText = { Text(item.title) },
+//    )
+//}
 
 @Composable
 internal fun SettingsScreenListItem_Simple(
@@ -43,6 +53,19 @@ internal fun SettingsScreenListItem_Switch(
     )
 }
 
+//@Preview
+//@Composable
+//private fun SettingsScreenListItem_Header_Preview() {
+//    PerformanceTheme {
+//        SettingsScreenListItem_Header(
+//            SettingsItem.Header(
+//                order = 0,
+//                title = "title",
+//            ),
+//        )
+//    }
+//}
+
 @Preview
 @Composable
 private fun SettingsScreenListItem_Simple_Preview() {
@@ -50,6 +73,7 @@ private fun SettingsScreenListItem_Simple_Preview() {
         SettingsScreenListItem_Simple(
             SettingsItem.Simple(
                 order = 0,
+                category = SettingsOrder.Category.ABOUT,
                 title = "title",
                 description = "description",
             ),
@@ -64,6 +88,7 @@ private fun SettingsScreenListItem_Switch_Preview() {
         SettingsScreenListItem_Switch(
             SettingsItem.Switch(
                 order = 0,
+                category = SettingsOrder.Category.ABOUT,
                 title = "title",
                 description = "description",
                 value = true,

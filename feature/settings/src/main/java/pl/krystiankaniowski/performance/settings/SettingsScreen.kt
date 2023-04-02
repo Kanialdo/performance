@@ -1,5 +1,6 @@
 package pl.krystiankaniowski.performance.settings
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +10,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -50,15 +52,20 @@ fun SettingsScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SettingsScreenContent(
     state: SettingsViewModel.State.Loaded,
 ) {
     LazyColumn {
-        items(state.items) {
-            when (it) {
-                is SettingsItem.Simple -> SettingsScreenListItem_Simple(it)
-                is SettingsItem.Switch -> SettingsScreenListItem_Switch(it)
+        state.items.forEach {
+            stickyHeader { ListItem(headlineText = { Text(it.key.name) }) }
+            items(it.value) {
+                when (it) {
+                    //is SettingsItem.Header -> SettingsScreenListItem_Header(it)
+                    is SettingsItem.Simple -> SettingsScreenListItem_Simple(it)
+                    is SettingsItem.Switch -> SettingsScreenListItem_Switch(it)
+                }
             }
         }
     }
@@ -70,7 +77,7 @@ private fun SettingsScreenContentPreview() {
     PerformanceTheme {
         SettingsScreenContent(
             SettingsViewModel.State.Loaded(
-                emptyList(),
+                emptyMap(),
             ),
         )
     }

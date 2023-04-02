@@ -41,6 +41,7 @@ class NotificationSettingsProvider @Inject constructor(
 
     private fun buildAndroidAppSettings() = SettingsItem.Simple(
         order = SettingsOrder.NOTIFICATION_ANDROID_APP_SETTINGS,
+        category = SettingsOrder.Category.NOTIFICATIONS,
         title = stringsProvider.getString(R.string.app_notifications_settings),
         description = null,
         onClick = { navigator.open(Destination.Android.AppNotificationsSettings) },
@@ -48,6 +49,7 @@ class NotificationSettingsProvider @Inject constructor(
 
     private suspend fun buildShowTimeEnabled() = SettingsItem.Switch(
         order = SettingsOrder.NOTIFICATION_SHOW_TIME_ENABLED,
+        category = SettingsOrder.Category.NOTIFICATIONS,
         title = stringsProvider.getString(R.string.notfication_setting_show_time_title),
         description = null,
         value = isShowTimeEnabledUseCase(),

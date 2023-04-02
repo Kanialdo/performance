@@ -41,6 +41,7 @@ class DndSettingsProvider @Inject constructor(
 
     private suspend fun buildIsDndEnabled() = SettingsItem.Switch(
         order = SettingsOrder.DND_ENABLED,
+        category = SettingsOrder.Category.DND,
         title = stringsProvider.getString(R.string.do_not_disturbed),
         description = stringsProvider.getString(R.string.turn_on_do_not_disturbed_in_focus_time),
         value = isDoNotDisturbEnabledUseCase(),
@@ -50,6 +51,7 @@ class DndSettingsProvider @Inject constructor(
 
     private suspend fun buildOpenNotificationAccessScreen() = SettingsItem.Simple(
         order = SettingsOrder.DND_ANDROID_SETTINGS,
+        category = SettingsOrder.Category.DND,
         title = stringsProvider.getString(R.string.do_not_disturbed_android_settings),
         description = null,
         onClick = { navigator.open(Destination.Android.NotificationPolicyAccessSettings) },

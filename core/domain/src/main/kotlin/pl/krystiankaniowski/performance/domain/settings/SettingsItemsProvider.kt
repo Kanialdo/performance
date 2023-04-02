@@ -9,12 +9,14 @@ interface SettingsItemsProvider {
 
 sealed interface SettingsItem {
 
+    val category: SettingsOrder.Category
     val order: Int
     val title: String
     val description: String?
 
     data class Simple(
         override val order: Int,
+        override val category: SettingsOrder.Category,
         override val title: String,
         override val description: String? = null,
         val onClick: (() -> Unit)? = null,
@@ -22,6 +24,7 @@ sealed interface SettingsItem {
 
     data class Switch(
         override val order: Int,
+        override val category: SettingsOrder.Category,
         override val title: String,
         override val description: String? = null,
         val value: Boolean,

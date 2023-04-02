@@ -35,6 +35,7 @@ class AccountSettingsProvider @Inject constructor(
 
     private fun buildRemoveAllDataItem() = SettingsItem.Simple(
         order = SettingsOrder.REMOVE_ALL_DATA,
+        category = SettingsOrder.Category.STATS,
         title = stringsProvider.getString(R.string.title_remove_all_data),
         onClick = ::removeAllData,
     )
