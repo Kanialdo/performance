@@ -34,7 +34,7 @@ class DebugStatsSettingsProvider@Inject constructor(
     }
 
     private fun buildGenerateStatsItem() = SettingsItem.Simple(
-        order = SettingsOrder.APP_VERSION,
+        order = SettingsOrder.STATS_DEV_GENERATE_HISTORY,
         title = stringsProvider.getString(R.string.settings_generate_history_item),
         description = null,
         onClick = ::generateStats
