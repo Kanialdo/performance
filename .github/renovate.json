@@ -15,8 +15,10 @@
   ],
   "extends": [
     "config:base",
+    ":automergeAll",
+    ":automergeBranch",
     "schedule:daily",
     ":noUnscheduledUpdates",
     ":prConcurrentLimitNone",
-    ":prHourlyLimitNone"
+    ":prHourlyLimitNone",
   ]
