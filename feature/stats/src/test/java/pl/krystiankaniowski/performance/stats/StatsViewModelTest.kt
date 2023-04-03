@@ -34,7 +34,7 @@ class StatsViewModelTest {
     }
 
     @Test
-    fun `WHEN use case provided data THEN proper state is emitted`() = runTest {
+    fun `WHEN use case provided data THEN loaded state is emitted`() = runTest {
         val date = Clock.System.now()
         val formattedDuration = "5 min"
         val formattedDate = "01.01.2001"
@@ -52,6 +52,18 @@ class StatsViewModelTest {
                     ),
                 ),
             ),
+            sut.state.value,
+        )
+    }
+
+    @Test
+    fun `WHEN use case did not provide data THEN empty state is emitted`() = runTest {
+        coEvery { getFocusListUseCase.invoke() } returns emptyList()
+
+        val sut = createSut()
+
+        Assertions.assertEquals(
+            StatsViewModel.State.Empty,
             sut.state.value,
         )
     }

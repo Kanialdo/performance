@@ -35,24 +35,27 @@ class StatsViewModel @Inject constructor(
     private fun loadData() {
         reloadJob?.cancel()
         reloadJob = viewModelScope.launch {
-            _state.value = State.Loaded(
-                items = getFocusListUseCase()
-                    .groupBy { dateFormatter.format(it.startDate) }
-                    .map {
-                        State.Loaded.Item.Header(it.key) to it.value.sortedByDescending { it.startDate }.map {
-                            State.Loaded.Item.Focus(
-                                duration = durationTimeFormatter.format(from = it.startDate, to = it.endDate),
-                            )
-                        }
+            val items = getFocusListUseCase()
+                .groupBy { dateFormatter.format(it.startDate) }
+                .map {
+                    State.Loaded.Item.Header(it.key) to it.value.sortedByDescending { it.startDate }.map {
+                        State.Loaded.Item.Focus(
+                            duration = durationTimeFormatter.format(from = it.startDate, to = it.endDate),
+                        )
                     }
-                    .toMap()
-                    .toSortedMap { a, b -> b.date.compareTo(a.date) },
-            )
+                }
+                .toMap()
+                .toSortedMap { a, b -> b.date.compareTo(a.date) }
+            _state.value = when {
+                items.isEmpty() -> State.Empty
+                else -> State.Loaded(items = items)
+            }
         }
     }
 
     sealed interface State {
         object Loading : State
+        object Empty : State
         data class Loaded(
             val items: Map<Item.Header, List<Item.Focus>>,
         ) : State {
