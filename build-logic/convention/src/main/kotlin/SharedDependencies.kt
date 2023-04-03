@@ -1,33 +1,30 @@
+
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByType
 
 internal fun Project.shared() {
-    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
     dependencies {
-        add("implementation", libs.findLibrary("androidx.core").get())
+        add("implementation", libs.androidx.core)
 
-        add("implementation", libs.findLibrary("androidx.activity.compose").get())
+        add("implementation", libs.androidx.activity.compose)
 
-        add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
-        add("implementation", libs.findLibrary("androidx.navigation.compose").get())
+        add("implementation", libs.androidx.hilt.navigation.compose)
+        add("implementation", libs.androidx.navigation.compose)
 
-        add("testImplementation", libs.findLibrary("mockk.core").get())
+        add("testImplementation", libs.mockk.core)
         add("testImplementation", project(":core:testing"))
 
-        add("androidTestImplementation", libs.findLibrary("mockk.android").get())
-        add("androidTestImplementation", libs.findLibrary("androidx.test.ext").get())
-        add("androidTestImplementation", libs.findLibrary("androidx.test.espresso.core").get())
+        add("androidTestImplementation", libs.mockk.android)
+        add("androidTestImplementation", libs.androidx.test.ext)
+        add("androidTestImplementation", libs.androidx.test.espresso.core)
     }
 }
 
 internal fun Project.commonDependencies() {
-    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
     dependencies {
-        add("implementation", libs.findLibrary("kotlinx.datetime").get())
-        add("testImplementation", libs.findLibrary("kotlinx.coroutines.test").get())
+        add("implementation", libs.kotlinx.datetime)
+        add("testImplementation", libs.kotlinx.coroutines.test)
     }
 }
