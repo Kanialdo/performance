@@ -9,6 +9,9 @@ import javax.inject.Inject
 class GetStopTimerActionUseCaseImpl @Inject constructor(
     private val timer: PerformanceTimer,
 ) : GetStopTimerActionUseCase {
+
+    // TODO: improve
+
     override suspend fun invoke(): GetStopTimerActionUseCase.Action = when (val state = timer.state.first()) {
         PerformanceTimer.State.NotStarted -> error("TODO")
         is PerformanceTimer.State.Pending -> state.elapsedSeconds.value.let { seconds ->

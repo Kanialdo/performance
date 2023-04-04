@@ -39,6 +39,7 @@ class TimerViewModel @Inject constructor(
                         isTimerActive = false,
                         button = State.Button.Start,
                     )
+
                     is PerformanceTimer.State.Pending -> State(
                         counter = timerState.leftSeconds.value.toTextTime(),
                         isTimerActive = true,
@@ -52,30 +53,10 @@ class TimerViewModel @Inject constructor(
         }
     }
 
-    private fun onButtonClicked() {
-        when (state.value.button) {
-            is State.Button.Cancel -> timer.cancel()
-            State.Button.Start -> onStart()
-            State.Button.Stop -> onStop()
-        }
-    }
-
     fun onEvent(event: Event) = when (event) {
-        Event.Start -> onStart()
-        Event.Stop -> onStop()
-        Event.OnButtonClick -> onButtonClicked()
-    }
-
-    private fun onStart() {
-        viewModelScope.launch {
-            timer.start(Seconds(seconds))
-        }
-    }
-
-    private fun onStop() {
-        viewModelScope.launch {
-            timer.stop()
-        }
+        Event.Start -> timer.start(Seconds(seconds))
+        Event.Stop -> timer.stop()
+        Event.Cancel -> timer.cancel()
     }
 
     private fun Long.toTextTime() = "${this / 60}:${(this % 60).toString().padStart(2, '0')}"
@@ -96,7 +77,7 @@ class TimerViewModel @Inject constructor(
     sealed class Event {
         object Start : Event()
         object Stop : Event()
-        object OnButtonClick : Event()
+        object Cancel : Event()
     }
 
     sealed class Effect

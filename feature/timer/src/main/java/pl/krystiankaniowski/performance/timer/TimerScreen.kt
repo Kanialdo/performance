@@ -83,18 +83,20 @@ fun TimerScreenContent(
             Text(text = state.counter, style = MaterialTheme.typography.headlineLarge)
         }
         Spacer(modifier = Modifier.height(32.dp))
-        Button(
-            onClick = { onEvent(TimerViewModel.Event.OnButtonClick) },
-            content = {
-                Text(
-                    when (state.button) {
-                        is TimerViewModel.State.Button.Cancel -> "Cancel (${state.button.secondsLeft})"
-                        TimerViewModel.State.Button.Start -> "Start"
-                        TimerViewModel.State.Button.Stop -> "Stop"
-                    },
-                )
-            },
-        )
+        when (state.button) {
+            is TimerViewModel.State.Button.Cancel -> Button(
+                content = { Text("Cancel (${state.button.secondsLeft})") }, // TODO: transaltions
+                onClick = { onEvent(TimerViewModel.Event.Cancel) },
+            )
+            TimerViewModel.State.Button.Start -> Button(
+                content = { Text("Start") }, // TODO: transaltions
+                onClick = { onEvent(TimerViewModel.Event.Start) },
+            )
+            TimerViewModel.State.Button.Stop -> Button(
+                content = { Text("Stop") }, // TODO: transaltions
+                onClick = { onEvent(TimerViewModel.Event.Stop) },
+            )
+        }
     }
 }
 
