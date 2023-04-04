@@ -4,7 +4,7 @@ import pl.krystiankaniowski.performance.model.Seconds
 
 interface GetStopTimerActionUseCase {
 
-    operator fun invoke(): Action
+    suspend operator fun invoke(): Action
 
     sealed class Action {
         object GiveUp : Action()

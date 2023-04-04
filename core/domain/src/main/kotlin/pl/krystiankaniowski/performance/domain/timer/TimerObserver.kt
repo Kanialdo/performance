@@ -6,5 +6,10 @@ interface TimerObserver {
 
     suspend fun onStart()
 
-    suspend fun onStop()
+    suspend fun onStop(result: Result)
+
+    enum class Result {
+        CANCELED,
+        COMPLETED,
+    }
 }

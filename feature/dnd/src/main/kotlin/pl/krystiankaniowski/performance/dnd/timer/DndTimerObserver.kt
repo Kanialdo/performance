@@ -21,7 +21,7 @@ class DndTimerObserver @Inject constructor(
         }
     }
 
-    override suspend fun onStop() {
+    override suspend fun onStop(result: TimerObserver.Result) {
         if (isDoNotDisturbEnabledUseCase()) {
             turnOffDoNotDisturbUseCase()
         }

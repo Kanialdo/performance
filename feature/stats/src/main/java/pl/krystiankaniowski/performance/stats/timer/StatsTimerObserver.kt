@@ -20,13 +20,20 @@ class StatsTimerObserver @Inject constructor(
         startDate = Clock.System.now()
     }
 
-    override suspend fun onStop() {
+    override suspend fun onStop(result: TimerObserver.Result) {
+        when (result) {
+            TimerObserver.Result.CANCELED -> Unit
+            TimerObserver.Result.COMPLETED -> save()
+        }
+        startDate = null
+    }
+
+    private suspend fun save() {
         saveFocusUseCase(
             Focus(
                 startDate = requireNotNull(startDate),
                 endDate = Clock.System.now(),
             ),
         )
-        startDate = null
     }
 }

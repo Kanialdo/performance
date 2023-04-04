@@ -21,25 +21,30 @@ class TimerViewModel @Inject constructor(
 
     private val seconds = 25.toDuration(DurationUnit.MINUTES).inWholeSeconds
 
-    private val _state: MutableStateFlow<State> = MutableStateFlow(State.Preparing)
+    private val _state: MutableStateFlow<State> = MutableStateFlow(
+        State(
+            counter = seconds.toTextTime(),
+            isTimerActive = false,
+            button = State.Button.Start,
+        ),
+    )
     val state: StateFlow<State> = _state
 
     init {
         viewModelScope.launch {
             timer.state.collect { timerState ->
                 _state.value = when (timerState) {
-                    PerformanceTimer.State.NotStarted -> State.Loaded(
+                    PerformanceTimer.State.NotStarted -> State(
                         counter = seconds.toTextTime(),
                         isTimerActive = false,
-                        buttonLabel = "Start",
+                        button = State.Button.Start,
                     )
-
-                    is PerformanceTimer.State.Pending -> State.Loaded(
+                    is PerformanceTimer.State.Pending -> State(
                         counter = timerState.leftSeconds.value.toTextTime(),
                         isTimerActive = true,
-                        buttonLabel = when (val action = getStopTimerActionUseCase()) {
-                            is GetStopTimerActionUseCase.Action.Cancel -> "Cancel (${action.secondsLeft})"
-                            GetStopTimerActionUseCase.Action.GiveUp -> "Give up"
+                        button = when (val action = getStopTimerActionUseCase()) {
+                            is GetStopTimerActionUseCase.Action.Cancel -> State.Button.Cancel(action.secondsLeft.value.toInt())
+                            GetStopTimerActionUseCase.Action.GiveUp -> State.Button.Stop
                         },
                     )
                 }
@@ -47,19 +52,18 @@ class TimerViewModel @Inject constructor(
         }
     }
 
-    fun onButtonClick() {
-        state.value.let { it as? State.Loaded }?.let {
-            if (it.isTimerActive) {
-                onStop()
-            } else {
-                onStart()
-            }
+    private fun onButtonClicked() {
+        when (state.value.button) {
+            is State.Button.Cancel -> timer.cancel()
+            State.Button.Start -> onStart()
+            State.Button.Stop -> onStop()
         }
     }
 
     fun onEvent(event: Event) = when (event) {
         Event.Start -> onStart()
         Event.Stop -> onStop()
+        Event.OnButtonClick -> onButtonClicked()
     }
 
     private fun onStart() {
@@ -76,18 +80,23 @@ class TimerViewModel @Inject constructor(
 
     private fun Long.toTextTime() = "${this / 60}:${(this % 60).toString().padStart(2, '0')}"
 
-    sealed interface State {
-        object Preparing : State
-        data class Loaded(
-            val counter: String,
-            val isTimerActive: Boolean,
-            val buttonLabel: String,
-        ) : State
+    data class State(
+        val counter: String,
+        val isTimerActive: Boolean,
+        val button: Button,
+    ) {
+
+        sealed interface Button {
+            object Start : Button
+            object Stop : Button
+            data class Cancel(val secondsLeft: Int) : Button
+        }
     }
 
     sealed class Event {
         object Start : Event()
         object Stop : Event()
+        object OnButtonClick : Event()
     }
 
     sealed class Effect

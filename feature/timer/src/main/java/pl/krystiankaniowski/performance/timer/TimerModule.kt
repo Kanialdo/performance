@@ -4,11 +4,15 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import pl.krystiankaniowski.performance.domain.timer.GetStopTimerActionUseCase
 import pl.krystiankaniowski.performance.domain.timer.PerformanceTimer
 
 @Module
 @InstallIn(SingletonComponent::class)
 interface TimerModule {
+
+    @Binds
+    fun GetStopTimerActionUseCaseImpl.bindGetStopTimerActionUseCaseImpl(): GetStopTimerActionUseCase
 
     @Binds
     fun PerformanceTimerImpl.bindPerformanceTimerImpl(): PerformanceTimer

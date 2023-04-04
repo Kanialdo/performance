@@ -11,6 +11,8 @@ interface PerformanceTimer {
 
     fun stop()
 
+    fun cancel()
+
     sealed interface State {
         object NotStarted : State
         data class Pending(

@@ -3,7 +3,6 @@ package pl.krystiankaniowski.performance.timer
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -84,25 +83,25 @@ fun TimerScreenContent(
             Text(text = state.counter, style = MaterialTheme.typography.headlineLarge)
         }
         Spacer(modifier = Modifier.height(32.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            Button(
-                enabled = state.isStartButtonEnabled,
-                onClick = { onEvent(TimerViewModel.Event.Start) },
-                content = { Text("Start") },
-            )
-            Button(
-                enabled = state.isStopButtonEnabled,
-                onClick = { onEvent(TimerViewModel.Event.Stop) },
-                content = { Text("Stop") },
-            )
-        }
+        Button(
+            onClick = { onEvent(TimerViewModel.Event.OnButtonClick) },
+            content = {
+                Text(
+                    when (state.button) {
+                        is TimerViewModel.State.Button.Cancel -> "Cancel (${state.button.secondsLeft})"
+                        TimerViewModel.State.Button.Start -> "Start"
+                        TimerViewModel.State.Button.Stop -> "Stop"
+                    },
+                )
+            },
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun TimerScreenContentPreview() {
+fun TimerScreenContentPreview_Start() {
     PerformanceTheme {
         Scaffold { paddingValues ->
             Box(modifier = Modifier.padding(paddingValues)) {
@@ -110,8 +109,47 @@ fun TimerScreenContentPreview() {
                     state = TimerViewModel.State(
                         counter = "25:00",
                         isTimerActive = false,
-                        isStartButtonEnabled = true,
-                        isStopButtonEnabled = false,
+                        button = TimerViewModel.State.Button.Start,
+                    ),
+                    onEvent = {},
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun TimerScreenContentPreview_Stop() {
+    PerformanceTheme {
+        Scaffold { paddingValues ->
+            Box(modifier = Modifier.padding(paddingValues)) {
+                TimerScreenContent(
+                    state = TimerViewModel.State(
+                        counter = "25:00",
+                        isTimerActive = true,
+                        button = TimerViewModel.State.Button.Stop,
+                    ),
+                    onEvent = {},
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun TimerScreenContentPreview_Cancel() {
+    PerformanceTheme {
+        Scaffold { paddingValues ->
+            Box(modifier = Modifier.padding(paddingValues)) {
+                TimerScreenContent(
+                    state = TimerViewModel.State(
+                        counter = "25:00",
+                        isTimerActive = true,
+                        button = TimerViewModel.State.Button.Cancel(10),
                     ),
                     onEvent = {},
                 )
