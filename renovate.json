@@ -1,6 +1,21 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "timezone": "Europe/Warsaw",
+  "packageRules": [
+    {
+      "matchPackagePrefixes": [
+        "androidx.compose.compiler",
+        "com.google.devtools.ksp",
+        "org.jetbrains.kotlin"
+      ],
+      "groupName": "Kotlin and plugins"
+    }
+  ],
   "extends": [
-    "config:base"
+    "config:base",
+    "schedule:daily",
+    ":noUnscheduledUpdates",
+    ":prConcurrentLimitNone",
+    ":prHourlyLimitNone"
   ]
 }
