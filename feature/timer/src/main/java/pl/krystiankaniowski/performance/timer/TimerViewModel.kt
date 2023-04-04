@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.domain.timer.GetStopTimerActionUseCase
 import pl.krystiankaniowski.performance.domain.timer.PerformanceTimer
 import pl.krystiankaniowski.performance.model.Seconds
 import javax.inject.Inject
@@ -15,37 +16,43 @@ import kotlin.time.toDuration
 @HiltViewModel
 class TimerViewModel @Inject constructor(
     private val timer: PerformanceTimer,
+    private val getStopTimerActionUseCase: GetStopTimerActionUseCase,
 ) : ViewModel() {
 
     private val seconds = 25.toDuration(DurationUnit.MINUTES).inWholeSeconds
 
-    private val _state: MutableStateFlow<State> = MutableStateFlow(
-        State(
-            counter = seconds.toTextTime(),
-            isTimerActive = false,
-            isStartButtonEnabled = true,
-            isStopButtonEnabled = false,
-        ),
-    )
+    private val _state: MutableStateFlow<State> = MutableStateFlow(State.Preparing)
     val state: StateFlow<State> = _state
 
     init {
         viewModelScope.launch {
             timer.state.collect { timerState ->
                 _state.value = when (timerState) {
-                    PerformanceTimer.State.NotStarted -> State(
+                    PerformanceTimer.State.NotStarted -> State.Loaded(
                         counter = seconds.toTextTime(),
                         isTimerActive = false,
-                        isStartButtonEnabled = true,
-                        isStopButtonEnabled = false,
+                        buttonLabel = "Start",
                     )
-                    is PerformanceTimer.State.Pending -> State(
+
+                    is PerformanceTimer.State.Pending -> State.Loaded(
                         counter = timerState.leftSeconds.value.toTextTime(),
                         isTimerActive = true,
-                        isStartButtonEnabled = false,
-                        isStopButtonEnabled = true,
+                        buttonLabel = when (val action = getStopTimerActionUseCase()) {
+                            is GetStopTimerActionUseCase.Action.Cancel -> "Cancel (${action.secondsLeft})"
+                            GetStopTimerActionUseCase.Action.GiveUp -> "Give up"
+                        },
                     )
                 }
+            }
+        }
+    }
+
+    fun onButtonClick() {
+        state.value.let { it as? State.Loaded }?.let {
+            if (it.isTimerActive) {
+                onStop()
+            } else {
+                onStart()
             }
         }
     }
@@ -69,12 +76,14 @@ class TimerViewModel @Inject constructor(
 
     private fun Long.toTextTime() = "${this / 60}:${(this % 60).toString().padStart(2, '0')}"
 
-    data class State(
-        val counter: String,
-        val isTimerActive: Boolean,
-        val isStartButtonEnabled: Boolean,
-        val isStopButtonEnabled: Boolean,
-    )
+    sealed interface State {
+        object Preparing : State
+        data class Loaded(
+            val counter: String,
+            val isTimerActive: Boolean,
+            val buttonLabel: String,
+        ) : State
+    }
 
     sealed class Event {
         object Start : Event()
