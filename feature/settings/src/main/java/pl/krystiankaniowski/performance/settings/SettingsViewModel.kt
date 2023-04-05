@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
+import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider
-import pl.krystiankaniowski.performance.domain.settings.SettingsOrder
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,7 +23,7 @@ class SettingsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             combine(flows = providers.map { it.items }, transform = { it }).collect { items ->
-                val map = sortedMapOf<SettingsOrder.Category, MutableList<SettingsItem>>()
+                val map = sortedMapOf<SettingsItems.Category, MutableList<SettingsItem>>()
                 items.forEach { subItems ->
                     subItems.forEach { settingsItem ->
                         map[settingsItem.category]?.add(settingsItem) ?: let {
@@ -42,7 +42,7 @@ class SettingsViewModel @Inject constructor(
     sealed interface State {
         object Loading : State
         data class Loaded(
-            val items: Map<SettingsOrder.Category, List<SettingsItem>>,
+            val items: Map<SettingsItems.Category, List<SettingsItem>>,
         ) : State
     }
 }

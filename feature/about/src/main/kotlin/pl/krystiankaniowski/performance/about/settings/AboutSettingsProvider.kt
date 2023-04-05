@@ -6,8 +6,8 @@ import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.about.R
 import pl.krystiankaniowski.performance.domain.provider.StringsProvider
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
+import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider
-import pl.krystiankaniowski.performance.domain.settings.SettingsOrder
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -34,8 +34,8 @@ class AboutSettingsProvider @Inject constructor(
     }
 
     private fun buildVersionItem() = SettingsItem.Simple(
-        order = SettingsOrder.APP_VERSION,
-        category = SettingsOrder.Category.ABOUT,
+        order = SettingsItems.Order.APP_VERSION,
+        category = SettingsItems.Category.ABOUT,
         title = stringsProvider.getString(R.string.title_app_version),
         description = applicationVersion,
     )

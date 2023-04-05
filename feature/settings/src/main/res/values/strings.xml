@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="settings_title">Settings</string>
+    <string name="settings_header_do_not_disturb">Do not Disturb</string>
+    <string name="settings_header_notifications">Notifications</string>
+    <string name="settings_header_statistics">Statistics</string>
+    <string name="settings_header_others">Others</string>
+    <string name="settings_header_about">About</string>
 </resources>
