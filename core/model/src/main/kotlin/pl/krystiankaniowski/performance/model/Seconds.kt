@@ -14,6 +14,8 @@ value class Seconds(val value: Long) {
     operator fun minus(other: Seconds) = Seconds(value - other.value)
 
     operator fun compareTo(other: Seconds) = value.compareTo(other.value)
+
+    override fun toString() = value.toString()
 }
 
 fun Duration.toSeconds() = Seconds(this.inWholeSeconds)

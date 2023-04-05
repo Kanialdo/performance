@@ -32,7 +32,7 @@ class StatsTimerObserverTest {
     }
 
     @Test
-    fun `WHEN onStart and onStop with interruption are invoked fitting cancel threshold THEN save session`() = runTest {
+    fun `WHEN onStart and onStop with interruption are invoked fitting cancel threshold THEN do not save session`() = runTest {
         coEvery { getCancelThresholdUseCase.invoke() } returns 15.toSeconds()
         coEvery { saveFocusUseCase.invoke(any()) } answers {}
 
@@ -42,7 +42,7 @@ class StatsTimerObserverTest {
         clock.fixedInstant += 10.seconds
         sut.onStop(isInterrupted = true)
 
-        coVerify { saveFocusUseCase.invoke(any()) }
+        coVerify(exactly = 0) { saveFocusUseCase.invoke(any()) }
     }
 
     @Test
@@ -56,7 +56,7 @@ class StatsTimerObserverTest {
         clock.fixedInstant += 30.seconds
         sut.onStop(isInterrupted = true)
 
-        coVerify(exactly = 0) { saveFocusUseCase.invoke(any()) }
+        coVerify { saveFocusUseCase.invoke(any()) }
     }
 
     private fun createSut() = StatsTimerObserver(

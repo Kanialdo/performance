@@ -29,7 +29,7 @@ class StatsTimerObserver @Inject constructor(
         val startDate = requireNotNull(this.startDate)
         val endDate = clock.now()
         val diff = (endDate - startDate).toSeconds()
-        if (!isInterrupted || getCancelThresholdUseCase.fits(diff)) {
+        if (!isInterrupted || !getCancelThresholdUseCase.fits(diff)) {
             saveFocusUseCase(
                 Focus(
                     startDate = startDate,
