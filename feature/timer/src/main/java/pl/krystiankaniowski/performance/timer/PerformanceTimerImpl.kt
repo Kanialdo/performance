@@ -40,9 +40,7 @@ class PerformanceTimerImpl @Inject constructor(
                 .map { Seconds(it) }
                 .onStart { emit(seconds) }
                 .conflate()
-                .onCompletion { throwable ->
-                    onCompletion(throwable)
-                }
+                .onCompletion { throwable -> onCompletion(throwable) }
                 .collect {
                     _state.emit(
                         PerformanceTimer.State.Pending(

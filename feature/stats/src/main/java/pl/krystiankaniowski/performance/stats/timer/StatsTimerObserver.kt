@@ -12,6 +12,7 @@ import pl.krystiankaniowski.performance.model.toSeconds
 import javax.inject.Inject
 
 class StatsTimerObserver @Inject constructor(
+    private val clock: Clock,
     private val saveFocusUseCase: SaveFocusUseCase,
     private val getCancelThresholdUseCase: GetCancelThresholdUseCase,
 ) : TimerObserver {
@@ -21,12 +22,12 @@ class StatsTimerObserver @Inject constructor(
     override val priority: Int = TimerObserverPriority.STATISTICS
 
     override suspend fun onStart() {
-        startDate = Clock.System.now()
+        startDate = clock.now()
     }
 
     override suspend fun onStop(isInterrupted: Boolean) {
         val startDate = requireNotNull(this.startDate)
-        val endDate = Clock.System.now()
+        val endDate = clock.now()
         val diff = (endDate - startDate).toSeconds()
         if (!isInterrupted || getCancelThresholdUseCase.fits(diff)) {
             saveFocusUseCase(

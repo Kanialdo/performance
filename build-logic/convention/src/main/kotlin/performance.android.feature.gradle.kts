@@ -15,6 +15,8 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:model"))
 
+    testImplementation(project(":core:testing"))
+
     commonDependencies()
     shared()
 }

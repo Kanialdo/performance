@@ -3,6 +3,9 @@ plugins {
 }
 
 dependencies {
+
+    implementation(libs.kotlinx.datetime)
+
     implementation(libs.junit5.jupiter.api)
     implementation(libs.junit5.jupiter.engine)
     implementation(libs.kotlinx.coroutines.test)
