@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import pl.krystiankaniowski.performance.model.Seconds
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -85,15 +86,15 @@ fun TimerScreenContent(
         Spacer(modifier = Modifier.height(32.dp))
         when (state.button) {
             is TimerViewModel.State.Button.Cancel -> Button(
-                content = { Text("Cancel (${state.button.secondsLeft})") }, // TODO: transaltions
+                content = { Text(stringResource(R.string.timer_button_cancel, state.button.secondsLeft)) },
                 onClick = { onEvent(TimerViewModel.Event.Cancel) },
             )
             TimerViewModel.State.Button.Start -> Button(
-                content = { Text("Start") }, // TODO: transaltions
+                content = { Text(stringResource(R.string.timer_button_start)) },
                 onClick = { onEvent(TimerViewModel.Event.Start) },
             )
             TimerViewModel.State.Button.Stop -> Button(
-                content = { Text("Stop") }, // TODO: transaltions
+                content = { Text(stringResource(R.string.timer_button_stop)) },
                 onClick = { onEvent(TimerViewModel.Event.Stop) },
             )
         }
@@ -151,7 +152,7 @@ fun TimerScreenContentPreview_Cancel() {
                     state = TimerViewModel.State(
                         counter = "25:00",
                         isTimerActive = true,
-                        button = TimerViewModel.State.Button.Cancel(10),
+                        button = TimerViewModel.State.Button.Cancel(Seconds(10)),
                     ),
                     onEvent = {},
                 )

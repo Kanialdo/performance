@@ -75,11 +75,6 @@ class PerformanceTimerImplTest {
         coVerify { observer2.onStop(any()) }
     }
 
-    @Test
-    fun `WHEN cancel is called THEN observers are notified`() = runTest {
-        TODO()
-    }
-
     private fun createSut(
         observers: Set<TimerObserver> = emptySet(),
     ) = PerformanceTimerImpl(

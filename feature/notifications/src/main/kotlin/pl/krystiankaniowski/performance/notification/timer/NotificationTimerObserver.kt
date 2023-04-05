@@ -17,7 +17,7 @@ class NotificationTimerObserver @Inject constructor(
         startForegroundServiceUseCase()
     }
 
-    override suspend fun onStop(result: TimerObserver.Result) {
+    override suspend fun onStop(isInterrupted: Boolean) {
         stopForegroundServiceUseCase()
     }
 }

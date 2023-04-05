@@ -2,14 +2,18 @@ package pl.krystiankaniowski.performance.stats.timer
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import pl.krystiankaniowski.performance.domain.timer.GetCancelThresholdUseCase
 import pl.krystiankaniowski.performance.domain.timer.TimerObserver
 import pl.krystiankaniowski.performance.domain.timer.TimerObserverPriority
+import pl.krystiankaniowski.performance.domain.timer.fits
 import pl.krystiankaniowski.performance.domain.usecase.SaveFocusUseCase
 import pl.krystiankaniowski.performance.model.Focus
+import pl.krystiankaniowski.performance.model.toSeconds
 import javax.inject.Inject
 
 class StatsTimerObserver @Inject constructor(
     private val saveFocusUseCase: SaveFocusUseCase,
+    private val getCancelThresholdUseCase: GetCancelThresholdUseCase,
 ) : TimerObserver {
 
     private var startDate: Instant? = null
@@ -20,20 +24,18 @@ class StatsTimerObserver @Inject constructor(
         startDate = Clock.System.now()
     }
 
-    override suspend fun onStop(result: TimerObserver.Result) {
-        when (result) {
-            TimerObserver.Result.CANCELED -> Unit
-            TimerObserver.Result.COMPLETED -> save()
+    override suspend fun onStop(isInterrupted: Boolean) {
+        val startDate = requireNotNull(this.startDate)
+        val endDate = Clock.System.now()
+        val diff = (endDate - startDate).toSeconds()
+        if (!isInterrupted || getCancelThresholdUseCase.fits(diff)) {
+            saveFocusUseCase(
+                Focus(
+                    startDate = startDate,
+                    endDate = endDate,
+                ),
+            )
         }
-        startDate = null
-    }
-
-    private suspend fun save() {
-        saveFocusUseCase(
-            Focus(
-                startDate = requireNotNull(startDate),
-                endDate = Clock.System.now(),
-            ),
-        )
+        this.startDate = null
     }
 }

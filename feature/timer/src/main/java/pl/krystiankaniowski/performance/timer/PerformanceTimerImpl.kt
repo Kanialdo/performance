@@ -58,20 +58,11 @@ class PerformanceTimerImpl @Inject constructor(
         job?.cancel(CancellationException())
     }
 
-    override fun cancel() {
-        job?.cancel(CanceledByUserException())
-    }
-
     private fun onCompletion(throwable: Throwable?) {
         scope.launch {
-            val result = when (throwable) {
-                is CanceledByUserException -> TimerObserver.Result.CANCELED
-                else -> TimerObserver.Result.COMPLETED
-            }
-            observers.sortedBy { it.priority }.forEach { it.onStop(result) }
+            val isInterrupted = throwable != null
+            observers.sortedBy { it.priority }.forEach { it.onStop(isInterrupted = isInterrupted) }
             _state.emit(PerformanceTimer.State.NotStarted)
         }
     }
 }
-
-private class CanceledByUserException : CancellationException()
