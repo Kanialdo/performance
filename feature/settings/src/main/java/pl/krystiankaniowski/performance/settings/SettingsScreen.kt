@@ -23,10 +23,21 @@ import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.ui.components.PerformanceLoadingScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel(),
+    navigateUp: () -> Unit,
+) {
+    SettingsScreenContent(
+        state = viewModel.state.collectAsState().value,
+        navigateUp = navigateUp,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SettingsScreenContent(
+    state: SettingsViewModel.State,
     navigateUp: () -> Unit,
 ) {
     Scaffold(
@@ -43,8 +54,8 @@ fun SettingsScreen(
         },
     ) {
         Box(modifier = Modifier.padding(it)) {
-            when (val state = viewModel.state.collectAsState().value) {
-                is SettingsViewModel.State.Loaded -> SettingsScreenContent(state)
+            when (state) {
+                is SettingsViewModel.State.Loaded -> SettingsScreenContentLoaded(state)
                 SettingsViewModel.State.Loading -> PerformanceLoadingScreen()
             }
         }
@@ -52,7 +63,7 @@ fun SettingsScreen(
 }
 
 @Composable
-private fun SettingsScreenContent(
+private fun SettingsScreenContentLoaded(
     state: SettingsViewModel.State.Loaded,
 ) {
     LazyColumn {
@@ -80,12 +91,45 @@ private fun SettingsScreenContent(
 
 @Preview
 @Composable
-private fun SettingsScreenContentPreview() {
+private fun SettingsScreenContentLoadingPreview() {
     PerformanceTheme {
         SettingsScreenContent(
-            SettingsViewModel.State.Loaded(
-                emptyMap(),
+            state = SettingsViewModel.State.Loading,
+            navigateUp = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun SettingsScreenContentLoadedPreview() {
+    PerformanceTheme {
+        SettingsScreenContent(
+            state = SettingsViewModel.State.Loaded(
+                mapOf(
+                    SettingsItems.Category.OTHERS to listOf(
+                        SettingsItem.Simple(
+                            order = 1,
+                            category = SettingsItems.Category.OTHERS,
+                            title = "Option #1",
+                            description = "Description #1",
+                            onClick = null,
+                        ),
+                    ),
+                    SettingsItems.Category.ABOUT to listOf(
+                        SettingsItem.Switch(
+                            order = 2,
+                            category = SettingsItems.Category.ABOUT,
+                            title = "Option #2",
+                            description = "Description #2",
+                            value = true,
+                            isEnabled = true,
+                            onValueChanged = {},
+                        ),
+                    ),
+                ),
             ),
+            navigateUp = {},
         )
     }
 }

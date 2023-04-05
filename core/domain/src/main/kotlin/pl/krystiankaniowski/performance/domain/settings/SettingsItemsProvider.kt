@@ -6,4 +6,3 @@ interface SettingsItemsProvider {
 
     val items: Flow<List<SettingsItem>>
 }
-
