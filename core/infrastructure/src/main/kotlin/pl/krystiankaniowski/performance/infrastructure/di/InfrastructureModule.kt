@@ -2,8 +2,10 @@ package pl.krystiankaniowski.performance.infrastructure.di
 
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.datetime.Clock
 import pl.krystiankaniowski.performance.domain.RemoveAllDataUseCase
 import pl.krystiankaniowski.performance.domain.provider.StringsProvider
 import pl.krystiankaniowski.performance.domain.usecase.GetFocusListUseCase
@@ -13,19 +15,27 @@ import pl.krystiankaniowski.performance.infrastructure.usecase.GetFocusListUseCa
 import pl.krystiankaniowski.performance.infrastructure.usecase.RemoveAllDataUseCaseImpl
 import pl.krystiankaniowski.performance.infrastructure.usecase.SaveFocusUseCaseImpl
 
-@Module
+@Module(includes = [InfrastructureModule.Bindings::class])
 @InstallIn(SingletonComponent::class)
-interface UseCasesBinding {
+object InfrastructureModule {
 
-    @Binds
-    fun bindSaveFocusUseCase(impl: SaveFocusUseCaseImpl): SaveFocusUseCase
+    @Provides
+    fun provideClock(): Clock = Clock.System
 
-    @Binds
-    fun bindGetFocusListUseCase(impl: GetFocusListUseCaseImpl): GetFocusListUseCase
+    @Module
+    @InstallIn(SingletonComponent::class)
+    interface Bindings {
 
-    @Binds
-    fun bindRemoveAllDataUseCase(impl: RemoveAllDataUseCaseImpl): RemoveAllDataUseCase
+        @Binds
+        fun bindSaveFocusUseCase(impl: SaveFocusUseCaseImpl): SaveFocusUseCase
 
-    @Binds
-    fun bindStringsProvider(impl: StringsProviderImpl): StringsProvider
+        @Binds
+        fun bindGetFocusListUseCase(impl: GetFocusListUseCaseImpl): GetFocusListUseCase
+
+        @Binds
+        fun bindRemoveAllDataUseCase(impl: RemoveAllDataUseCaseImpl): RemoveAllDataUseCase
+
+        @Binds
+        fun bindStringsProvider(impl: StringsProviderImpl): StringsProvider
+    }
 }

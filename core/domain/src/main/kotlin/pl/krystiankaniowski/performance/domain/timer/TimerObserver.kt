@@ -6,5 +6,5 @@ interface TimerObserver {
 
     suspend fun onStart()
 
-    suspend fun onStop()
+    suspend fun onStop(isInterrupted: Boolean)
 }

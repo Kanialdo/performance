@@ -54,12 +54,12 @@ class PerformanceTimerImplTest {
         val observer1: TimerObserver = mockk<TimerObserver>().apply {
             every { priority }.returns(1)
             coEvery { onStart() }.coAnswers { }
-            coEvery { onStop() }.coAnswers { }
+            coEvery { onStop(any()) }.coAnswers { }
         }
         val observer2: TimerObserver = mockk<TimerObserver>().apply {
             every { priority }.returns(2)
             coEvery { onStart() }.coAnswers { }
-            coEvery { onStop() }.coAnswers { }
+            coEvery { onStop(any()) }.coAnswers { }
         }
 
         val sut = createSut(
@@ -71,8 +71,8 @@ class PerformanceTimerImplTest {
         coVerify { observer2.onStart() }
 
         sut.stop()
-        coVerify { observer1.onStop() }
-        coVerify { observer2.onStop() }
+        coVerify { observer1.onStop(any()) }
+        coVerify { observer2.onStop(any()) }
     }
 
     private fun createSut(
