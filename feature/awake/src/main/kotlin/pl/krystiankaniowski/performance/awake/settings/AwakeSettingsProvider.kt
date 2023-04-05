@@ -8,8 +8,8 @@ import pl.krystiankaniowski.performance.awake.usecase.IsKeepAwakeEnabledUseCase
 import pl.krystiankaniowski.performance.awake.usecase.SetKeepAwakeEnabledUseCase
 import pl.krystiankaniowski.performance.domain.provider.StringsProvider
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
+import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider
-import pl.krystiankaniowski.performance.domain.settings.SettingsOrder
 import javax.inject.Inject
 
 class AwakeSettingsProvider @Inject constructor(
@@ -36,7 +36,8 @@ class AwakeSettingsProvider @Inject constructor(
     }
 
     private suspend fun buildKeepAwakeEnabledItem() = SettingsItem.Switch(
-        order = SettingsOrder.AWAKE_KEEP_AWAKE,
+        order = SettingsItems.Order.AWAKE_KEEP_AWAKE,
+        category = SettingsItems.Category.OTHERS,
         title = stringsProvider.getString(R.string.awake_settings_keep_awake_title),
         description = null,
         value = isKeepAwakeEnabledUseCase(),

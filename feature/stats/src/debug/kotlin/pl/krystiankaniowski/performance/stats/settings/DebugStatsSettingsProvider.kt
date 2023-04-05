@@ -5,13 +5,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.domain.provider.StringsProvider
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
+import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider
-import pl.krystiankaniowski.performance.domain.settings.SettingsOrder
 import pl.krystiankaniowski.performance.stats.R
 import pl.krystiankaniowski.performance.stats.usecase.GenerateHistoryUseCase
 import javax.inject.Inject
 
-class DebugStatsSettingsProvider@Inject constructor(
+class DebugStatsSettingsProvider @Inject constructor(
     private val stringsProvider: StringsProvider,
     private val generateHistoryUseCase: GenerateHistoryUseCase,
 ) : SettingsItemsProvider {
@@ -34,10 +34,11 @@ class DebugStatsSettingsProvider@Inject constructor(
     }
 
     private fun buildGenerateStatsItem() = SettingsItem.Simple(
-        order = SettingsOrder.STATS_DEV_GENERATE_HISTORY,
+        order = SettingsItems.Order.STATS_DEV_GENERATE_HISTORY,
+        category = SettingsItems.Category.STATS,
         title = stringsProvider.getString(R.string.settings_generate_history_item),
         description = null,
-        onClick = ::generateStats
+        onClick = ::generateStats,
     )
 
     private fun generateStats() {
