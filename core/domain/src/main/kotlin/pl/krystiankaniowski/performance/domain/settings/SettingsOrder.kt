@@ -15,8 +15,8 @@ object SettingsOrder {
     val NOTIFICATION_ANDROID_APP_SETTINGS = autoOrder
     val NOTIFICATION_SHOW_TIME_ENABLED = autoOrder
     val AWAKE_KEEP_AWAKE = autoOrder
-    val REMOVE_ALL_DATA = autoOrder
-    val ABOUT_HEADER = autoOrder
+    val STATS_DEV_GENERATE_HISTORY = autoOrder
+    val STATS_REMOVE_HISTORY = autoOrder
     val APP_VERSION = autoOrder
 
     data class Entry(val category: Category, val order: Int)

@@ -3,11 +3,9 @@ plugins {
     `java-library`
 }
 
-val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-
 dependencies {
     commonDependencies()
-    implementation(libs.findLibrary("kotlinx.coroutines.core").get())
+    implementation(libs.kotlinx.coroutines.core)
 }
 
 java {

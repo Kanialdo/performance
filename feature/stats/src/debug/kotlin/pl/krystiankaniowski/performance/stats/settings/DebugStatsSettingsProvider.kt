@@ -1,19 +1,19 @@
-package pl.krystiankaniowski.performance.account.settings
+package pl.krystiankaniowski.performance.stats.settings
 
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import pl.krystiankaniowski.performance.account.R
-import pl.krystiankaniowski.performance.domain.RemoveAllDataUseCase
 import pl.krystiankaniowski.performance.domain.provider.StringsProvider
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider
 import pl.krystiankaniowski.performance.domain.settings.SettingsOrder
+import pl.krystiankaniowski.performance.stats.R
+import pl.krystiankaniowski.performance.stats.usecase.GenerateHistoryUseCase
 import javax.inject.Inject
 
-class AccountSettingsProvider @Inject constructor(
+class DebugStatsSettingsProvider@Inject constructor(
     private val stringsProvider: StringsProvider,
-    private val removeAllDataUseCase: RemoveAllDataUseCase,
+    private val generateHistoryUseCase: GenerateHistoryUseCase,
 ) : SettingsItemsProvider {
 
     private val scope = MainScope()
@@ -27,20 +27,20 @@ class AccountSettingsProvider @Inject constructor(
         scope.launch {
             items.emit(
                 listOf(
-                    buildRemoveAllDataItem(),
+                    buildGenerateStatsItem(),
                 ),
             )
         }
     }
 
-    private fun buildRemoveAllDataItem() = SettingsItem.Simple(
-        order = SettingsOrder.STATS_REMOVE_HISTORY,
-        category = SettingsOrder.Category.STATS,
-        title = stringsProvider.getString(R.string.settings_remove_history_title),
-        onClick = ::removeAllData,
+    private fun buildGenerateStatsItem() = SettingsItem.Simple(
+        order = SettingsOrder.STATS_DEV_GENERATE_HISTORY,
+        title = stringsProvider.getString(R.string.settings_generate_history_item),
+        description = null,
+        onClick = ::generateStats
     )
 
-    private fun removeAllData() = scope.launch {
-        removeAllDataUseCase()
+    private fun generateStats() {
+        scope.launch { generateHistoryUseCase() }
     }
 }
