@@ -8,10 +8,10 @@ import pl.krystiankaniowski.performance.database.usecase.GetFocusListUseCaseImpl
 import pl.krystiankaniowski.performance.database.usecase.GetHistoryEntryUseCaseImpl
 import pl.krystiankaniowski.performance.database.usecase.RemoveAllDataUseCaseImpl
 import pl.krystiankaniowski.performance.database.usecase.SaveFocusUseCaseImpl
-import pl.krystiankaniowski.performance.domain.RemoveAllDataUseCase
-import pl.krystiankaniowski.performance.domain.usecase.GetFocusListUseCase
-import pl.krystiankaniowski.performance.domain.usecase.GetHistoryEntryUseCase
-import pl.krystiankaniowski.performance.domain.usecase.SaveFocusUseCase
+import pl.krystiankaniowski.performance.domain.stats.RemoveAllDataUseCase
+import pl.krystiankaniowski.performance.domain.stats.GetFocusListUseCase
+import pl.krystiankaniowski.performance.domain.stats.GetHistoryEntryUseCase
+import pl.krystiankaniowski.performance.domain.stats.SaveFocusUseCase
 
 @Module
 @InstallIn(SingletonComponent::class)

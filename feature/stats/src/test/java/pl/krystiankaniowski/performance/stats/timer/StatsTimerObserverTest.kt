@@ -7,7 +7,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
 import org.junit.jupiter.api.Test
 import pl.krystiankaniowski.performance.domain.timer.GetCancelThresholdUseCase
-import pl.krystiankaniowski.performance.domain.usecase.SaveFocusUseCase
+import pl.krystiankaniowski.performance.domain.stats.SaveFocusUseCase
 import pl.krystiankaniowski.performance.model.toSeconds
 import pl.krystiankaniowski.performance.testing.Virtual
 import kotlin.time.Duration.Companion.seconds

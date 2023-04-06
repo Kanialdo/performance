@@ -8,7 +8,7 @@ import kotlinx.datetime.Clock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import pl.krystiankaniowski.performance.domain.usecase.GetFocusListUseCase
+import pl.krystiankaniowski.performance.domain.stats.GetFocusListUseCase
 import pl.krystiankaniowski.performance.model.Focus
 import pl.krystiankaniowski.performance.stats.formatters.DateFormatter
 import pl.krystiankaniowski.performance.stats.formatters.DurationTimeFormatter
