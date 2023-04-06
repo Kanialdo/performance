@@ -41,6 +41,7 @@ dependencies {
     implementation(projects.feature.account)
     implementation(projects.feature.awake)
     implementation(projects.feature.dnd)
+    implementation(projects.feature.historydetails)
     implementation(projects.feature.notifications)
     implementation(projects.feature.timer)
     implementation(projects.feature.settings)
