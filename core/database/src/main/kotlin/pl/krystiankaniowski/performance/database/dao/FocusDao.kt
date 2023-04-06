@@ -11,6 +11,9 @@ interface FocusDao {
     @Insert
     suspend fun insert(vararg focus: FocusEntity)
 
+    @Query("SELECT * FROM focus WHERE uid = :id")
+    suspend fun get(id: Long): FocusEntity
+
     @Query("SELECT * FROM focus")
     suspend fun getAll(): List<FocusEntity>
 
