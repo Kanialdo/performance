@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.domain.usecase.GetFocusListUseCase
@@ -24,6 +26,9 @@ class StatsViewModel @Inject constructor(
     private val _state: MutableStateFlow<State> = MutableStateFlow(State.Loading)
     val state: StateFlow<State> = _state
 
+    private val _effects: MutableSharedFlow<Effect> = MutableSharedFlow()
+    val effects: SharedFlow<Effect> = _effects
+
     fun onEvent(event: Event) = when (event) {
         Event.Refresh -> loadData()
     }
@@ -41,6 +46,7 @@ class StatsViewModel @Inject constructor(
                     .map {
                         State.Loaded.Item.Header(it.key) to it.value.sortedByDescending { it.startDate }.map {
                             State.Loaded.Item.Focus(
+                                id = it.id,
                                 duration = durationTimeFormatter.format(from = it.startDate, to = it.endDate),
                             )
                         }
@@ -48,6 +54,12 @@ class StatsViewModel @Inject constructor(
                     .toMap()
                     .toSortedMap { a, b -> b.date.compareTo(a.date) },
             )
+        }
+    }
+
+    fun onItemClick(id: Long) {
+        viewModelScope.launch {
+            _effects.emit(Effect.OpenDetails(id))
         }
     }
 
@@ -59,6 +71,7 @@ class StatsViewModel @Inject constructor(
             sealed interface Item {
                 data class Header(val date: String) : Item
                 data class Focus(
+                    val id: Long,
                     val duration: String,
                 ) : Item
             }
@@ -69,5 +82,7 @@ class StatsViewModel @Inject constructor(
         object Refresh : Event
     }
 
-    sealed class Effect
+    sealed interface Effect {
+        data class OpenDetails(val id: Long) : Effect
+    }
 }

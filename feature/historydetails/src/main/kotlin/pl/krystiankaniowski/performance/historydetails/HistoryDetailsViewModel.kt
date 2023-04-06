@@ -3,11 +3,11 @@ package pl.krystiankaniowski.performance.historydetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Instant
 import pl.krystiankaniowski.performance.domain.usecase.GetHistoryEntryUseCase
 
 class HistoryDetailsViewModel @AssistedInject constructor(
@@ -15,11 +15,16 @@ class HistoryDetailsViewModel @AssistedInject constructor(
     @Assisted private val id: Long,
 ) : ViewModel() {
 
+    @AssistedFactory
+    interface Factory {
+        fun create(id: Long): HistoryDetailsViewModel
+    }
+
     sealed interface State {
         object Loading : State
         data class Loaded(
-            val startDate: Instant,
-            val endDate: Instant,
+            val startDate: String,
+            val endDate: String,
         ) : State
     }
 
@@ -30,8 +35,8 @@ class HistoryDetailsViewModel @AssistedInject constructor(
         viewModelScope.launch {
             _state.value = getHistoryEntryUseCase(id).let { data ->
                 State.Loaded(
-                    startDate = data.startDate,
-                    endDate = data.endDate,
+                    startDate = data.startDate.toString(),
+                    endDate = data.endDate.toString(),
                 )
             }
         }

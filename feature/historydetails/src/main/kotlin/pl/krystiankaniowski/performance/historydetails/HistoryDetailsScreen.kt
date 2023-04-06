@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -16,7 +17,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.datetime.Clock
 import pl.krystiankaniowski.performance.ui.components.PerformanceLoadingScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 
@@ -64,8 +64,14 @@ private fun HistoryDetailsContent(
 
 @Composable
 private fun ColumnScope.HistoryDetailsContentLoaded(state: HistoryDetailsViewModel.State.Loaded) {
-    Text("Start: ${state.startDate}")
-    Text("End: ${state.endDate}")
+    ListItem(
+        headlineText = { Text("Start") },
+        supportingText = { Text(state.startDate) },
+    )
+    ListItem(
+        headlineText = { Text("End") },
+        supportingText = { Text(state.endDate) },
+    )
 }
 
 @Preview
@@ -85,8 +91,8 @@ private fun HistoryDetailsContent_Loaded_Preview() {
     PerformanceTheme {
         HistoryDetailsContent(
             state = HistoryDetailsViewModel.State.Loaded(
-                startDate = Clock.System.now(),
-                endDate = Clock.System.now(),
+                startDate = "2020-02-02 10:15:20",
+                endDate = "2020-02-02 10:30:20",
             ),
             navigateUp = {},
         )
