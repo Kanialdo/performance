@@ -38,7 +38,7 @@ class StatsViewModelTest {
         val date = Clock.System.now()
         val formattedDuration = "5 min"
         val formattedDate = "01.01.2001"
-        coEvery { getFocusListUseCase.invoke() } returns listOf(Focus(startDate = date, endDate = date))
+        coEvery { getFocusListUseCase.invoke() } returns listOf(Focus(id = 1, startDate = date, endDate = date))
         coEvery { durationTimeFormatter.format(any(), any()) } returns formattedDuration
         coEvery { dateFormatter.format(any()) } returns formattedDate
 
@@ -48,7 +48,7 @@ class StatsViewModelTest {
             StatsViewModel.State.Loaded(
                 items = mapOf(
                     StatsViewModel.State.Loaded.Item.Header(date = formattedDate) to listOf(
-                        StatsViewModel.State.Loaded.Item.Focus(duration = formattedDuration),
+                        StatsViewModel.State.Loaded.Item.Focus(id = 1, duration = formattedDuration),
                     ),
                 ),
             ),
