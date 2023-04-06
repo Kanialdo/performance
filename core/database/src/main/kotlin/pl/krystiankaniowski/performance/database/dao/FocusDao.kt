@@ -6,7 +6,7 @@ import androidx.room.Query
 import pl.krystiankaniowski.performance.database.model.FocusEntity
 
 @Dao
-interface FocusDao {
+internal interface FocusDao {
 
     @Insert
     suspend fun insert(vararg focus: FocusEntity)

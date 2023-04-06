@@ -8,7 +8,7 @@ import pl.krystiankaniowski.performance.database.dao.FocusDao
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DaosModule {
+internal object DaosModule {
 
     @Provides
     fun providesFocusDao(
