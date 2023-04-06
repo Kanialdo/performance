@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
                     composable("stats") {
                         StatsScreen(
                             navigateUp = navController::navigateUp,
-                            openDetailsScreen = { id -> navController.navigate("details/${id}") },
+                            openDetailsScreen = { id -> navController.navigate("details/$id") },
                         )
                     }
                     composable(

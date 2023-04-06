@@ -12,6 +12,7 @@ import pl.krystiankaniowski.performance.domain.usecase.GetHistoryEntryUseCase
 
 class HistoryDetailsViewModel @AssistedInject constructor(
     private val getHistoryEntryUseCase: GetHistoryEntryUseCase,
+    private val dateTimeFormatter: DateTimeFormatter,
     @Assisted private val id: Long,
 ) : ViewModel() {
 
@@ -35,8 +36,8 @@ class HistoryDetailsViewModel @AssistedInject constructor(
         viewModelScope.launch {
             _state.value = getHistoryEntryUseCase(id).let { data ->
                 State.Loaded(
-                    startDate = data.startDate.toString(),
-                    endDate = data.endDate.toString(),
+                    startDate = dateTimeFormatter.formatDateTime(data.startDate),
+                    endDate = dateTimeFormatter.formatDateTime(data.endDate),
                 )
             }
         }
