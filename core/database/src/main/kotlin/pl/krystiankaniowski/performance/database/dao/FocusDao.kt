@@ -17,6 +17,9 @@ internal interface FocusDao {
     @Query("SELECT * FROM focus")
     suspend fun getAll(): List<FocusEntity>
 
+    @Query("DELETE FROM focus WHERE uid = :id")
+    suspend fun delete(id: Long)
+
     @Query("DELETE FROM focus")
     suspend fun deleteAll()
 }

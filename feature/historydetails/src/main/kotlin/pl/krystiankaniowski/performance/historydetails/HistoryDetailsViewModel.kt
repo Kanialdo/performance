@@ -5,13 +5,17 @@ import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.domain.stats.FocusRepository
 import pl.krystiankaniowski.performance.domain.stats.GetHistoryEntryUseCase
 
 class HistoryDetailsViewModel @AssistedInject constructor(
     private val getHistoryEntryUseCase: GetHistoryEntryUseCase,
+    private val repository: FocusRepository,
     private val dateTimeFormatter: DateTimeFormatter,
     @Assisted private val id: Long,
 ) : ViewModel() {
@@ -29,8 +33,15 @@ class HistoryDetailsViewModel @AssistedInject constructor(
         ) : State
     }
 
+    sealed interface Effect {
+        object CloseScreen : Effect
+    }
+
     private val _state: MutableStateFlow<State> = MutableStateFlow(State.Loading)
     val state: StateFlow<State> = _state
+
+    private val _effects: MutableSharedFlow<Effect> = MutableSharedFlow()
+    val effects: SharedFlow<Effect> = _effects
 
     init {
         viewModelScope.launch {
@@ -41,5 +52,10 @@ class HistoryDetailsViewModel @AssistedInject constructor(
                 )
             }
         }
+    }
+
+    fun onDeleteButtonClick() = viewModelScope.launch {
+        repository.delete(id)
+        _effects.emit(Effect.CloseScreen)
     }
 }
