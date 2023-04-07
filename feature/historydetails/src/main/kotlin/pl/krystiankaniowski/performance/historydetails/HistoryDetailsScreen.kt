@@ -1,6 +1,5 @@
 package pl.krystiankaniowski.performance.historydetails
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
@@ -15,44 +14,24 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.repeatOnLifecycle
-import kotlinx.coroutines.flow.Flow
+import androidx.hilt.navigation.compose.hiltViewModel
 import pl.krystiankaniowski.performance.ui.components.PerformanceLoadingScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
-
-@Composable
-fun <T> Flow<T>.collectAsEffect(
-    lifecycleOwner:LifecycleOwner = LocalLifecycleOwner.current,
-    block: (T) -> Unit,
-) {
-    LaunchedEffect(key1 = Unit) {
-        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            this@collectAsEffect.collect {
-                block(it)
-            }
-        }
-    }
-}
+import pl.krystiankaniowski.performance.ui.utils.collectAsEffect
 
 @Composable
 fun HistoryDetailsScreen(
-    viewModel: HistoryDetailsViewModel,
+    viewModel: HistoryDetailsViewModel = hiltViewModel(),
     navigateUp: () -> Unit,
 ) {
 
     viewModel.effects.collectAsEffect {
-        Log.d("###", "dupa")
         when (it) {
             HistoryDetailsViewModel.Effect.CloseScreen -> {
-                Log.d("###", "close screen")
                 navigateUp()
             }
         }
@@ -90,6 +69,7 @@ private fun HistoryDetailsContent(
                                 onClick = onDeleteButtonClicked,
                             )
                         }
+
                         else -> Unit
                     }
                 },

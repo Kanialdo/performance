@@ -1,10 +1,9 @@
 package pl.krystiankaniowski.performance.historydetails
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -12,18 +11,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
 import pl.krystiankaniowski.performance.domain.stats.GetHistoryEntryUseCase
+import javax.inject.Inject
 
-class HistoryDetailsViewModel @AssistedInject constructor(
+@HiltViewModel
+class HistoryDetailsViewModel @Inject constructor(
     private val getHistoryEntryUseCase: GetHistoryEntryUseCase,
     private val repository: FocusRepository,
     private val dateTimeFormatter: DateTimeFormatter,
-    @Assisted private val id: Long,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    @AssistedFactory
-    interface Factory {
-        fun create(id: Long): HistoryDetailsViewModel
-    }
+    private val id: Long = checkNotNull(savedStateHandle[HistoryDetailsArgs.id])
 
     sealed interface State {
         object Loading : State

@@ -1,5 +1,6 @@
 package pl.krystiankaniowski.performance.database.provider
 
+import kotlinx.coroutines.flow.map
 import pl.krystiankaniowski.performance.database.dao.FocusDao
 import pl.krystiankaniowski.performance.database.utils.toDatabase
 import pl.krystiankaniowski.performance.database.utils.toDomain
@@ -11,7 +12,7 @@ internal class FocusRepositoryImpl @Inject constructor(private val focusDao: Foc
 
     override suspend fun get(id: Long) = focusDao.get(id).toDomain()
 
-    override suspend fun getAll() = focusDao.getAll().toDomain()
+    override fun getAll() = focusDao.getAll().map { it.toDomain() }
 
     override suspend fun add(focus: Focus) = focusDao.insert(focus.toDatabase())
 
