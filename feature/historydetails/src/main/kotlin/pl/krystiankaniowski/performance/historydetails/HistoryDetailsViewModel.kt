@@ -8,7 +8,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import pl.krystiankaniowski.performance.domain.usecase.GetHistoryEntryUseCase
+import pl.krystiankaniowski.performance.domain.stats.GetHistoryEntryUseCase
 
 class HistoryDetailsViewModel @AssistedInject constructor(
     private val getHistoryEntryUseCase: GetHistoryEntryUseCase,

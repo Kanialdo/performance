@@ -4,11 +4,11 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.account.R
-import pl.krystiankaniowski.performance.domain.RemoveAllDataUseCase
 import pl.krystiankaniowski.performance.domain.provider.StringsProvider
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
 import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider
+import pl.krystiankaniowski.performance.domain.stats.RemoveAllDataUseCase
 import javax.inject.Inject
 
 class AccountSettingsProvider @Inject constructor(

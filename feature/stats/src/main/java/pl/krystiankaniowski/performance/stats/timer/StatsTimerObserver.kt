@@ -2,11 +2,11 @@ package pl.krystiankaniowski.performance.stats.timer
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import pl.krystiankaniowski.performance.domain.stats.SaveFocusUseCase
 import pl.krystiankaniowski.performance.domain.timer.GetCancelThresholdUseCase
 import pl.krystiankaniowski.performance.domain.timer.TimerObserver
 import pl.krystiankaniowski.performance.domain.timer.TimerObserverPriority
 import pl.krystiankaniowski.performance.domain.timer.fits
-import pl.krystiankaniowski.performance.domain.usecase.SaveFocusUseCase
 import pl.krystiankaniowski.performance.model.Focus
 import pl.krystiankaniowski.performance.model.toSeconds
 import javax.inject.Inject

@@ -1,10 +1,10 @@
-package pl.krystiankaniowski.performance.infrastructure.usecase
+package pl.krystiankaniowski.performance.database.usecase
 
 import pl.krystiankaniowski.performance.database.dao.FocusDao
-import pl.krystiankaniowski.performance.domain.RemoveAllDataUseCase
+import pl.krystiankaniowski.performance.domain.stats.RemoveAllDataUseCase
 import javax.inject.Inject
 
-class RemoveAllDataUseCaseImpl @Inject constructor(
+internal class RemoveAllDataUseCaseImpl @Inject constructor(
     private val focusDao: FocusDao,
 ) : RemoveAllDataUseCase {
 

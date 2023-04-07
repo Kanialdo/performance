@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.performance.domain.usecase
+package pl.krystiankaniowski.performance.domain.stats
 
 import pl.krystiankaniowski.performance.model.Focus
 

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import pl.krystiankaniowski.performance.domain.usecase.GetFocusListUseCase
+import pl.krystiankaniowski.performance.domain.stats.GetFocusListUseCase
 import pl.krystiankaniowski.performance.stats.formatters.DateFormatter
 import pl.krystiankaniowski.performance.stats.formatters.DurationTimeFormatter
 import javax.inject.Inject

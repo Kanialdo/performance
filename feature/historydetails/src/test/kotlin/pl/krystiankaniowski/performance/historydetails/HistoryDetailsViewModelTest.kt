@@ -9,7 +9,7 @@ import kotlinx.datetime.Clock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import pl.krystiankaniowski.performance.domain.usecase.GetHistoryEntryUseCase
+import pl.krystiankaniowski.performance.domain.stats.GetHistoryEntryUseCase
 import pl.krystiankaniowski.performance.model.Focus
 import pl.krystiankaniowski.performance.testing.rule.InstantDispatcherExtension
 import kotlin.time.Duration.Companion.seconds
