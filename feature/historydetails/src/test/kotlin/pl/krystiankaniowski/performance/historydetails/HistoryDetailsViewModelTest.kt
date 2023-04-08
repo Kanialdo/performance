@@ -15,8 +15,10 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import pl.krystiankaniowski.performance.domain.localization.time.DateTimeFormatter
+import pl.krystiankaniowski.performance.domain.localization.time.DurationFormatter
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
 import pl.krystiankaniowski.performance.model.Focus
+import pl.krystiankaniowski.performance.model.Seconds
 import pl.krystiankaniowski.performance.testing.rule.InstantDispatcherExtension
 import kotlin.time.Duration.Companion.seconds
 
@@ -24,6 +26,7 @@ import kotlin.time.Duration.Companion.seconds
 class HistoryDetailsViewModelTest {
 
     private val dateTimeFormatter: DateTimeFormatter = mockk()
+    private val durationFormatter: DurationFormatter = mockk()
     private val repository: FocusRepository = mockk()
     private val savedStateHandle: SavedStateHandle = mockk()
 
@@ -48,6 +51,7 @@ class HistoryDetailsViewModelTest {
         coEvery { repository.get(focus.id) } returns focus
         coEvery { dateTimeFormatter.formatDateTime(start) } returns "start"
         coEvery { dateTimeFormatter.formatDateTime(end) } returns "end"
+        coEvery { durationFormatter.format(any<Seconds>()) } returns "duration"
 
         val sut = createSut(id = focus.id)
 
@@ -55,6 +59,7 @@ class HistoryDetailsViewModelTest {
             HistoryDetailsViewModel.State.Loaded(
                 startDate = "start",
                 endDate = "end",
+                duration = "duration",
             ),
             sut.state.value,
         )
@@ -69,6 +74,7 @@ class HistoryDetailsViewModelTest {
         )
         coEvery { repository.delete(any()) } just Runs
         coEvery { dateTimeFormatter.formatDateTime(any()) } returns ""
+        coEvery { durationFormatter.format(any<Seconds>()) } returns ""
 
         val sut = createSut(id = 1)
 
@@ -85,6 +91,7 @@ class HistoryDetailsViewModelTest {
         every { savedStateHandle.get<Long>(HistoryDetailsArgs.id) } returns id
         return HistoryDetailsViewModel(
             dateTimeFormatter = dateTimeFormatter,
+            durationFormatter = durationFormatter,
             savedStateHandle = savedStateHandle,
             repository = repository,
         )
