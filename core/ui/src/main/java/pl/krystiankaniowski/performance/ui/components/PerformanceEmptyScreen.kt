@@ -19,7 +19,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import pl.krystiankaniowski.performance.ui.R
 
-
 @Composable
 fun PerformanceEmptyScreen(
     title: String,
