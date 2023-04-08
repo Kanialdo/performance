@@ -9,16 +9,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.domain.localization.time.DateTimeFormatter
+import pl.krystiankaniowski.performance.domain.localization.time.DurationFormatter
 import pl.krystiankaniowski.performance.domain.stats.GetFocusListUseCase
-import pl.krystiankaniowski.performance.stats.formatters.DateFormatter
-import pl.krystiankaniowski.performance.stats.formatters.DurationTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
 class StatsViewModel @Inject constructor(
     private val getFocusListUseCase: GetFocusListUseCase,
-    private val durationTimeFormatter: DurationTimeFormatter,
-    private val dateFormatter: DateFormatter,
+    private val dateTimeFormatter: DateTimeFormatter,
+    private val durationFormatter: DurationFormatter,
 ) : ViewModel() {
 
     private var reloadJob: Job? = null
@@ -43,12 +43,12 @@ class StatsViewModel @Inject constructor(
             getFocusListUseCase().collect { items ->
                 _state.value = State.Loaded(
                     items = items
-                        .groupBy { dateFormatter.format(it.startDate) }
+                        .groupBy { dateTimeFormatter.formatDate(it.startDate) }
                         .map {
                             State.Loaded.Item.Header(it.key) to it.value.sortedByDescending { it.startDate }.map {
                                 State.Loaded.Item.Focus(
                                     id = it.id,
-                                    duration = durationTimeFormatter.format(from = it.startDate, to = it.endDate),
+                                    duration = durationFormatter.format(from = it.startDate, to = it.endDate),
                                 )
                             }
                         }

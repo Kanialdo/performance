@@ -1,19 +1,18 @@
-package pl.krystiankaniowski.performance.stats.formatter
+package pl.krystiankaniowski.performance.localization.time
 
 import kotlinx.datetime.Clock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import pl.krystiankaniowski.performance.stats.formatters.DurationTimeFormatter
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-class DurationTimeFormatterTest {
+class DurationFormatterImplTest {
 
     @Test
     fun test() {
 
-        val durationTimeFormatter = DurationTimeFormatter()
+        val durationTimeFormatter = DurationFormatterImpl()
 
         val baseDate = Clock.System.now()
 

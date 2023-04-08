@@ -14,6 +14,7 @@ import kotlinx.datetime.Clock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import pl.krystiankaniowski.performance.domain.localization.time.DateTimeFormatter
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
 import pl.krystiankaniowski.performance.model.Focus
 import pl.krystiankaniowski.performance.testing.rule.InstantDispatcherExtension

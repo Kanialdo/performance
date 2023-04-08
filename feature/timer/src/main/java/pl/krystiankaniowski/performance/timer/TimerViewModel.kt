@@ -6,26 +6,28 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.domain.localization.time.TimerFormatter
 import pl.krystiankaniowski.performance.domain.timer.GetCancelThresholdUseCase
 import pl.krystiankaniowski.performance.domain.timer.PerformanceTimer
 import pl.krystiankaniowski.performance.domain.timer.fits
 import pl.krystiankaniowski.performance.domain.timer.left
 import pl.krystiankaniowski.performance.model.Seconds
+import pl.krystiankaniowski.performance.model.toSeconds
 import javax.inject.Inject
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
+import kotlin.time.Duration.Companion.minutes
 
 @HiltViewModel
 class TimerViewModel @Inject constructor(
     private val timer: PerformanceTimer,
+    private val timerFormatter: TimerFormatter,
     private val getCancelThresholdUseCase: GetCancelThresholdUseCase,
 ) : ViewModel() {
 
-    private val seconds = 25.toDuration(DurationUnit.MINUTES).inWholeSeconds
+    private val seconds = 25.minutes.inWholeSeconds.toSeconds()
 
     private val _state: MutableStateFlow<State> = MutableStateFlow(
         State(
-            counter = seconds.toTextTime(),
+            counter = timerFormatter.format(seconds),
             isTimerActive = false,
             button = State.Button.Start,
         ),
@@ -37,12 +39,13 @@ class TimerViewModel @Inject constructor(
             timer.state.collect { timerState ->
                 _state.value = when (timerState) {
                     PerformanceTimer.State.NotStarted -> State(
-                        counter = seconds.toTextTime(),
+                        counter = timerFormatter.format(seconds),
                         isTimerActive = false,
                         button = State.Button.Start,
                     )
+
                     is PerformanceTimer.State.Pending -> State(
-                        counter = timerState.leftSeconds.value.toTextTime(),
+                        counter = timerFormatter.format(timerState.leftSeconds),
                         isTimerActive = true,
                         button = if (getCancelThresholdUseCase.fits(timerState)) {
                             State.Button.Cancel(getCancelThresholdUseCase.left(timerState))
@@ -56,12 +59,10 @@ class TimerViewModel @Inject constructor(
     }
 
     fun onEvent(event: Event) = when (event) {
-        Event.Start -> timer.start(Seconds(seconds))
+        Event.Start -> timer.start(seconds)
         Event.Stop -> timer.stop()
         Event.Cancel -> timer.stop()
     }
-
-    private fun Long.toTextTime() = "${this / 60}:${(this % 60).toString().padStart(2, '0')}"
 
     data class State(
         val counter: String,

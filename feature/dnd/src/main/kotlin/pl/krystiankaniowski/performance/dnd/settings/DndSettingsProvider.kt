@@ -6,9 +6,9 @@ import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.dnd.R
 import pl.krystiankaniowski.performance.dnd.usecase.IsDoNotDisturbEnabledUseCase
 import pl.krystiankaniowski.performance.dnd.usecase.SetDoNotDisturbEnabledUseCase
+import pl.krystiankaniowski.performance.domain.localization.strings.StringsProvider
 import pl.krystiankaniowski.performance.domain.navigation.Destination
 import pl.krystiankaniowski.performance.domain.navigation.Navigator
-import pl.krystiankaniowski.performance.domain.provider.StringsProvider
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
 import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider

@@ -1,12 +1,13 @@
-package pl.krystiankaniowski.performance.stats.formatters
+package pl.krystiankaniowski.performance.localization.time
 
-import kotlinx.datetime.Instant
+import pl.krystiankaniowski.performance.domain.localization.time.DurationFormatter
 import javax.inject.Inject
+import kotlin.time.Duration
 
-class DurationTimeFormatter @Inject constructor() {
+class DurationFormatterImpl @Inject constructor() : DurationFormatter {
 
-    fun format(from: Instant, to: Instant): String {
-        val diff = (to - from).inWholeSeconds
+    override fun format(duration: Duration): String {
+        val diff = duration.inWholeSeconds
         return when {
             diff < 60 -> "${diff}s"
             diff < 5 * 60 -> "${diff / 60}m" + ((diff % 60).takeIf { it != 0L }?.let { " ${it}s" } ?: "")
