@@ -4,11 +4,11 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.account.R
-import pl.krystiankaniowski.performance.domain.RemoveAllDataUseCase
-import pl.krystiankaniowski.performance.domain.provider.StringsProvider
+import pl.krystiankaniowski.performance.domain.localization.strings.StringsProvider
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
+import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider
-import pl.krystiankaniowski.performance.domain.settings.SettingsOrder
+import pl.krystiankaniowski.performance.domain.stats.RemoveAllDataUseCase
 import javax.inject.Inject
 
 class AccountSettingsProvider @Inject constructor(
@@ -34,7 +34,8 @@ class AccountSettingsProvider @Inject constructor(
     }
 
     private fun buildRemoveAllDataItem() = SettingsItem.Simple(
-        order = SettingsOrder.STATS_REMOVE_HISTORY,
+        order = SettingsItems.Order.STATS_REMOVE_HISTORY,
+        category = SettingsItems.Category.STATS,
         title = stringsProvider.getString(R.string.settings_remove_history_title),
         onClick = ::removeAllData,
     )

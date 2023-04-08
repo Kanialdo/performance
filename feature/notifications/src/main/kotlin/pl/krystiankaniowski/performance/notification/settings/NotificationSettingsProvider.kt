@@ -3,12 +3,12 @@ package pl.krystiankaniowski.performance.notification.settings
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.domain.localization.strings.StringsProvider
 import pl.krystiankaniowski.performance.domain.navigation.Destination
 import pl.krystiankaniowski.performance.domain.navigation.Navigator
-import pl.krystiankaniowski.performance.domain.provider.StringsProvider
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
+import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider
-import pl.krystiankaniowski.performance.domain.settings.SettingsOrder
 import pl.krystiankaniowski.performance.notification.usecase.IsShowTimeEnabledUseCase
 import pl.krystiankaniowski.performance.notification.usecase.SetShowTimeEnabledUseCase
 import pl.krystiankaniowski.performance.notifications.R
@@ -40,14 +40,16 @@ class NotificationSettingsProvider @Inject constructor(
     }
 
     private fun buildAndroidAppSettings() = SettingsItem.Simple(
-        order = SettingsOrder.NOTIFICATION_ANDROID_APP_SETTINGS,
+        order = SettingsItems.Order.NOTIFICATION_ANDROID_APP_SETTINGS,
+        category = SettingsItems.Category.NOTIFICATIONS,
         title = stringsProvider.getString(R.string.app_notifications_settings),
         description = null,
         onClick = { navigator.open(Destination.Android.AppNotificationsSettings) },
     )
 
     private suspend fun buildShowTimeEnabled() = SettingsItem.Switch(
-        order = SettingsOrder.NOTIFICATION_SHOW_TIME_ENABLED,
+        order = SettingsItems.Order.NOTIFICATION_SHOW_TIME_ENABLED,
+        category = SettingsItems.Category.NOTIFICATIONS,
         title = stringsProvider.getString(R.string.notfication_setting_show_time_title),
         description = null,
         value = isShowTimeEnabledUseCase(),

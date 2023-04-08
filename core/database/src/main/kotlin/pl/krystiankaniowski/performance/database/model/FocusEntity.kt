@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import kotlinx.datetime.Instant
 
 @Entity("focus")
-data class FocusEntity(
+internal data class FocusEntity(
     @PrimaryKey(autoGenerate = true) val uid: Int,
     @ColumnInfo(name = "date_start") val dateStart: Instant,
     @ColumnInfo(name = "date_end") val dateEnd: Instant,

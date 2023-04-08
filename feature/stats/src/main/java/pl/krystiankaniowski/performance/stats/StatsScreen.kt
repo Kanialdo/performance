@@ -1,6 +1,7 @@
 package pl.krystiankaniowski.performance.stats
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,8 +31,18 @@ import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 @Composable
 fun StatsScreen(
     viewModel: StatsViewModel = hiltViewModel(),
+    openDetailsScreen: (Long) -> Unit,
     navigateUp: () -> Unit,
 ) {
+
+    LaunchedEffect(Unit) {
+        viewModel.effects.collect {
+            when (it) {
+                is StatsViewModel.Effect.OpenDetails -> openDetailsScreen(it.id)
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -56,6 +68,7 @@ fun StatsScreen(
                 StatsViewModel.State.Empty -> PerformanceEmptyScreen(stringResource(R.string.stats_empty_title))
                 is StatsViewModel.State.Loaded -> StatsScreenContent(
                     state = state,
+                    onClick = viewModel::onItemClick,
                 )
             }
         }
@@ -66,6 +79,7 @@ fun StatsScreen(
 @Composable
 private fun StatsScreenContent(
     state: StatsViewModel.State.Loaded,
+    onClick: (Long) -> Unit,
 ) {
     LazyColumn {
         state.items.forEach {
@@ -73,7 +87,7 @@ private fun StatsScreenContent(
                 StatsScreenHeader(it.key)
             }
             items(it.value) {
-                StatsScreenItem(it)
+                StatsScreenItem(item = it, onClick = onClick)
             }
         }
     }
@@ -89,8 +103,10 @@ private fun StatsScreenHeader(
 @Composable
 private fun StatsScreenItem(
     item: StatsViewModel.State.Loaded.Item.Focus,
+    onClick: (Long) -> Unit,
 ) {
     ListItem(
+        modifier = Modifier.clickable { onClick(item.id) },
         headlineText = { Text("Focus") },
         trailingContent = { Text(item.duration) },
     )
@@ -108,14 +124,17 @@ fun StatsScreenContentPreview() {
                         items = mapOf(
                             StatsViewModel.State.Loaded.Item.Header("10-10-2020") to listOf(
                                 StatsViewModel.State.Loaded.Item.Focus(
-                                    "10 min",
+                                    id = 1,
+                                    duration = "10 min",
                                 ),
                                 StatsViewModel.State.Loaded.Item.Focus(
-                                    "12 min",
+                                    id = 2,
+                                    duration = "12 min",
                                 ),
                             ),
                         ),
                     ),
+                    onClick = {},
                 )
             }
         }
@@ -134,6 +153,9 @@ private fun StatsScreenHeaderPreview() {
 @Composable
 private fun StatsScreenItemPreview() {
     PerformanceTheme {
-        StatsScreenItem(StatsViewModel.State.Loaded.Item.Focus("12 min"))
+        StatsScreenItem(
+            item = StatsViewModel.State.Loaded.Item.Focus(id = 1, duration = "12 min"),
+            onClick = {},
+        )
     }
 }

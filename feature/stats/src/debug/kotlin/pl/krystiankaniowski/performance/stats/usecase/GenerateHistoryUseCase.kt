@@ -1,7 +1,7 @@
 package pl.krystiankaniowski.performance.stats.usecase
 
 import kotlinx.datetime.Clock
-import pl.krystiankaniowski.performance.domain.usecase.SaveFocusUseCase
+import pl.krystiankaniowski.performance.domain.stats.SaveFocusUseCase
 import pl.krystiankaniowski.performance.model.Focus
 import javax.inject.Inject
 import kotlin.random.Random

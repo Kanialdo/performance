@@ -40,9 +40,7 @@ class PerformanceTimerImpl @Inject constructor(
                 .map { Seconds(it) }
                 .onStart { emit(seconds) }
                 .conflate()
-                .onCompletion {
-                    onCompletion()
-                }
+                .onCompletion { throwable -> onCompletion(throwable) }
                 .collect {
                     _state.emit(
                         PerformanceTimer.State.Pending(
@@ -58,9 +56,10 @@ class PerformanceTimerImpl @Inject constructor(
         job?.cancel(CancellationException())
     }
 
-    private fun onCompletion() {
+    private fun onCompletion(throwable: Throwable?) {
         scope.launch {
-            observers.sortedBy { it.priority }.forEach { it.onStop() }
+            val isInterrupted = throwable != null
+            observers.sortedBy { it.priority }.forEach { it.onStop(isInterrupted = isInterrupted) }
             _state.emit(PerformanceTimer.State.NotStarted)
         }
     }

@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import pl.krystiankaniowski.performance.dnd.usecase.IsDoNotDisturbEnabledUseCase
 import pl.krystiankaniowski.performance.dnd.usecase.SetDoNotDisturbEnabledUseCase
+import pl.krystiankaniowski.performance.domain.localization.strings.StringsProvider
 import pl.krystiankaniowski.performance.domain.navigation.Navigator
-import pl.krystiankaniowski.performance.domain.provider.StringsProvider
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
 import pl.krystiankaniowski.performance.testing.rule.InstantDispatcherExtension
 

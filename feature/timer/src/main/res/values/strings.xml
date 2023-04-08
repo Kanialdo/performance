@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="timer_title">Timer</string>
+    <string name="timer_button_start">Start</string>
+    <string name="timer_button_stop">Stop</string>
+    <string name="timer_button_cancel">Cancel (%1$s)</string>
 </resources>

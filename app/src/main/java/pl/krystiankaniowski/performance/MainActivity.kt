@@ -7,13 +7,17 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.DisposableEffect
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.historydetails.HistoryDetailsArgs
+import pl.krystiankaniowski.performance.historydetails.HistoryDetailsScreen
 import pl.krystiankaniowski.performance.navigation.AndroidNavigator
 import pl.krystiankaniowski.performance.settings.SettingsScreen
 import pl.krystiankaniowski.performance.stats.StatsScreen
@@ -59,6 +63,17 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("stats") {
                         StatsScreen(
+                            navigateUp = navController::navigateUp,
+                            openDetailsScreen = { id -> navController.navigate("details/$id") },
+                        )
+                    }
+                    composable(
+                        route = "details/{${HistoryDetailsArgs.id}}",
+                        arguments = listOf(
+                            navArgument(HistoryDetailsArgs.id) { type = NavType.LongType },
+                        ),
+                    ) {
+                        HistoryDetailsScreen(
                             navigateUp = navController::navigateUp,
                         )
                     }

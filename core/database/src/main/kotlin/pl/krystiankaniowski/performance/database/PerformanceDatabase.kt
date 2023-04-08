@@ -11,6 +11,6 @@ import pl.krystiankaniowski.performance.database.utils.InstantConverter
 @TypeConverters(
     InstantConverter::class,
 )
-abstract class PerformanceDatabase : RoomDatabase() {
+internal abstract class PerformanceDatabase : RoomDatabase() {
     abstract fun focusDao(): FocusDao
 }
