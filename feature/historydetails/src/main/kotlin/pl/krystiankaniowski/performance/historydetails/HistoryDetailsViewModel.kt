@@ -32,6 +32,7 @@ class HistoryDetailsViewModel @Inject constructor(
     }
 
     sealed interface Effect {
+        object ShowConfirmationPopup : Effect
         object CloseScreen : Effect
     }
 
@@ -53,6 +54,10 @@ class HistoryDetailsViewModel @Inject constructor(
     }
 
     fun onDeleteButtonClick() = viewModelScope.launch {
+        _effects.emit(Effect.ShowConfirmationPopup)
+    }
+
+    fun onDeleteConfirmation() = viewModelScope.launch {
         repository.delete(id)
         _effects.emit(Effect.CloseScreen)
     }

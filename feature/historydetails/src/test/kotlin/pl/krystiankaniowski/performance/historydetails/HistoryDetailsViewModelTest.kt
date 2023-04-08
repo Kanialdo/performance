@@ -62,7 +62,7 @@ class HistoryDetailsViewModelTest {
     }
 
     @Test
-    fun `WHEN on delete button is clicked THEN delete session and emit close effect`() = runTest {
+    fun `WHEN on delete button is clicked and then action confirmed THEN delete session and emit close effect`() = runTest {
         coEvery { getHistoryEntryUseCase.invoke(any()) } returns Focus(
             id = 1,
             startDate = Clock.System.now(),
@@ -75,6 +75,8 @@ class HistoryDetailsViewModelTest {
 
         sut.effects.test {
             sut.onDeleteButtonClick()
+            Assertions.assertEquals(HistoryDetailsViewModel.Effect.ShowConfirmationPopup, awaitItem())
+            sut.onDeleteConfirmation()
             Assertions.assertEquals(HistoryDetailsViewModel.Effect.CloseScreen, awaitItem())
         }
         coVerify { repository.delete(1) }
