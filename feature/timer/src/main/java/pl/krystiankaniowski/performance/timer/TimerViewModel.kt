@@ -12,9 +12,9 @@ import pl.krystiankaniowski.performance.domain.timer.PerformanceTimer
 import pl.krystiankaniowski.performance.domain.timer.fits
 import pl.krystiankaniowski.performance.domain.timer.left
 import pl.krystiankaniowski.performance.model.Seconds
+import pl.krystiankaniowski.performance.model.toSeconds
 import javax.inject.Inject
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
+import kotlin.time.Duration.Companion.minutes
 
 @HiltViewModel
 class TimerViewModel @Inject constructor(
@@ -23,7 +23,7 @@ class TimerViewModel @Inject constructor(
     private val getCancelThresholdUseCase: GetCancelThresholdUseCase,
 ) : ViewModel() {
 
-    private val seconds = 25.toDuration(DurationUnit.MINUTES).inWholeSeconds
+    private val seconds = 25.minutes.inWholeSeconds.toSeconds()
 
     private val _state: MutableStateFlow<State> = MutableStateFlow(
         State(
@@ -43,6 +43,7 @@ class TimerViewModel @Inject constructor(
                         isTimerActive = false,
                         button = State.Button.Start,
                     )
+
                     is PerformanceTimer.State.Pending -> State(
                         counter = timerFormatter.format(timerState.leftSeconds),
                         isTimerActive = true,
@@ -58,7 +59,7 @@ class TimerViewModel @Inject constructor(
     }
 
     fun onEvent(event: Event) = when (event) {
-        Event.Start -> timer.start(Seconds(seconds))
+        Event.Start -> timer.start(seconds)
         Event.Stop -> timer.stop()
         Event.Cancel -> timer.stop()
     }
