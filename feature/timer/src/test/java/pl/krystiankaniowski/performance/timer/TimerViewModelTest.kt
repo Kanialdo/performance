@@ -9,6 +9,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import pl.krystiankaniowski.performance.domain.localization.time.TimerFormatter
 import pl.krystiankaniowski.performance.domain.timer.GetCancelThresholdUseCase
 import pl.krystiankaniowski.performance.domain.timer.PerformanceTimer
 import pl.krystiankaniowski.performance.model.Seconds
@@ -19,7 +20,10 @@ import pl.krystiankaniowski.performance.testing.rule.InstantDispatcherExtension
 class TimerViewModelTest {
 
     private val performanceTimer: PerformanceTimer = mockk()
+    private val timerFormatter: TimerFormatter = mockk()
     private val getCancelThresholdUseCase: GetCancelThresholdUseCase = mockk()
+
+    private val formattedTime = ""
 
     @Test
     fun `WHEN start is requested THEN start is performed on timer`() = runTest {
@@ -65,7 +69,7 @@ class TimerViewModelTest {
         Assertions.assertEquals(
             sut.state.first(),
             TimerViewModel.State(
-                counter = "0:10",
+                counter = formattedTime,
                 isTimerActive = true,
                 button = TimerViewModel.State.Button.Stop,
             ),
@@ -86,7 +90,7 @@ class TimerViewModelTest {
         Assertions.assertEquals(
             sut.state.first(),
             TimerViewModel.State(
-                counter = "0:10",
+                counter = formattedTime,
                 isTimerActive = true,
                 button = TimerViewModel.State.Button.Cancel(10.toSeconds()),
             ),
@@ -100,7 +104,7 @@ class TimerViewModelTest {
         Assertions.assertEquals(
             sut.state.first(),
             TimerViewModel.State(
-                counter = "25:00",
+                counter = formattedTime,
                 isTimerActive = false,
                 button = TimerViewModel.State.Button.Start,
             ),
@@ -109,9 +113,12 @@ class TimerViewModelTest {
 
     private fun createSut(timerState: PerformanceTimer.State = PerformanceTimer.State.NotStarted): TimerViewModel {
         coEvery { performanceTimer.state }.coAnswers { flowOf(timerState) }
+        coEvery { timerFormatter.format(any<Long>()) } returns formattedTime
+        coEvery { timerFormatter.format(any<Seconds>()) } returns formattedTime
         return TimerViewModel(
             timer = performanceTimer,
             getCancelThresholdUseCase = getCancelThresholdUseCase,
+            timerFormatter = timerFormatter,
         )
     }
 }

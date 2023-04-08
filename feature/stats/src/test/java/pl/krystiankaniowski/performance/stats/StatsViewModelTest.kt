@@ -9,18 +9,18 @@ import kotlinx.datetime.Clock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import pl.krystiankaniowski.performance.domain.localization.time.DateTimeFormatter
+import pl.krystiankaniowski.performance.domain.localization.time.DurationFormatter
 import pl.krystiankaniowski.performance.domain.stats.GetFocusListUseCase
 import pl.krystiankaniowski.performance.model.Focus
-import pl.krystiankaniowski.performance.infrastructure.DateFormatter
-import pl.krystiankaniowski.performance.infrastructure.DurationTimeFormatter
 import pl.krystiankaniowski.performance.testing.rule.InstantDispatcherExtension
 
 @ExtendWith(InstantDispatcherExtension::class)
 class StatsViewModelTest {
 
     private val getFocusListUseCase: GetFocusListUseCase = mockk()
-    private val durationTimeFormatter: pl.krystiankaniowski.performance.infrastructure.DurationTimeFormatter = mockk()
-    private val dateFormatter: pl.krystiankaniowski.performance.infrastructure.DateFormatter = mockk()
+    private val durationFormatter: DurationFormatter = mockk()
+    private val dateTimeFormatter: DateTimeFormatter = mockk()
 
     @Test
     fun `WHEN view model is initialized THEN proper state is emitted`() = runTest {
@@ -40,8 +40,8 @@ class StatsViewModelTest {
         val formattedDuration = "5 min"
         val formattedDate = "01.01.2001"
         coEvery { getFocusListUseCase.invoke() } returns flowOf(listOf(Focus(id = 1, startDate = date, endDate = date)))
-        coEvery { durationTimeFormatter.format(any(), any()) } returns formattedDuration
-        coEvery { dateFormatter.format(any()) } returns formattedDate
+        coEvery { durationFormatter.format(any(), any()) } returns formattedDuration
+        coEvery { dateTimeFormatter.formatDate(any()) } returns formattedDate
 
         val sut = createSut()
 
@@ -68,7 +68,7 @@ class StatsViewModelTest {
 
     private fun createSut() = StatsViewModel(
         getFocusListUseCase = getFocusListUseCase,
-        durationTimeFormatter = durationTimeFormatter,
-        dateFormatter = dateFormatter,
+        durationFormatter = durationFormatter,
+        dateTimeFormatter = dateTimeFormatter,
     )
 }

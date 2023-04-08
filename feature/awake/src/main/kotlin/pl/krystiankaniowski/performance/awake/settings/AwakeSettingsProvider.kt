@@ -6,7 +6,7 @@ import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.awake.R
 import pl.krystiankaniowski.performance.awake.usecase.IsKeepAwakeEnabledUseCase
 import pl.krystiankaniowski.performance.awake.usecase.SetKeepAwakeEnabledUseCase
-import pl.krystiankaniowski.performance.domain.localization.StringsProvider
+import pl.krystiankaniowski.performance.domain.localization.strings.StringsProvider
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
 import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider

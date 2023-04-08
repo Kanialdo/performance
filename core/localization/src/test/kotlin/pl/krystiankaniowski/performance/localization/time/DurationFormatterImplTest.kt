@@ -7,12 +7,12 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-class DateTimeFormatterImplTest {
+class DurationFormatterImplTest {
 
     @Test
-    fun testFormat() {
+    fun test() {
 
-        val durationTimeFormatter = DateTimeFormatterImpl()
+        val durationTimeFormatter = DurationFormatterImpl()
 
         val baseDate = Clock.System.now()
 
@@ -25,5 +25,4 @@ class DateTimeFormatterImplTest {
         Assertions.assertEquals("1h", durationTimeFormatter.format(baseDate.minus(1.hours), baseDate))
         Assertions.assertEquals("1h 1m", durationTimeFormatter.format(baseDate.minus(1.hours).minus(1.minutes), baseDate))
     }
-
 }

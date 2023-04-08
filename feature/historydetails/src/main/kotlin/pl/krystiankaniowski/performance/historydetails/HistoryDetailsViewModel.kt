@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import pl.krystiankaniowski.performance.domain.localization.DateTimeFormatter
+import pl.krystiankaniowski.performance.domain.localization.time.DateTimeFormatter
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
 import javax.inject.Inject
 
@@ -45,8 +45,8 @@ class HistoryDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = repository.get(id).let { data ->
                 State.Loaded(
-                    startDate = dateTimeFormatter.format(data.startDate, DateTimeFormatter.Format.DATE_TIME),
-                    endDate = dateTimeFormatter.format(data.endDate, DateTimeFormatter.Format.DATE_TIME),
+                    startDate = dateTimeFormatter.formatDateTime(data.startDate),
+                    endDate = dateTimeFormatter.formatDateTime(data.endDate),
                 )
             }
         }
