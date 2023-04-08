@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.performance.infrastructure.provider
+package pl.krystiankaniowski.performance.infrastructure
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
