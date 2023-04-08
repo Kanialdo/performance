@@ -3,6 +3,7 @@ package pl.krystiankaniowski.performance.stats
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
 import org.junit.jupiter.api.Assertions
@@ -38,7 +39,7 @@ class StatsViewModelTest {
         val date = Clock.System.now()
         val formattedDuration = "5 min"
         val formattedDate = "01.01.2001"
-        coEvery { getFocusListUseCase.invoke() } returns listOf(Focus(id = 1, startDate = date, endDate = date))
+        coEvery { getFocusListUseCase.invoke() } returns flowOf(listOf(Focus(id = 1, startDate = date, endDate = date)))
         coEvery { durationTimeFormatter.format(any(), any()) } returns formattedDuration
         coEvery { dateFormatter.format(any()) } returns formattedDate
 

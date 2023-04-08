@@ -40,20 +40,22 @@ class StatsViewModel @Inject constructor(
     private fun loadData() {
         reloadJob?.cancel()
         reloadJob = viewModelScope.launch {
-            _state.value = State.Loaded(
-                items = getFocusListUseCase()
-                    .groupBy { dateFormatter.format(it.startDate) }
-                    .map {
-                        State.Loaded.Item.Header(it.key) to it.value.sortedByDescending { it.startDate }.map {
-                            State.Loaded.Item.Focus(
-                                id = it.id,
-                                duration = durationTimeFormatter.format(from = it.startDate, to = it.endDate),
-                            )
+            getFocusListUseCase().collect { items ->
+                _state.value = State.Loaded(
+                    items = items
+                        .groupBy { dateFormatter.format(it.startDate) }
+                        .map {
+                            State.Loaded.Item.Header(it.key) to it.value.sortedByDescending { it.startDate }.map {
+                                State.Loaded.Item.Focus(
+                                    id = it.id,
+                                    duration = durationTimeFormatter.format(from = it.startDate, to = it.endDate),
+                                )
+                            }
                         }
-                    }
-                    .toMap()
-                    .toSortedMap { a, b -> b.date.compareTo(a.date) },
-            )
+                        .toMap()
+                        .toSortedMap { a, b -> b.date.compareTo(a.date) },
+                )
+            }
         }
     }
 

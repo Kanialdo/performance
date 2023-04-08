@@ -16,8 +16,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.historydetails.HistoryDetailsArgs
 import pl.krystiankaniowski.performance.historydetails.HistoryDetailsScreen
-import pl.krystiankaniowski.performance.historydetails.HistoryDetailsViewModel
 import pl.krystiankaniowski.performance.navigation.AndroidNavigator
 import pl.krystiankaniowski.performance.settings.SettingsScreen
 import pl.krystiankaniowski.performance.stats.StatsScreen
@@ -29,9 +29,6 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainActivityViewModel by viewModels()
-
-    @Inject
-    lateinit var detailsViewModelFactory: HistoryDetailsViewModel.Factory
 
     @Inject
     lateinit var androidNavigator: AndroidNavigator
@@ -71,13 +68,12 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable(
-                        route = "details/{id}",
+                        route = "details/{${HistoryDetailsArgs.id}}",
                         arguments = listOf(
-                            navArgument("id") { type = NavType.LongType },
+                            navArgument(HistoryDetailsArgs.id) { type = NavType.LongType },
                         ),
                     ) {
                         HistoryDetailsScreen(
-                            viewModel = detailsViewModelFactory.create(it.arguments?.getLong("id") ?: -1),
                             navigateUp = navController::navigateUp,
                         )
                     }
