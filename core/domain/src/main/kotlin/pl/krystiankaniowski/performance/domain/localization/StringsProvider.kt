@@ -1,4 +1,4 @@
-package pl.krystiankaniowski.performance.domain.provider
+package pl.krystiankaniowski.performance.domain.localization
 
 interface StringsProvider {
 

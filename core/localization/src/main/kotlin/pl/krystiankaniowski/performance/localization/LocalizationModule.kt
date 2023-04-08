@@ -1,13 +1,13 @@
-package pl.krystiankaniowski.performance.infrastructure.di
+package pl.krystiankaniowski.performance.localization
 
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import pl.krystiankaniowski.performance.domain.localization.DateTimeFormatter
-import pl.krystiankaniowski.performance.domain.provider.StringsProvider
-import pl.krystiankaniowski.performance.infrastructure.DateTimeFormatterImpl
-import pl.krystiankaniowski.performance.infrastructure.StringsProviderImpl
+import pl.krystiankaniowski.performance.domain.localization.StringsProvider
+import pl.krystiankaniowski.performance.localization.strings.StringsProviderImpl
+import pl.krystiankaniowski.performance.localization.time.DateTimeFormatterImpl
 
 @Module
 @InstallIn(SingletonComponent::class)

@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import pl.krystiankaniowski.performance.domain.stats.GetFocusListUseCase
 import pl.krystiankaniowski.performance.model.Focus
-import pl.krystiankaniowski.performance.stats.formatters.DateFormatter
-import pl.krystiankaniowski.performance.stats.formatters.DurationTimeFormatter
+import pl.krystiankaniowski.performance.infrastructure.DateFormatter
+import pl.krystiankaniowski.performance.infrastructure.DurationTimeFormatter
 import pl.krystiankaniowski.performance.testing.rule.InstantDispatcherExtension
 
 @ExtendWith(InstantDispatcherExtension::class)
 class StatsViewModelTest {
 
     private val getFocusListUseCase: GetFocusListUseCase = mockk()
-    private val durationTimeFormatter: DurationTimeFormatter = mockk()
-    private val dateFormatter: DateFormatter = mockk()
+    private val durationTimeFormatter: pl.krystiankaniowski.performance.infrastructure.DurationTimeFormatter = mockk()
+    private val dateFormatter: pl.krystiankaniowski.performance.infrastructure.DateFormatter = mockk()
 
     @Test
     fun `WHEN view model is initialized THEN proper state is emitted`() = runTest {

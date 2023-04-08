@@ -11,9 +11,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.domain.localization.DateTimeFormatter
 import pl.krystiankaniowski.performance.domain.timer.PerformanceTimer
 import pl.krystiankaniowski.performance.notification.usecase.IsShowTimeEnabledUseCase
-import pl.krystiankaniowski.performance.notification.utils.TimeFormatter
 import pl.krystiankaniowski.performance.notifications.R
 import javax.inject.Inject
 
@@ -30,7 +30,7 @@ class ForegroundService : Service() {
     lateinit var notificationManager: NotificationManager
 
     @Inject
-    lateinit var timeFormatter: TimeFormatter
+    lateinit var dateTimeFormatter: DateTimeFormatter
 
     @Inject
     lateinit var isShowTimeEnabledUseCase: IsShowTimeEnabledUseCase
@@ -47,7 +47,7 @@ class ForegroundService : Service() {
                         buildNotification(
                             contentMessage = when (state) {
                                 PerformanceTimer.State.NotStarted -> getString(R.string.notification_timer_description_not_started)
-                                is PerformanceTimer.State.Pending -> getString(R.string.notification_timer_description_time_left, timeFormatter.format(state.leftSeconds))
+                                is PerformanceTimer.State.Pending -> getString(R.string.notification_timer_description_time_left, dateTimeFormatter.formatTimer(state.leftSeconds))
                             },
                         ),
                     )

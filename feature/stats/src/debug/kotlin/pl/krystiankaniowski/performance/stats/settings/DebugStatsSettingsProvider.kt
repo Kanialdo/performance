@@ -3,7 +3,7 @@ package pl.krystiankaniowski.performance.stats.settings
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import pl.krystiankaniowski.performance.domain.provider.StringsProvider
+import pl.krystiankaniowski.performance.domain.localization.StringsProvider
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
 import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider

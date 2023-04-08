@@ -5,7 +5,7 @@ import pl.krystiankaniowski.performance.model.Seconds
 import java.text.Format
 import kotlin.time.Duration
 
-interface DateTimeFormatter {
+interface DurationFormatter {
 
     fun format(instant: Instant, format: Format): String
 
