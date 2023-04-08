@@ -10,12 +10,10 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
-import pl.krystiankaniowski.performance.domain.stats.GetHistoryEntryUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class HistoryDetailsViewModel @Inject constructor(
-    private val getHistoryEntryUseCase: GetHistoryEntryUseCase,
     private val repository: FocusRepository,
     private val dateTimeFormatter: DateTimeFormatter,
     savedStateHandle: SavedStateHandle,
@@ -44,7 +42,7 @@ class HistoryDetailsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _state.value = getHistoryEntryUseCase(id).let { data ->
+            _state.value = repository.get(id).let { data ->
                 State.Loaded(
                     startDate = dateTimeFormatter.formatDateTime(data.startDate),
                     endDate = dateTimeFormatter.formatDateTime(data.endDate),
