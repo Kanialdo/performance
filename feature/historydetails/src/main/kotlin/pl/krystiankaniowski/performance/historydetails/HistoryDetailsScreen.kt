@@ -29,7 +29,6 @@ import pl.krystiankaniowski.performance.ui.components.PerformanceLoadingScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 import pl.krystiankaniowski.performance.ui.utils.collectAsEffect
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryDetailsScreen(
     viewModel: HistoryDetailsViewModel = hiltViewModel(),
@@ -56,21 +55,21 @@ fun HistoryDetailsScreen(
     if (showConfirmationPopup) {
         AlertDialog(
             onDismissRequest = { showConfirmationPopup = false },
-            title = { Text(text = "Confirmation") },
-            text = { Text("Do you want to remove this entry?") },
+            title = { Text(text = stringResource(R.string.details_confirmation_dialog_title)) },
+            text = { Text(stringResource(R.string.details_confirmation_dialog_description)) },
             confirmButton = {
                 TextButton(
                     onClick = {
                         showConfirmationPopup = false
                         viewModel.onDeleteConfirmation()
                     },
-                    content = { Text("Confirm") },
+                    content = { Text(stringResource(R.string.details_confirmation_dialog_button_positive_label)) },
                 )
             },
             dismissButton = {
                 TextButton(
                     onClick = { showConfirmationPopup = false },
-                    content = { Text("Cancel") },
+                    content = { Text(stringResource(R.string.details_confirmation_dialog_button_negative_label)) },
                 )
             },
         )
@@ -98,11 +97,15 @@ private fun HistoryDetailsContent(
                     when (state) {
                         is HistoryDetailsViewModel.State.Loaded -> {
                             IconButton(
-                                content = { Icon(Icons.Outlined.Delete, null) },
+                                content = {
+                                    Icon(
+                                        Icons.Outlined.Delete,
+                                        stringResource(R.string.action_delete),
+                                    )
+                                },
                                 onClick = onDeleteButtonClicked,
                             )
                         }
-
                         else -> Unit
                     }
                 },
@@ -123,12 +126,16 @@ private fun HistoryDetailsContent(
 @Composable
 private fun ColumnScope.HistoryDetailsContentLoaded(state: HistoryDetailsViewModel.State.Loaded) {
     ListItem(
-        headlineText = { Text("Start") },
+        headlineText = { Text(stringResource(R.string.details_start_label)) },
         supportingText = { Text(state.startDate) },
     )
     ListItem(
-        headlineText = { Text("End") },
+        headlineText = { Text(stringResource(R.string.details_end_label)) },
         supportingText = { Text(state.endDate) },
+    )
+    ListItem(
+        headlineText = { Text(stringResource(R.string.details_duration_label)) },
+        supportingText = { Text(state.duration) },
     )
 }
 
@@ -152,6 +159,7 @@ private fun HistoryDetailsContent_Loaded_Preview() {
             state = HistoryDetailsViewModel.State.Loaded(
                 startDate = "2020-02-02 10:15:20",
                 endDate = "2020-02-02 10:30:20",
+                duration = "25 min",
             ),
             navigateUp = {},
             onDeleteButtonClicked = {},

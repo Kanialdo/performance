@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.domain.localization.time.DateTimeFormatter
+import pl.krystiankaniowski.performance.domain.localization.time.DurationFormatter
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
 import javax.inject.Inject
 
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class HistoryDetailsViewModel @Inject constructor(
     private val repository: FocusRepository,
     private val dateTimeFormatter: DateTimeFormatter,
+    private val durationFormatter: DurationFormatter,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -27,6 +29,7 @@ class HistoryDetailsViewModel @Inject constructor(
         data class Loaded(
             val startDate: String,
             val endDate: String,
+            val duration: String,
         ) : State
     }
 
@@ -47,6 +50,7 @@ class HistoryDetailsViewModel @Inject constructor(
                 State.Loaded(
                     startDate = dateTimeFormatter.formatDateTime(data.startDate),
                     endDate = dateTimeFormatter.formatDateTime(data.endDate),
+                    duration = durationFormatter.format(data.duration),
                 )
             }
         }
