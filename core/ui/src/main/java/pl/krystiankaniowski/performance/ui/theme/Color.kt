@@ -12,3 +12,8 @@ val DeepOrange600 = Color(0xFFF4511E)
 val DeepOrange700 = Color(0xFFE64A19)
 val DeepOrange800 = Color(0xFFD84315)
 val DeepOrange900 = Color(0xFFBF360C)
+
+val hunterGreen = Color(0xFF235B20)
+val citrine = Color(0xFFCAC509)
+val chiliRed = Color(0xFFD64C31)
+val federalBlue = Color(0xFF1A1A65)
