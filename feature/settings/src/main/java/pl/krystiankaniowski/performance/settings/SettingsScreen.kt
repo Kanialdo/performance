@@ -1,34 +1,43 @@
 package pl.krystiankaniowski.performance.settings
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import pl.krystiankaniowski.performance.domain.settings.SettingsItem
+import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.ui.components.PerformanceLoadingScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel(),
+    navigateUp: () -> Unit,
+) {
+    SettingsScreenContent(
+        state = viewModel.state.collectAsState().value,
+        navigateUp = navigateUp,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SettingsScreenContent(
+    state: SettingsViewModel.State,
     navigateUp: () -> Unit,
 ) {
     Scaffold(
@@ -45,8 +54,8 @@ fun SettingsScreen(
         },
     ) {
         Box(modifier = Modifier.padding(it)) {
-            when (val state = viewModel.state.collectAsState().value) {
-                is SettingsViewModel.State.Loaded -> SettingsScreenContent(state, viewModel::onDndChanged)
+            when (state) {
+                is SettingsViewModel.State.Loaded -> SettingsScreenContentLoaded(state)
                 SettingsViewModel.State.Loading -> PerformanceLoadingScreen()
             }
         }
@@ -54,46 +63,73 @@ fun SettingsScreen(
 }
 
 @Composable
-fun SettingsScreenContent(
+private fun SettingsScreenContentLoaded(
     state: SettingsViewModel.State.Loaded,
-    onDndChanged: (Boolean) -> Unit,
 ) {
     LazyColumn {
-        item {
-
-            ListItem(
-                headlineText = { Text(stringResource(R.string.do_not_disturbed)) },
-                supportingText = { Text(text = stringResource(R.string.turn_on_do_not_disturbed_in_focus_time)) },
-                trailingContent = {
-                    val interactionSource = remember { MutableInteractionSource() }
-                    Switch(
-                        checked = state.isDndEnabled,
-                        onCheckedChange = onDndChanged,
-                        thumbContent = null,
-                        enabled = true,
-                        interactionSource = interactionSource,
-                    )
-                },
-            )
-            Divider()
-            ListItem(
-                headlineText = { Text(stringResource(R.string.title_app_version)) },
-                supportingText = { Text(text = state.appVersion) },
-            )
+        state.items.forEach {
+            item {
+                SettingsScreenListItem_Header(
+                    title = when (it.key) {
+                        SettingsItems.Category.DND -> stringResource(R.string.settings_header_do_not_disturb)
+                        SettingsItems.Category.NOTIFICATIONS -> stringResource(R.string.settings_header_notifications)
+                        SettingsItems.Category.STATS -> stringResource(R.string.settings_header_statistics)
+                        SettingsItems.Category.OTHERS -> stringResource(R.string.settings_header_others)
+                        SettingsItems.Category.ABOUT -> stringResource(R.string.settings_header_about)
+                    },
+                )
+            }
+            items(it.value) {
+                when (it) {
+                    is SettingsItem.Simple -> SettingsScreenListItem_Simple(it)
+                    is SettingsItem.Switch -> SettingsScreenListItem_Switch(it)
+                }
+            }
         }
     }
 }
 
 @Preview
 @Composable
-fun SettingsScreenContentPreview() {
+private fun SettingsScreenContentLoadingPreview() {
     PerformanceTheme {
         SettingsScreenContent(
-            SettingsViewModel.State.Loaded(
-                appVersion = "1.0.0",
-                isDndEnabled = false,
+            state = SettingsViewModel.State.Loading,
+            navigateUp = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun SettingsScreenContentLoadedPreview() {
+    PerformanceTheme {
+        SettingsScreenContent(
+            state = SettingsViewModel.State.Loaded(
+                mapOf(
+                    SettingsItems.Category.OTHERS to listOf(
+                        SettingsItem.Simple(
+                            order = 1,
+                            category = SettingsItems.Category.OTHERS,
+                            title = "Option #1",
+                            description = "Description #1",
+                            onClick = null,
+                        ),
+                    ),
+                    SettingsItems.Category.ABOUT to listOf(
+                        SettingsItem.Switch(
+                            order = 2,
+                            category = SettingsItems.Category.ABOUT,
+                            title = "Option #2",
+                            description = "Description #2",
+                            value = true,
+                            isEnabled = true,
+                            onValueChanged = {},
+                        ),
+                    ),
+                ),
             ),
-            onDndChanged = {},
+            navigateUp = {},
         )
     }
 }

@@ -28,13 +28,19 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
           cache: gradle
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
-      - name: Init gradle
-        run: ./gradlew init
-      - name: Detekt
-        run: ./gradlew detekt
+      - name: Gradle init
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: init
+      - name: Detkt
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: detekt
       - name: Assemble
-        run: ./gradlew assemble
-      - name: Test
-        run: ./gradlew test
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: assembleDebug          
+      - name: Unit tests
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: testDebugUnitTest

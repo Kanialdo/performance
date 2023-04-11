@@ -1,7 +1,8 @@
 package pl.krystiankaniowski.performance.stats
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,16 +12,18 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import pl.krystiankaniowski.performance.ui.components.PerformanceEmptyScreen
 import pl.krystiankaniowski.performance.ui.components.PerformanceLoadingScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 
@@ -28,8 +31,18 @@ import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 @Composable
 fun StatsScreen(
     viewModel: StatsViewModel = hiltViewModel(),
+    openDetailsScreen: (Long) -> Unit,
     navigateUp: () -> Unit,
 ) {
+
+    LaunchedEffect(Unit) {
+        viewModel.effects.collect {
+            when (it) {
+                is StatsViewModel.Effect.OpenDetails -> openDetailsScreen(it.id)
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -52,26 +65,51 @@ fun StatsScreen(
         Box(modifier = Modifier.padding(it)) {
             when (val state = viewModel.state.collectAsState().value) {
                 StatsViewModel.State.Loading -> PerformanceLoadingScreen()
+                StatsViewModel.State.Empty -> PerformanceEmptyScreen(stringResource(R.string.stats_empty_title))
                 is StatsViewModel.State.Loaded -> StatsScreenContent(
                     state = state,
+                    onClick = viewModel::onItemClick,
                 )
             }
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun StatsScreenContent(
+private fun StatsScreenContent(
     state: StatsViewModel.State.Loaded,
+    onClick: (Long) -> Unit,
 ) {
     LazyColumn {
-        items(state.items) {
-            Column(modifier = Modifier.padding(8.dp)) {
-                Text(it.startDate)
-                Text(it.endDate)
+        state.items.forEach {
+            stickyHeader {
+                StatsScreenHeader(it.key)
+            }
+            items(it.value) {
+                StatsScreenItem(item = it, onClick = onClick)
             }
         }
     }
+}
+
+@Composable
+private fun StatsScreenHeader(
+    item: StatsViewModel.State.Loaded.Item.Header,
+) {
+    ListItem(headlineText = { Text(item.date) })
+}
+
+@Composable
+private fun StatsScreenItem(
+    item: StatsViewModel.State.Loaded.Item.Focus,
+    onClick: (Long) -> Unit,
+) {
+    ListItem(
+        modifier = Modifier.clickable { onClick(item.id) },
+        headlineText = { Text("Focus") },
+        trailingContent = { Text(item.duration) },
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,19 +121,41 @@ fun StatsScreenContentPreview() {
             Box(modifier = Modifier.padding(paddingValues)) {
                 StatsScreenContent(
                     state = StatsViewModel.State.Loaded(
-                        items = listOf(
-                            StatsViewModel.State.Loaded.FocusEntry(
-                                "10-10-2020 10:10:00",
-                                "10-10-2020 10:20:00",
-                            ),
-                            StatsViewModel.State.Loaded.FocusEntry(
-                                "10-10-2020 10:30:00",
-                                "10-10-2020 10:40:00",
+                        items = mapOf(
+                            StatsViewModel.State.Loaded.Item.Header("10-10-2020") to listOf(
+                                StatsViewModel.State.Loaded.Item.Focus(
+                                    id = 1,
+                                    duration = "10 min",
+                                ),
+                                StatsViewModel.State.Loaded.Item.Focus(
+                                    id = 2,
+                                    duration = "12 min",
+                                ),
                             ),
                         ),
                     ),
+                    onClick = {},
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun StatsScreenHeaderPreview() {
+    PerformanceTheme {
+        StatsScreenHeader(StatsViewModel.State.Loaded.Item.Header("10-10-2020"))
+    }
+}
+
+@Preview
+@Composable
+private fun StatsScreenItemPreview() {
+    PerformanceTheme {
+        StatsScreenItem(
+            item = StatsViewModel.State.Loaded.Item.Focus(id = 1, duration = "12 min"),
+            onClick = {},
+        )
     }
 }

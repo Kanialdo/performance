@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_details_title">Details</string>
+    <string name="details_confirmation_dialog_title">Confirmation</string>
+    <string name="details_confirmation_dialog_description">Do you want to remove this entry?</string>
+    <string name="details_confirmation_dialog_button_positive_label">Confirm</string>
+    <string name="details_confirmation_dialog_button_negative_label">Cancel</string>
+    <string name="details_start_label">Start</string>
+    <string name="details_end_label">End</string>
+    <string name="details_duration_label">Duration</string>
+    <string name="action_delete">Delete</string>
+</resources>

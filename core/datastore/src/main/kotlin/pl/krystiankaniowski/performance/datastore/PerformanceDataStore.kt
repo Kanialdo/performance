@@ -18,12 +18,7 @@ class PerformanceDataStore @Inject constructor(@ApplicationContext context: Cont
 
     private val dataStore = context.dataStore
 
-    override val isDndEnabled = dataStore.readBool(PreferencesKeys.IS_DND_ENABLED)
-    override suspend fun updateIsDndEnabled(value: Boolean) {
-        dataStore.writeBool(PreferencesKeys.IS_DND_ENABLED, value)
-    }
-}
+    override fun getBoolean(key: String) = dataStore.readBool(key)
 
-internal object PreferencesKeys {
-    const val IS_DND_ENABLED = "is_dnd_enabled"
+    override suspend fun updateBoolean(key: String, value: Boolean) = dataStore.writeBool(key, value)
 }

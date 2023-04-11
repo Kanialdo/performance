@@ -3,9 +3,7 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
-val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-
 dependencies {
-    add("implementation", libs.findLibrary("hilt.android").get())
-    add("kapt", libs.findLibrary("hilt.compiler").get())
+    add("implementation", libs.hilt.android)
+    add("kapt", libs.hilt.compiler)
 }

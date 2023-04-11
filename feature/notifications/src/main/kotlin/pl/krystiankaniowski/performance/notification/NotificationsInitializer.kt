@@ -4,7 +4,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import androidx.core.content.getSystemService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.krystiankaniowski.performance.domain.Initializer
 import pl.krystiankaniowski.performance.notifications.R
@@ -12,6 +11,7 @@ import javax.inject.Inject
 
 class NotificationsInitializer @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val notificationManager: NotificationManager,
 ) : Initializer {
 
     override fun init() {
@@ -25,8 +25,6 @@ class NotificationsInitializer @Inject constructor(
                 description = context.getString(R.string.channel_description)
                 setShowBadge(false)
             }
-
-            val notificationManager = requireNotNull(context.getSystemService<NotificationManager>())
             notificationManager.createNotificationChannel(channel)
         }
     }

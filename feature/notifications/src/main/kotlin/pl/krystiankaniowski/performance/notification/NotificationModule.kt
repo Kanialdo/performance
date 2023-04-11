@@ -1,25 +1,42 @@
 package pl.krystiankaniowski.performance.notification
 
+import android.app.NotificationManager
+import android.content.Context
+import androidx.core.content.getSystemService
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import pl.krystiankaniowski.performance.domain.Initializer
-import pl.krystiankaniowski.performance.domain.usecase.notification.StartForegroundServiceUseCase
-import pl.krystiankaniowski.performance.domain.usecase.notification.StopForegroundServiceUseCase
+import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider
+import pl.krystiankaniowski.performance.domain.timer.TimerObserver
+import pl.krystiankaniowski.performance.notification.settings.NotificationSettingsProvider
+import pl.krystiankaniowski.performance.notification.timer.NotificationTimerObserver
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface NotificationModule {
+object NotificationModule {
 
-    @Binds
-    @IntoSet
-    fun NotificationsInitializer.bindNotificationsInitializer(): Initializer
+    @Provides
+    fun provideNotificationManager(@ApplicationContext context: Context): NotificationManager = requireNotNull(context.getSystemService())
 
-    @Binds
-    fun StartForegroundServiceUseCaseImpl.bindStartForegroundServiceUseCase(): StartForegroundServiceUseCase
+    @Module
+    @InstallIn(SingletonComponent::class)
+    interface BindingModule {
 
-    @Binds
-    fun StopForegroundServiceUseCaseImpl.bindStopForegroundServiceUseCase(): StopForegroundServiceUseCase
+        @Binds
+        @IntoSet
+        fun NotificationsInitializer.bindNotificationsInitializer(): Initializer
+
+        @Binds
+        @IntoSet
+        fun NotificationSettingsProvider.bindNotificationSettingsProvider(): SettingsItemsProvider
+
+        @Binds
+        @IntoSet
+        fun NotificationTimerObserver.bindNotificationTimerObserver(): TimerObserver
+    }
 }
