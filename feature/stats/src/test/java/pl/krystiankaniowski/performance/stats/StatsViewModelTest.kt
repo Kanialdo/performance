@@ -3,7 +3,6 @@ package pl.krystiankaniowski.performance.stats
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
@@ -60,7 +59,7 @@ class StatsViewModelTest {
 
     @Test
     fun `WHEN use case did not provide data THEN empty state is emitted`() = runTest {
-        coEvery { getFocusListUseCase.invoke() } returns emptyFlow()
+        coEvery { getFocusListUseCase.invoke() } returns flowOf(emptyList())
 
         val sut = createSut()
 
