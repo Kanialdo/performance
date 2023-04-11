@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import pl.krystiankaniowski.performance.ui.components.PerformanceEmptyScreen
 import pl.krystiankaniowski.performance.ui.components.PerformanceLoadingScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 
@@ -64,6 +65,7 @@ fun StatsScreen(
         Box(modifier = Modifier.padding(it)) {
             when (val state = viewModel.state.collectAsState().value) {
                 StatsViewModel.State.Loading -> PerformanceLoadingScreen()
+                StatsViewModel.State.Empty -> PerformanceEmptyScreen(stringResource(R.string.stats_empty_title))
                 is StatsViewModel.State.Loaded -> StatsScreenContent(
                     state = state,
                     onClick = viewModel::onItemClick,
