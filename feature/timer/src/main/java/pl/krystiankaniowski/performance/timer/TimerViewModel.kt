@@ -3,7 +3,9 @@ package pl.krystiankaniowski.performance.timer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.domain.localization.time.TimerFormatter
@@ -30,21 +32,25 @@ class TimerViewModel @Inject constructor(
             counter = timerFormatter.format(seconds),
             isTimerActive = false,
             button = State.Button.Start,
+            tag = State.ViewTag("Unknown"),
         ),
     )
     val state: StateFlow<State> = _state
+
+    private val _effects: MutableSharedFlow<Effect> = MutableSharedFlow()
+    val effect: SharedFlow<Effect> = _effects
 
     init {
         viewModelScope.launch {
             timer.state.collect { timerState ->
                 _state.value = when (timerState) {
-                    PerformanceTimer.State.NotStarted -> State(
+                    PerformanceTimer.State.NotStarted -> _state.value.copy(
                         counter = timerFormatter.format(seconds),
                         isTimerActive = false,
                         button = State.Button.Start,
                     )
 
-                    is PerformanceTimer.State.Pending -> State(
+                    is PerformanceTimer.State.Pending -> _state.value.copy(
                         counter = timerFormatter.format(timerState.leftSeconds),
                         isTimerActive = true,
                         button = if (getCancelThresholdUseCase.fits(timerState)) {
@@ -62,12 +68,24 @@ class TimerViewModel @Inject constructor(
         Event.Start -> timer.start(seconds)
         Event.Stop -> timer.stop()
         Event.Cancel -> timer.stop()
+        Event.OnTagClick -> onTagClick()
+        is Event.OnTagChanged -> onTagChanged(event.tag)
+    }
+
+    private fun onTagClick() = viewModelScope.launch {
+        val tags = emptyList<State.ViewTag>() // TODO: Load
+        _effects.emit(Effect.OpenTagSelector(tags = tags))
+    }
+
+    private fun onTagChanged(tag: State.ViewTag) {
+        _state.value = _state.value.copy(tag = tag)
     }
 
     data class State(
         val counter: String,
         val isTimerActive: Boolean,
         val button: Button,
+        val tag: ViewTag,
     ) {
 
         sealed interface Button {
@@ -75,13 +93,21 @@ class TimerViewModel @Inject constructor(
             object Stop : Button
             data class Cancel(val secondsLeft: Seconds) : Button
         }
+
+        data class ViewTag(
+            val name: String,
+        )
     }
 
     sealed class Event {
         object Start : Event()
         object Stop : Event()
         object Cancel : Event()
+        object OnTagClick : Event()
+        data class OnTagChanged(val tag: State.ViewTag) : Event()
     }
 
-    sealed class Effect
+    sealed interface Effect {
+        data class OpenTagSelector(val tags: List<State.ViewTag>) : Effect
+    }
 }

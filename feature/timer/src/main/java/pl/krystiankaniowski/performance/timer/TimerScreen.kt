@@ -17,6 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -65,7 +66,7 @@ fun TimerScreen(
 }
 
 @Composable
-fun TimerScreenContent(
+private fun TimerScreenContent(
     state: TimerViewModel.State,
     onEvent: (TimerViewModel.Event) -> Unit,
 ) {
@@ -89,22 +90,40 @@ fun TimerScreenContent(
                 content = { Text(stringResource(R.string.timer_button_cancel, state.button.secondsLeft)) },
                 onClick = { onEvent(TimerViewModel.Event.Cancel) },
             )
+
             TimerViewModel.State.Button.Start -> Button(
                 content = { Text(stringResource(R.string.timer_button_start)) },
                 onClick = { onEvent(TimerViewModel.Event.Start) },
             )
+
             TimerViewModel.State.Button.Stop -> Button(
                 content = { Text(stringResource(R.string.timer_button_stop)) },
                 onClick = { onEvent(TimerViewModel.Event.Stop) },
             )
         }
+        Spacer(modifier = Modifier.height(32.dp))
+        Tag(
+            name = "Undefined",
+            onClick = { onEvent(TimerViewModel.Event.OnTagClick) },
+        )
     }
+}
+
+@Composable
+private fun Tag(
+    name: String,
+    onClick: () -> Unit,
+) {
+    OutlinedButton(
+        content = { Text(name) },
+        onClick = onClick,
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun TimerScreenContentPreview_Start() {
+private fun TimerScreenContentPreview_Start() {
     PerformanceTheme {
         Scaffold { paddingValues ->
             Box(modifier = Modifier.padding(paddingValues)) {
@@ -124,7 +143,7 @@ fun TimerScreenContentPreview_Start() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun TimerScreenContentPreview_Stop() {
+private fun TimerScreenContentPreview_Stop() {
     PerformanceTheme {
         Scaffold { paddingValues ->
             Box(modifier = Modifier.padding(paddingValues)) {
@@ -144,7 +163,7 @@ fun TimerScreenContentPreview_Stop() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun TimerScreenContentPreview_Cancel() {
+private fun TimerScreenContentPreview_Cancel() {
     PerformanceTheme {
         Scaffold { paddingValues ->
             Box(modifier = Modifier.padding(paddingValues)) {
