@@ -18,7 +18,7 @@ class SoundTimerObserverTest {
     private val isSoundEnabledUseCase: IsSoundEnabledUseCase = mockk()
 
     @Test
-    fun `WHEN sounds is enabled THEN play sound on timer start`() = runTest {
+    fun `WHEN sound is enabled THEN play sound on timer start`() = runTest {
         val sut = createSut(isSoundEnabled = true)
 
         sut.onStart()
@@ -28,7 +28,7 @@ class SoundTimerObserverTest {
 
     @ParameterizedTest
     @ValueSource(booleans = [true, false])
-    fun `WHEN sounds is enabled THEN play sound on timer end`(isInterrupted: Boolean) = runTest {
+    fun `WHEN sound is enabled THEN play sound on timer end`(isInterrupted: Boolean) = runTest {
         val sut = createSut(isSoundEnabled = true)
 
         sut.onStop(isInterrupted = isInterrupted)
@@ -38,7 +38,7 @@ class SoundTimerObserverTest {
 
     @ParameterizedTest
     @ValueSource(booleans = [true, false])
-    fun `WHEN sounds is not enabled THEN do not play sound on timer start or timer end`(isInterrupted: Boolean) = runTest {
+    fun `WHEN sound is not enabled THEN do not play sound on timer start or timer end`(isInterrupted: Boolean) = runTest {
         val sut = createSut(isSoundEnabled = false)
 
         sut.onStart()
