@@ -46,5 +46,6 @@ dependencies {
     implementation(projects.feature.notifications)
     implementation(projects.feature.timer)
     implementation(projects.feature.settings)
+    implementation(projects.feature.sounds)
     implementation(projects.feature.stats)
 }
