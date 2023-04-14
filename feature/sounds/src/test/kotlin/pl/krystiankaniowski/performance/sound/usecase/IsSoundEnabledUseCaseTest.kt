@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 import pl.krystiankaniowski.performance.domain.repository.AppSettingsRepository
 import pl.krystiankaniowski.performance.sound.PreferencesKeys
 
-class IsSoundEnabledUseCaseTest{
+class IsSoundEnabledUseCaseTest {
 
     private val appSettingsRepository: AppSettingsRepository = mockk()
 
