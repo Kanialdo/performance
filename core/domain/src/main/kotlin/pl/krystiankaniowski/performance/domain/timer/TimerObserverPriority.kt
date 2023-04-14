@@ -10,5 +10,6 @@ object TimerObserverPriority {
 
     val STATISTICS = autoPriority
     val FOREGROUND_NOTIFICATION = autoPriority
+    val VIBRATION = autoPriority
     val DO_NOT_DISTURB = autoPriority
 }
