@@ -1,5 +1,4 @@
 import io.gitlab.arturbosch.detekt.Detekt
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `kotlin-dsl`
@@ -38,7 +37,7 @@ subprojects {
 
     tasks {
         withType<Detekt> {
-            this.jvmTarget = Versions.javaVersion.toString()
+            this.jvmTarget = Versions.java.toString()
             reports {
                 html.required.set(true)
             }
