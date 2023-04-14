@@ -7,6 +7,10 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.the
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
+object Versions {
+    val java = JavaVersion.VERSION_17
+}
+
 internal val Project.libs
     get() = the<LibrariesForLibs>()
 
@@ -20,13 +24,11 @@ internal fun CommonExtension<*, *, *, *>.configureKotlinAndroid() {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = Versions.java
+        targetCompatibility = Versions.java
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-
         freeCompilerArgs = freeCompilerArgs + listOf(
             "-opt-in=kotlin.RequiresOptIn",
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
