@@ -48,4 +48,5 @@ dependencies {
     implementation(projects.feature.settings)
     implementation(projects.feature.sounds)
     implementation(projects.feature.stats)
+    implementation(projects.feature.vibrations)
 }
