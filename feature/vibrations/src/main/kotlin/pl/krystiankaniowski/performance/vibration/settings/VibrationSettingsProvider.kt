@@ -8,12 +8,14 @@ import pl.krystiankaniowski.performance.domain.settings.SettingsItem
 import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider
 import pl.krystiankaniowski.performance.vibration.usecase.IsVibrationEnabledUseCase
+import pl.krystiankaniowski.performance.vibration.usecase.IsVibratorAvailableUseCase
 import pl.krystiankaniowski.performance.vibration.usecase.SetVibrationEnabledUseCase
 import pl.krystiankaniowski.performance.vibrations.R
 import javax.inject.Inject
 
 class VibrationSettingsProvider @Inject constructor(
     private val stringsProvider: StringsProvider,
+    private val isVibratorAvailableUseCase: IsVibratorAvailableUseCase,
     private val isVibrationEnabledUseCase: IsVibrationEnabledUseCase,
     private val setVibrationEnabledUseCase: SetVibrationEnabledUseCase,
 ) : SettingsItemsProvider {
@@ -22,7 +24,9 @@ class VibrationSettingsProvider @Inject constructor(
     override val items: MutableStateFlow<List<SettingsItem>> = MutableStateFlow(emptyList())
 
     init {
-        emitItems()
+        if (isVibratorAvailableUseCase()) {
+            emitItems()
+        }
     }
 
     private fun emitItems() {
@@ -36,7 +40,7 @@ class VibrationSettingsProvider @Inject constructor(
     }
 
     private suspend fun buildIsVibrationEnabled() = SettingsItem.Switch(
-        order = SettingsItems.Order.SOUND_ENABLED,
+        order = SettingsItems.Order.VIBRATION_ENABLED,
         category = SettingsItems.Category.NOTIFICATIONS,
         title = stringsProvider.getString(R.string.setting_item_vibration_enabled_title),
         description = stringsProvider.getString(R.string.setting_item_vibration_enabled_description),

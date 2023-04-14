@@ -10,7 +10,7 @@ class VibrationTimerObserver @Inject constructor(
     private val vibrateUseCase: VibrateUseCase,
 ) : TimerObserver {
 
-    override val priority: Int = TimerObserverPriority.DO_NOT_DISTURB
+    override val priority: Int = TimerObserverPriority.VIBRATION
 
     override suspend fun onStart() {
         if (isVibrationEnabledUseCase()) {

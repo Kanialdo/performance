@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import pl.krystiankaniowski.performance.vibration.usecase.IsVibrationEnabledUseCase
+import pl.krystiankaniowski.performance.vibration.usecase.VibrateUseCase
 
 class VibrationTimerObserverTest {
 
@@ -17,7 +18,7 @@ class VibrationTimerObserverTest {
     private val isVibrationEnabledUseCase: IsVibrationEnabledUseCase = mockk()
 
     @Test
-    fun `WHEN sound is enabled THEN play sound on timer start`() = runTest {
+    fun `WHEN vibration is enabled THEN vibrate on timer start`() = runTest {
         val sut = createSut(isSoundEnabled = true)
 
         sut.onStart()
@@ -27,7 +28,7 @@ class VibrationTimerObserverTest {
 
     @ParameterizedTest
     @ValueSource(booleans = [true, false])
-    fun `WHEN sound is enabled THEN play sound on timer end`(isInterrupted: Boolean) = runTest {
+    fun `WHEN vibration is enabled THEN vibrate on timer end`(isInterrupted: Boolean) = runTest {
         val sut = createSut(isSoundEnabled = true)
 
         sut.onStop(isInterrupted = isInterrupted)
@@ -37,7 +38,7 @@ class VibrationTimerObserverTest {
 
     @ParameterizedTest
     @ValueSource(booleans = [true, false])
-    fun `WHEN sound is not enabled THEN do not play sound on timer start or timer end`(isInterrupted: Boolean) = runTest {
+    fun `WHEN vibration is not enabled THEN do not vibrate on timer start or timer end`(isInterrupted: Boolean) = runTest {
         val sut = createSut(isSoundEnabled = false)
 
         sut.onStart()
