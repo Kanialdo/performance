@@ -20,7 +20,7 @@ class SoundSettingsProviderTest {
     private val setSoundEnabledUseCase: SetSoundEnabledUseCase = mockk()
 
     @Test
-    fun `WHEN sut is initialized THEN proper state is emitted`() = runTest {
+    fun `WHEN sut is initialized THEN proper list of options is emitted`() = runTest {
         coEvery { stringsProvider.getString(any()) }.returns("")
         coEvery { isSoundEnabledUseCase.invoke() }.returns(true)
 

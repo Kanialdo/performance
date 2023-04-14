@@ -12,7 +12,7 @@ class PlayNotificationSoundUseCase @Inject constructor(
 
     operator fun invoke() {
         val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val mp = MediaPlayer.create(context, alarmSound)
-        mp.start()
+        val mediaPlayer = MediaPlayer.create(context, alarmSound)
+        mediaPlayer.start()
     }
 }
