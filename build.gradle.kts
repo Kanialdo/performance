@@ -1,8 +1,8 @@
 import io.gitlab.arturbosch.detekt.Detekt
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `kotlin-dsl`
+    id("performance.root")
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.detekt)
@@ -10,12 +10,6 @@ plugins {
     alias(libs.plugins.junit5) apply false
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.android) apply false
-}
-
-allprojects {
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
-    }
 }
 
 subprojects {
@@ -43,7 +37,7 @@ subprojects {
 
     tasks {
         withType<Detekt> {
-            this.jvmTarget = JavaVersion.VERSION_11.toString()
+            this.jvmTarget = Versions.java.toString()
             reports {
                 html.required.set(true)
             }
