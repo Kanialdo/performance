@@ -7,7 +7,7 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.the
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
-object Versions {
+internal object Versions {
     val java = JavaVersion.VERSION_17
 }
 

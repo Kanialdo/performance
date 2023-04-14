@@ -9,6 +9,7 @@ java {
 
 dependencies {
     implementation(libs.android.gradlePlugin)
+    implementation(libs.detekt.gradlePlugin)
     implementation(libs.hilt.gradlePlugin)
     implementation(libs.junit5.gradlePlugin)
     implementation(libs.kotlin.gradlePlugin)
