@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,6 +31,7 @@ import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 @Composable
 fun StatsScreen(
     viewModel: StatsViewModel = hiltViewModel(),
+    openAddItemScreen: () -> Unit,
     openDetailsScreen: (Long) -> Unit,
     navigateUp: () -> Unit,
 ) {
@@ -39,6 +40,7 @@ fun StatsScreen(
         viewModel.effects.collect {
             when (it) {
                 is StatsViewModel.Effect.OpenDetails -> openDetailsScreen(it.id)
+                StatsViewModel.Effect.OpenAddItem -> openAddItemScreen()
             }
         }
     }
@@ -55,8 +57,8 @@ fun StatsScreen(
                 },
                 actions = {
                     IconButton(
-                        content = { Icon(Icons.Default.Refresh, null) },
-                        onClick = { viewModel.onEvent(StatsViewModel.Event.Refresh) },
+                        content = { Icon(Icons.Default.Add, null) },
+                        onClick = { viewModel.onEvent(StatsViewModel.Event.OnAddItemClick) },
                     )
                 },
             )

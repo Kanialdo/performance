@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.addhistory.AddDetailsScreen
 import pl.krystiankaniowski.performance.historydetails.HistoryDetailsArgs
 import pl.krystiankaniowski.performance.historydetails.HistoryDetailsScreen
 import pl.krystiankaniowski.performance.navigation.AndroidNavigator
@@ -64,7 +65,13 @@ class MainActivity : ComponentActivity() {
                     composable("stats") {
                         StatsScreen(
                             navigateUp = navController::navigateUp,
+                            openAddItemScreen = { navController.navigate("details-add") },
                             openDetailsScreen = { id -> navController.navigate("details/$id") },
+                        )
+                    }
+                    composable(route = "details-add}") {
+                        AddDetailsScreen(
+                            navigateUp = navController::navigateUp,
                         )
                     }
                     composable(

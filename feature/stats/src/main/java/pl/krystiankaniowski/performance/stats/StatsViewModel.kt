@@ -29,17 +29,14 @@ class StatsViewModel @Inject constructor(
     private val _effects: MutableSharedFlow<Effect> = MutableSharedFlow()
     val effects: SharedFlow<Effect> = _effects
 
-    fun onEvent(event: Event) = when (event) {
-        Event.Refresh -> loadData()
+    fun onEvent(event: Event) = viewModelScope.launch {
+        when (event) {
+            Event.OnAddItemClick -> _effects.emit(Effect.OpenAddItem)
+        }
     }
 
     init {
-        loadData()
-    }
-
-    private fun loadData() {
-        reloadJob?.cancel()
-        reloadJob = viewModelScope.launch {
+        viewModelScope.launch {
             getFocusListUseCase().collect { items ->
                 _state.value = when {
                     items.isEmpty() -> State.Empty
@@ -85,10 +82,11 @@ class StatsViewModel @Inject constructor(
     }
 
     sealed interface Event {
-        object Refresh : Event
+        object OnAddItemClick : Event
     }
 
     sealed interface Effect {
+        object OpenAddItem : Effect
         data class OpenDetails(val id: Long) : Effect
     }
 }
