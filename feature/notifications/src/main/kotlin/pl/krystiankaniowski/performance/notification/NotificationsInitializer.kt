@@ -3,7 +3,6 @@ package pl.krystiankaniowski.performance.notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.krystiankaniowski.performance.domain.Initializer
 import pl.krystiankaniowski.performance.notifications.R
