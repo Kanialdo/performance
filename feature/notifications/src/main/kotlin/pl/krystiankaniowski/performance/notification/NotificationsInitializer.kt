@@ -15,17 +15,14 @@ class NotificationsInitializer @Inject constructor(
 ) : Initializer {
 
     override fun init() {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                Constants.CHANNEL_TIMER,
-                context.getString(R.string.channel_name),
-                NotificationManager.IMPORTANCE_MIN,
-            ).apply {
-                description = context.getString(R.string.channel_description)
-                setShowBadge(false)
-            }
-            notificationManager.createNotificationChannel(channel)
+        val channel = NotificationChannel(
+            Constants.CHANNEL_TIMER,
+            context.getString(R.string.channel_name),
+            NotificationManager.IMPORTANCE_MIN,
+        ).apply {
+            description = context.getString(R.string.channel_description)
+            setShowBadge(false)
         }
+        notificationManager.createNotificationChannel(channel)
     }
 }
