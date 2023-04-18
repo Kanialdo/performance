@@ -10,7 +10,7 @@ class SoundTimerObserver @Inject constructor(
     private val playNotificationSoundUseCase: PlayNotificationSoundUseCase,
 ) : TimerObserver {
 
-    override val priority: Int = TimerObserverPriority.DO_NOT_DISTURB
+    override val priority: Int = TimerObserverPriority.SOUND
 
     override suspend fun onStart() {
         if (isSoundEnabledUseCase()) {

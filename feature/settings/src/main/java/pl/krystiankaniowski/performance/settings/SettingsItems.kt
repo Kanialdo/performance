@@ -19,7 +19,7 @@ internal fun SettingsScreenListItem_Header(
     title: String,
 ) {
     ListItem(
-        headlineText = {
+        headlineContent = {
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
@@ -35,8 +35,8 @@ internal fun SettingsScreenListItem_Simple(
 ) {
     ListItem(
         modifier = Modifier.clickable(enabled = item.onClick != null, onClick = { item.onClick?.invoke() }),
-        headlineText = { Text(item.title) },
-        supportingText = item.description?.let { { Text(it) } },
+        headlineContent = { Text(item.title) },
+        supportingContent = item.description?.let { { Text(it) } },
     )
 }
 
@@ -45,8 +45,8 @@ internal fun SettingsScreenListItem_Switch(
     item: SettingsItem.Switch,
 ) {
     ListItem(
-        headlineText = { Text(item.title) },
-        supportingText = item.description?.let { { Text(it) } },
+        headlineContent = { Text(item.title) },
+        supportingContent = item.description?.let { { Text(it) } },
         trailingContent = {
             val interactionSource = remember { MutableInteractionSource() }
             Switch(

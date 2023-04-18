@@ -15,13 +15,12 @@ android {
 
     buildTypes {
         debug {
+            applicationIdSuffix = ".debug"
+            isDebuggable = true
         }
         named("release") {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 }
@@ -48,4 +47,5 @@ dependencies {
     implementation(projects.feature.settings)
     implementation(projects.feature.sounds)
     implementation(projects.feature.stats)
+    implementation(projects.feature.vibrations)
 }

@@ -31,7 +31,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: init
-      - name: Detkt
+      - name: Detekt
         uses: gradle/gradle-build-action@v2
         with:
           arguments: detekt
