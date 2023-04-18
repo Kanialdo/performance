@@ -13,10 +13,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Verify code correctness
+ 
+  detekt:
+    name: Detekt
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -27,19 +27,45 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Gradle init
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: init
       - name: Detekt
         uses: gradle/gradle-build-action@v2
         with:
           arguments: detekt
+ 
+  assemble:
+    name: Verify code correctness
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
       - name: Assemble
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: assembleDebug          
+          arguments: assembleDebug
+  
+  test:
+    name: Junit tests
+    needs: [ assemble ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
       - name: Unit tests
         uses: gradle/gradle-build-action@v2
         with:
           arguments: testDebugUnitTest
+
