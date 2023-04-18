@@ -1,142 +1,113 @@
 package pl.krystiankaniowski.performance.addhistory
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import pl.krystiankaniowski.performance.adddetails.R
+import pl.krystiankaniowski.performance.ui.components.PerformanceFormItems
+import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
+import pl.krystiankaniowski.performance.ui.utils.collectAsEffect
 
 @Composable
 fun AddDetailsScreen(
     viewModel: AddHistoryViewModel = hiltViewModel(),
     navigateUp: () -> Unit,
 ) {
-//
-//    var showConfirmationPopup by rememberSaveable { mutableStateOf(false) }
-//
-//    viewModel.effects.collectAsEffect {
-//        when (it) {
-//            HistoryDetailsViewModel.Effect.ShowConfirmationPopup -> showConfirmationPopup = true
-//            HistoryDetailsViewModel.Effect.CloseScreen -> {
-//                navigateUp()
-//            }
-//        }
-//    }
-//
-//    HistoryDetailsContent(
-//        state = viewModel.state.collectAsState().value,
-//        navigateUp = navigateUp,
-//        onDeleteButtonClicked = viewModel::onDeleteButtonClick,
-//    )
-//
-//    if (showConfirmationPopup) {
-//        AlertDialog(
-//            onDismissRequest = { showConfirmationPopup = false },
-//            title = { Text(text = stringResource(R.string.details_confirmation_dialog_title)) },
-//            text = { Text(stringResource(R.string.details_confirmation_dialog_description)) },
-//            confirmButton = {
-//                TextButton(
-//                    onClick = {
-//                        showConfirmationPopup = false
-//                        viewModel.onDeleteConfirmation()
-//                    },
-//                    content = { Text(stringResource(R.string.details_confirmation_dialog_button_positive_label)) },
-//                )
-//            },
-//            dismissButton = {
-//                TextButton(
-//                    onClick = { showConfirmationPopup = false },
-//                    content = { Text(stringResource(R.string.details_confirmation_dialog_button_negative_label)) },
-//                )
-//            },
-//        )
-//    }
+
+    viewModel.effects.collectAsEffect {
+        when (it) {
+            AddHistoryViewModel.Effect.CloseScreen -> {
+                navigateUp()
+            }
+        }
+    }
+
+    AddDetailsContent(
+        state = viewModel.state.collectAsState().value,
+        navigateUp = navigateUp,
+        onSaveButtonClicked = viewModel::onSaveButtonClick,
+        onStartDateChanged = viewModel::onStartDateChange,
+    )
 }
-//
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//private fun HistoryDetailsContent(
-//    state: HistoryDetailsViewModel.State,
-//    navigateUp: () -> Unit,
-//    onDeleteButtonClicked: () -> Unit,
-//) {
-//    Scaffold(
-//        topBar = {
-//            TopAppBar(
-//                title = { Text(stringResource(R.string.history_details_title)) },
-//                navigationIcon = {
-//                    IconButton(
-//                        onClick = navigateUp,
-//                        content = { Icon(Icons.Default.ArrowBack, null) },
-//                    )
-//                },
-//                actions = {
-//                    when (state) {
-//                        is HistoryDetailsViewModel.State.Loaded -> {
-//                            IconButton(
-//                                content = {
-//                                    Icon(
-//                                        Icons.Outlined.Delete,
-//                                        stringResource(R.string.action_delete),
-//                                    )
-//                                },
-//                                onClick = onDeleteButtonClicked,
-//                            )
-//                        }
-//                        else -> Unit
-//                    }
-//                },
-//            )
-//        },
-//    ) {
-//        Column(modifier = Modifier.padding(it)) {
-//            when (state) {
-//                HistoryDetailsViewModel.State.Loading -> PerformanceLoadingScreen()
-//                is HistoryDetailsViewModel.State.Loaded -> HistoryDetailsContentLoaded(
-//                    state = state,
-//                )
-//            }
-//        }
-//    }
-//}
-//
-//@Composable
-//private fun ColumnScope.HistoryDetailsContentLoaded(state: HistoryDetailsViewModel.State.Loaded) {
-//    ListItem(
-//        headlineText = { Text(stringResource(R.string.details_start_label)) },
-//        supportingText = { Text(state.startDate) },
-//    )
-//    ListItem(
-//        headlineText = { Text(stringResource(R.string.details_end_label)) },
-//        supportingText = { Text(state.endDate) },
-//    )
-//    ListItem(
-//        headlineText = { Text(stringResource(R.string.details_duration_label)) },
-//        supportingText = { Text(state.duration) },
-//    )
-//}
-//
-//@Preview
-//@Composable
-//private fun HistoryDetailsContent_Loading_Preview() {
-//    PerformanceTheme {
-//        HistoryDetailsContent(
-//            state = HistoryDetailsViewModel.State.Loading,
-//            navigateUp = {},
-//            onDeleteButtonClicked = {},
-//        )
-//    }
-//}
-//
-//@Preview
-//@Composable
-//private fun HistoryDetailsContent_Loaded_Preview() {
-//    PerformanceTheme {
-//        HistoryDetailsContent(
-//            state = HistoryDetailsViewModel.State.Loaded(
-//                startDate = "2020-02-02 10:15:20",
-//                endDate = "2020-02-02 10:30:20",
-//                duration = "25 min",
-//            ),
-//            navigateUp = {},
-//            onDeleteButtonClicked = {},
-//        )
-//    }
-//}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AddDetailsContent(
+    state: AddHistoryViewModel.State,
+    navigateUp: () -> Unit,
+    onSaveButtonClicked: () -> Unit,
+    onStartDateChanged: (LocalDate?) -> Unit,
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.add_event_title)) },
+                navigationIcon = {
+                    IconButton(
+                        onClick = navigateUp,
+                        content = { Icon(Icons.Default.ArrowBack, null) },
+                    )
+                },
+                actions = {
+                    IconButton(
+                        content = {
+                            Icon(
+                                Icons.Default.Done,
+                                stringResource(R.string.action_save),
+                            )
+                        },
+                        enabled = state.isSaveButtonEnable,
+                        onClick = onSaveButtonClicked,
+                    )
+                },
+            )
+        },
+    ) {
+        Column(modifier = Modifier.padding(it)) {
+            PerformanceFormItems.DateInput(
+                label = stringResource(R.string.add_event_start_label),
+                date = state.startDate?.date,
+                onDateChange = onStartDateChanged,
+            )
+            ListItem(
+                headlineText = { Text(stringResource(R.string.add_event_end_label)) },
+                supportingText = { Text(state.endDate.toString()) },
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun AddDetailsContent_Preview() {
+    PerformanceTheme {
+        AddDetailsContent(
+            state = AddHistoryViewModel.State(
+                startDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
+                endDate = null,
+            ),
+            navigateUp = {},
+            onSaveButtonClicked = {},
+            onStartDateChanged = {},
+        )
+    }
+}

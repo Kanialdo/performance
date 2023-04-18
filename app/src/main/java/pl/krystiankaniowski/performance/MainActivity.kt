@@ -65,11 +65,11 @@ class MainActivity : ComponentActivity() {
                     composable("stats") {
                         StatsScreen(
                             navigateUp = navController::navigateUp,
-                            openAddItemScreen = { navController.navigate("details-add") },
+                            openAddItemScreen = { navController.navigate("add-event") },
                             openDetailsScreen = { id -> navController.navigate("details/$id") },
                         )
                     }
-                    composable(route = "details-add}") {
+                    composable(route = "add-event") {
                         AddDetailsScreen(
                             navigateUp = navController::navigateUp,
                         )

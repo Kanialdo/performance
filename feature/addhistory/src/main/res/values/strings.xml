@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_save">Save</string>
+    <string name="add_event_start_label">Start date</string>
+    <string name="add_event_end_label">End date</string>
+    <string name="add_event_title">Add new entry</string>
+</resources>

@@ -8,8 +8,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
 import pl.krystiankaniowski.performance.model.Focus
@@ -37,12 +40,11 @@ class AddHistoryViewModel @Inject constructor(
     private val _effects: MutableSharedFlow<Effect> = MutableSharedFlow()
     val effects: SharedFlow<Effect> = _effects
 
-
     // TODO: is dateTime ok? shouldn't be instant?
-    fun onStartDateChange(dateTime: LocalDateTime) = viewModelScope.launch {
+    fun onStartDateChange(dateTime: LocalDate?) = viewModelScope.launch {
         // verify date
         _state.value = state.value.copy(
-            startDate = dateTime,
+            startDate = dateTime?.atTime(LocalTime(hour = 0, minute = 0)),
         )
     }
 
