@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -19,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import pl.krystiankaniowski.performance.adddetails.R
@@ -44,8 +42,7 @@ fun AddDetailsScreen(
     AddDetailsContent(
         state = viewModel.state.collectAsState().value,
         navigateUp = navigateUp,
-        onSaveButtonClicked = viewModel::onSaveButtonClick,
-        onStartDateChanged = viewModel::onStartDateChange,
+        onEvent = viewModel::onEvent,
     )
 }
 
@@ -54,8 +51,7 @@ fun AddDetailsScreen(
 private fun AddDetailsContent(
     state: AddHistoryViewModel.State,
     navigateUp: () -> Unit,
-    onSaveButtonClicked: () -> Unit,
-    onStartDateChanged: (LocalDate?) -> Unit,
+    onEvent: (AddHistoryViewModel.Event) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -76,7 +72,7 @@ private fun AddDetailsContent(
                             )
                         },
                         enabled = state.isSaveButtonEnable,
-                        onClick = onSaveButtonClicked,
+                        onClick = { onEvent(AddHistoryViewModel.Event.OnSaveClick) },
                     )
                 },
             )
@@ -85,12 +81,13 @@ private fun AddDetailsContent(
         Column(modifier = Modifier.padding(it)) {
             PerformanceFormItems.DateInput(
                 label = stringResource(R.string.add_event_start_label),
-                date = state.startDate?.date,
-                onDateChange = onStartDateChanged,
+                date = state.startDate,
+                onDateChange = { date -> onEvent(AddHistoryViewModel.Event.StartDateChange(date)) },
             )
-            ListItem(
-                headlineText = { Text(stringResource(R.string.add_event_end_label)) },
-                supportingText = { Text(state.endDate.toString()) },
+            PerformanceFormItems.DateInput(
+                label = stringResource(R.string.add_event_end_label),
+                date = state.endDate,
+                onDateChange = { date -> onEvent(AddHistoryViewModel.Event.EndDateChange(date)) },
             )
         }
     }
@@ -102,12 +99,11 @@ private fun AddDetailsContent_Preview() {
     PerformanceTheme {
         AddDetailsContent(
             state = AddHistoryViewModel.State(
-                startDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
+                startDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
                 endDate = null,
             ),
             navigateUp = {},
-            onSaveButtonClicked = {},
-            onStartDateChanged = {},
+            onEvent = {},
         )
     }
 }

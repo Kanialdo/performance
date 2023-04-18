@@ -12,7 +12,6 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
 import pl.krystiankaniowski.performance.model.Focus
@@ -24,8 +23,10 @@ class AddHistoryViewModel @Inject constructor(
 ) : ViewModel() {
 
     data class State(
-        val startDate: LocalDateTime? = null,
-        val endDate: LocalDateTime? = null,
+        val startDate: LocalDate? = null,
+        val startTime: LocalTime? = null,
+        val endDate: LocalDate? = null,
+        val endTime: LocalTime? = null,
     ) {
         val isSaveButtonEnable: Boolean = startDate != null && endDate != null && startDate < endDate
     }
@@ -34,33 +35,66 @@ class AddHistoryViewModel @Inject constructor(
         object CloseScreen : Effect
     }
 
+    sealed interface Event {
+        data class StartDateChange(val startDate: LocalDate?) : Event
+        data class StartTimeChange(val startTime: LocalTime?) : Event
+        data class EndDateChange(val endDate: LocalDate?) : Event
+        data class EndTimeChange(val endTime: LocalTime?) : Event
+        object OnSaveClick : Event
+    }
+
     private val _state: MutableStateFlow<State> = MutableStateFlow(State())
     val state: StateFlow<State> = _state
 
     private val _effects: MutableSharedFlow<Effect> = MutableSharedFlow()
     val effects: SharedFlow<Effect> = _effects
 
-    // TODO: is dateTime ok? shouldn't be instant?
-    fun onStartDateChange(dateTime: LocalDate?) = viewModelScope.launch {
+    fun onEvent(event: Event) = when (event) {
+        is Event.EndDateChange -> onStartDateChange(event.endDate)
+        is Event.EndTimeChange -> TODO()
+        Event.OnSaveClick -> onSaveButtonClick()
+        is Event.StartDateChange -> onStartDateChange(event.startDate)
+        is Event.StartTimeChange -> TODO()
+    }
+
+    private fun onStartDateChange(date: LocalDate?) = viewModelScope.launch {
         // verify date
         _state.value = state.value.copy(
-            startDate = dateTime?.atTime(LocalTime(hour = 0, minute = 0)),
+            startDate = date,
         )
     }
 
-    fun onEndDateChange(dateTime: LocalDateTime) = viewModelScope.launch {
+    private fun onStartTimeChange(time: LocalTime?) = viewModelScope.launch {
         // verify date
         _state.value = state.value.copy(
-            endDate = dateTime,
+            startTime = time,
         )
     }
 
-    fun onSaveButtonClick() = viewModelScope.launch {
+    private fun onEndDateChange(date: LocalDate?) = viewModelScope.launch {
+        // verify date
+        _state.value = state.value.copy(
+            endDate = date,
+        )
+    }
+
+    private fun onEndTimeChange(time: LocalTime?) = viewModelScope.launch {
+        // verify date
+        _state.value = state.value.copy(
+            endTime = time,
+        )
+    }
+
+    private fun onSaveButtonClick() = viewModelScope.launch {
         with(state.value) {
             check(isSaveButtonEnable)
+            checkNotNull(startDate)
+            checkNotNull(startTime)
+            checkNotNull(endDate)
+            checkNotNull(endTime)
             val focus = Focus(
-                startDate = startDate?.toInstant(TimeZone.currentSystemDefault()) ?: error("startDate is not set"),
-                endDate = endDate?.toInstant(TimeZone.currentSystemDefault()) ?: error("endDate is not set"),
+                startDate = LocalDateTime(startDate, startTime).toInstant(TimeZone.currentSystemDefault()),
+                endDate = LocalDateTime(endDate, endTime).toInstant(TimeZone.currentSystemDefault()),
             )
             repository.add(focus)
             _effects.emit(Effect.CloseScreen)
