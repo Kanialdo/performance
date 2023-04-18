@@ -126,16 +126,16 @@ private fun HistoryDetailsContent(
 @Composable
 private fun ColumnScope.HistoryDetailsContentLoaded(state: HistoryDetailsViewModel.State.Loaded) {
     ListItem(
-        headlineText = { Text(stringResource(R.string.details_start_label)) },
-        supportingText = { Text(state.startDate) },
+        headlineContent = { Text(stringResource(R.string.details_start_label)) },
+        supportingContent = { Text(state.startDate) },
     )
     ListItem(
-        headlineText = { Text(stringResource(R.string.details_end_label)) },
-        supportingText = { Text(state.endDate) },
+        headlineContent = { Text(stringResource(R.string.details_end_label)) },
+        supportingContent = { Text(state.endDate) },
     )
     ListItem(
-        headlineText = { Text(stringResource(R.string.details_duration_label)) },
-        supportingText = { Text(state.duration) },
+        headlineContent = { Text(stringResource(R.string.details_duration_label)) },
+        supportingContent = { Text(state.duration) },
     )
 }
 
