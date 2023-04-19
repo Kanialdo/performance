@@ -8,6 +8,10 @@ plugins {
 android {
     configureKotlinAndroid()
     configureCompose(this)
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
