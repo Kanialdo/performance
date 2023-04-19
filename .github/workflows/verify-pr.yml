@@ -27,8 +27,8 @@ jobs:
           java-version: '17'
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
-      - name: Init gradle
-        run: ./gradlew init
+        with:
+          arguments: init
 
   detekt:
     name: Detekt
@@ -42,10 +42,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
       - name: Detekt
-        run: ./gradlew detekt
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: detekt
  
   assemble:
     name: Assemble
@@ -59,10 +59,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
       - name: Assemble
-        run: ./gradlew assembleDebug
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: assembleDebug
   
   test:
     name: Junit tests
@@ -76,7 +76,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Setup Gradle
+      - name: Junit test
         uses: gradle/gradle-build-action@v2
-      - name: Unit tests
-        run: ./gradlew testDebugUnitTest
+        with:
+          arguments: testDebugUnitTest
