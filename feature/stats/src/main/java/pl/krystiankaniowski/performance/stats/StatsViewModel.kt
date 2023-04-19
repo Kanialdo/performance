@@ -3,7 +3,6 @@ package pl.krystiankaniowski.performance.stats
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -21,25 +20,20 @@ class StatsViewModel @Inject constructor(
     private val durationFormatter: DurationFormatter,
 ) : ViewModel() {
 
-    private var reloadJob: Job? = null
-
     private val _state: MutableStateFlow<State> = MutableStateFlow(State.Loading)
     val state: StateFlow<State> = _state
 
     private val _effects: MutableSharedFlow<Effect> = MutableSharedFlow()
     val effects: SharedFlow<Effect> = _effects
 
-    fun onEvent(event: Event) = when (event) {
-        Event.Refresh -> loadData()
+    fun onEvent(event: Event) = viewModelScope.launch {
+        when (event) {
+            Event.OnAddItemClick -> _effects.emit(Effect.OpenAddItem)
+        }
     }
 
     init {
-        loadData()
-    }
-
-    private fun loadData() {
-        reloadJob?.cancel()
-        reloadJob = viewModelScope.launch {
+        viewModelScope.launch {
             getFocusListUseCase().collect { items ->
                 _state.value = when {
                     items.isEmpty() -> State.Empty
@@ -85,10 +79,11 @@ class StatsViewModel @Inject constructor(
     }
 
     sealed interface Event {
-        object Refresh : Event
+        object OnAddItemClick : Event
     }
 
     sealed interface Effect {
+        object OpenAddItem : Effect
         data class OpenDetails(val id: Long) : Effect
     }
 }

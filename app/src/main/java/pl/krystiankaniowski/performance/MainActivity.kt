@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.addhistory.AddDetailsScreen
 import pl.krystiankaniowski.performance.historydetails.HistoryDetailsArgs
 import pl.krystiankaniowski.performance.historydetails.HistoryDetailsScreen
 import pl.krystiankaniowski.performance.navigation.AndroidNavigator
@@ -33,6 +34,7 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var androidNavigator: AndroidNavigator
 
+    @Suppress("LongMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         androidNavigator.activity = this
@@ -64,7 +66,13 @@ class MainActivity : ComponentActivity() {
                     composable("stats") {
                         StatsScreen(
                             navigateUp = navController::navigateUp,
+                            openAddItemScreen = { navController.navigate("add-event") },
                             openDetailsScreen = { id -> navController.navigate("details/$id") },
+                        )
+                    }
+                    composable(route = "add-event") {
+                        AddDetailsScreen(
+                            navigateUp = navController::navigateUp,
                         )
                     }
                     composable(
