@@ -28,7 +28,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
       - name: Detekt
-        run: ./gradlew detekt
+        run: ./gradlew detekt –no-daemon
  
   assemble:
     name: Assemble
@@ -44,7 +44,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
       - name: Assemble
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug –no-daemon
   
   test:
     name: Junit tests
@@ -61,4 +61,4 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
       - name: Unit tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testDebugUnitTest –no-daemon
