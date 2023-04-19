@@ -1,5 +1,6 @@
 package pl.krystiankaniowski.performance.stats
 
+import app.cash.turbine.test
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -70,12 +71,13 @@ class StatsViewModelTest {
     }
 
     @Test
-    fun `WHEN refresh is requested THEN perform reload`() = runTest {
+    fun `WHEN add item is clicked THEN emit open add item screen event`() = runTest {
         val sut = createSut()
 
-        sut.onEvent(StatsViewModel.Event.Refresh)
-
-        coVerify(atLeast = 2) { getFocusListUseCase.invoke() }
+        sut.effects.test {
+            sut.onEvent(StatsViewModel.Event.OnAddItemClick)
+            Assertions.assertEquals(StatsViewModel.Effect.OpenAddItem, awaitItem())
+        }
     }
 
     private fun createSut() = StatsViewModel(

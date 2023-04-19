@@ -28,7 +28,14 @@ class AddHistoryViewModel @Inject constructor(
         val endDate: LocalDate? = null,
         val endTime: LocalTime? = null,
     ) {
-        val isSaveButtonEnable: Boolean = startDate != null && endDate != null && startDate < endDate
+
+        @Suppress("ComplexCondition")
+        val isSaveButtonEnable: Boolean =
+            if (startDate != null && startTime != null && endDate != null && endTime != null) {
+                LocalDateTime(startDate, startTime) < LocalDateTime(endDate, endTime)
+            } else {
+                false
+            }
     }
 
     sealed interface Effect {
@@ -50,36 +57,32 @@ class AddHistoryViewModel @Inject constructor(
     val effects: SharedFlow<Effect> = _effects
 
     fun onEvent(event: Event) = when (event) {
-        is Event.EndDateChange -> onStartDateChange(event.endDate)
-        is Event.EndTimeChange -> TODO()
-        Event.OnSaveClick -> onSaveButtonClick()
+        is Event.EndDateChange -> onEndDateChange(event.endDate)
+        is Event.EndTimeChange -> onEndTimeChange(event.endTime)
         is Event.StartDateChange -> onStartDateChange(event.startDate)
-        is Event.StartTimeChange -> TODO()
+        is Event.StartTimeChange -> onStartTimeChange(event.startTime)
+        Event.OnSaveClick -> onSaveButtonClick()
     }
 
     private fun onStartDateChange(date: LocalDate?) = viewModelScope.launch {
-        // verify date
         _state.value = state.value.copy(
             startDate = date,
         )
     }
 
     private fun onStartTimeChange(time: LocalTime?) = viewModelScope.launch {
-        // verify date
         _state.value = state.value.copy(
             startTime = time,
         )
     }
 
     private fun onEndDateChange(date: LocalDate?) = viewModelScope.launch {
-        // verify date
         _state.value = state.value.copy(
             endDate = date,
         )
     }
 
     private fun onEndTimeChange(time: LocalTime?) = viewModelScope.launch {
-        // verify date
         _state.value = state.value.copy(
             endTime = time,
         )
@@ -88,13 +91,9 @@ class AddHistoryViewModel @Inject constructor(
     private fun onSaveButtonClick() = viewModelScope.launch {
         with(state.value) {
             check(isSaveButtonEnable)
-            checkNotNull(startDate)
-            checkNotNull(startTime)
-            checkNotNull(endDate)
-            checkNotNull(endTime)
             val focus = Focus(
-                startDate = LocalDateTime(startDate, startTime).toInstant(TimeZone.currentSystemDefault()),
-                endDate = LocalDateTime(endDate, endTime).toInstant(TimeZone.currentSystemDefault()),
+                startDate = LocalDateTime(checkNotNull(startDate), checkNotNull(startTime)).toInstant(TimeZone.currentSystemDefault()),
+                endDate = LocalDateTime(checkNotNull(endDate), checkNotNull(endTime)).toInstant(TimeZone.currentSystemDefault()),
             )
             repository.add(focus)
             _effects.emit(Effect.CloseScreen)

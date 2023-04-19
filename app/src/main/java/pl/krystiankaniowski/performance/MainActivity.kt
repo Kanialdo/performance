@@ -34,6 +34,7 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var androidNavigator: AndroidNavigator
 
+    @Suppress("LongMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         androidNavigator.activity = this

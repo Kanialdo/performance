@@ -4,4 +4,6 @@
     <string name="add_event_start_label">Start date</string>
     <string name="add_event_end_label">End date</string>
     <string name="add_event_title">Add new entry</string>
+    <string name="add_event_start_time_label">Start time</string>
+    <string name="add_event_end_time_label">End time</string>
 </resources>

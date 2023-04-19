@@ -13,6 +13,7 @@ internal fun Project.shared() {
         add("implementation", libs.androidx.navigation.compose)
 
         add("testImplementation", libs.mockk.core)
+        add("testImplementation", libs.turbine)
         add("testImplementation", project(":core:testing"))
 
         add("androidTestImplementation", libs.mockk.android)

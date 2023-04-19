@@ -17,9 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 import pl.krystiankaniowski.performance.adddetails.R
 import pl.krystiankaniowski.performance.ui.components.PerformanceFormItems
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
@@ -84,10 +83,20 @@ private fun AddDetailsContent(
                 date = state.startDate,
                 onDateChange = { date -> onEvent(AddHistoryViewModel.Event.StartDateChange(date)) },
             )
+            PerformanceFormItems.TimeInput(
+                label = stringResource(R.string.add_event_start_time_label),
+                time = state.startTime,
+                onTimeChange = { time -> onEvent(AddHistoryViewModel.Event.StartTimeChange(time)) },
+            )
             PerformanceFormItems.DateInput(
                 label = stringResource(R.string.add_event_end_label),
                 date = state.endDate,
                 onDateChange = { date -> onEvent(AddHistoryViewModel.Event.EndDateChange(date)) },
+            )
+            PerformanceFormItems.TimeInput(
+                label = stringResource(R.string.add_event_end_time_label),
+                time = state.endTime,
+                onTimeChange = { time -> onEvent(AddHistoryViewModel.Event.EndTimeChange(time)) },
             )
         }
     }
@@ -99,7 +108,8 @@ private fun AddDetailsContent_Preview() {
     PerformanceTheme {
         AddDetailsContent(
             state = AddHistoryViewModel.State(
-                startDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
+                startDate = LocalDate(2020, 10, 20),
+                startTime = LocalTime(8, 30),
                 endDate = null,
             ),
             navigateUp = {},

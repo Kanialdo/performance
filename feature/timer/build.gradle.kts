@@ -8,5 +8,4 @@ android {
 
 dependencies {
     implementation(projects.core.ui)
-    testImplementation(libs.turbine)
 }
