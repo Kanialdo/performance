@@ -97,7 +97,7 @@ private fun StatsScreenContent(
 private fun StatsScreenHeader(
     item: StatsViewModel.State.Loaded.Item.Header,
 ) {
-    ListItem(headlineText = { Text(item.date) })
+    ListItem(headlineContent = { Text(item.date) })
 }
 
 @Composable
@@ -107,12 +107,11 @@ private fun StatsScreenItem(
 ) {
     ListItem(
         modifier = Modifier.clickable { onClick(item.id) },
-        headlineText = { Text("Focus") },
+        headlineContent = { Text("Focus") },
         trailingContent = { Text(item.duration) },
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun StatsScreenContentPreview() {

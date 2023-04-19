@@ -3,20 +3,19 @@
   "timezone": "Europe/Warsaw",
   "packageRules": [
     {
+      "groupName": "Kotlin and plugins",
       "matchPackagePrefixes": [
-        "androidx.compose.compiler",
         "com.google.devtools.ksp",
-        "org.jetbrains.kotlin"
+        "androidx.compose.compiler"
       ],
-      "groupName": "Kotlin and plugins"
+      "matchPackagePatterns": [
+        "^org\\.jetbrains\\.kotlin[.:]"
+      ]
     }
   ],
   "extends": [
     "config:base",
     "schedule:daily",
-    ":automergeAll",
-    ":automergeBranch",
-    ":noUnscheduledUpdates",
     ":prConcurrentLimitNone",
     ":prHourlyLimitNone"
   ]

@@ -1,21 +1,21 @@
 [versions]
-androidxComposeCompiler = "1.4.3"
+androidxComposeCompiler = "1.4.5"
 androidGradlePlugin = "8.0.0"
 coroutines = "1.6.4"
 detekt = "1.22.0"
 hilt = "2.45"
 junit5 = "5.9.2"
 junit5GradlePlugin = "1.8.2.1"
-kotlin = "1.8.10"
+kotlin = "1.8.20"
 lifecycle = "2.6.1"
-material3 = "1.1.0-alpha06"
-mockk = "1.13.4"
+material3 = "1.1.0-beta02"
+mockk = "1.13.5"
 protobuf = "3.22.2"
 room = "2.5.1"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version = "1.7.0" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version = "2023.03.00" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version = "2023.04.00" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
@@ -55,7 +55,7 @@ detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gr
 hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 junit5-gradlePlugin = { group = "de.mannodermaus.gradle.plugins", name = "android-junit5", version.ref = "junit5GradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version = "1.8.10-1.0.9" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version = "1.8.20-1.0.10" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
