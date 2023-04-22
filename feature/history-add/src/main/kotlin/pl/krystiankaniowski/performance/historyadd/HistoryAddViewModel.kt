@@ -1,10 +1,10 @@
 package pl.krystiankaniowski.performance.historyadd
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -13,6 +13,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
 import pl.krystiankaniowski.performance.model.Focus
 import javax.inject.Inject
@@ -20,22 +21,29 @@ import javax.inject.Inject
 @HiltViewModel
 class HistoryAddViewModel @Inject constructor(
     private val repository: FocusRepository,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    data class State(
-        val startDate: LocalDate? = null,
-        val startTime: LocalTime? = null,
-        val endDate: LocalDate? = null,
-        val endTime: LocalTime? = null,
-    ) {
+    private val id: Long? = savedStateHandle[HistoryAddEditArgs.id]
 
-        @Suppress("ComplexCondition")
-        val isSaveButtonEnable: Boolean =
-            if (startDate != null && startTime != null && endDate != null && endTime != null) {
-                LocalDateTime(startDate, startTime) < LocalDateTime(endDate, endTime)
-            } else {
-                false
-            }
+    sealed interface State {
+        object Loading : State
+
+        data class Loaded(
+            val startDate: LocalDate? = null,
+            val startTime: LocalTime? = null,
+            val endDate: LocalDate? = null,
+            val endTime: LocalTime? = null,
+        ) : State {
+
+            @Suppress("ComplexCondition")
+            val isSaveButtonEnable: Boolean =
+                if (startDate != null && startTime != null && endDate != null && endTime != null) {
+                    LocalDateTime(startDate, startTime) < LocalDateTime(endDate, endTime)
+                } else {
+                    false
+                }
+        }
     }
 
     sealed interface Effect {
@@ -50,11 +58,27 @@ class HistoryAddViewModel @Inject constructor(
         object OnSaveClick : Event
     }
 
-    private val _state: MutableStateFlow<State> = MutableStateFlow(State())
-    val state: StateFlow<State> = _state
+    private val _state = ViewModelState(viewModelScope, if (id != null) State.Loading else State.Loaded())
+    val state: StateFlow<State> = _state.state
 
     private val _effects: MutableSharedFlow<Effect> = MutableSharedFlow()
     val effects: SharedFlow<Effect> = _effects
+
+    init {
+        if (id != null) {
+            viewModelScope.launch {
+                val entry = repository.get(id)
+                _state.update {
+                    State.Loaded(
+                        startDate = entry.startDate.toLocalDateTime(TimeZone.currentSystemDefault()).date,
+                        startTime = entry.startDate.toLocalDateTime(TimeZone.currentSystemDefault()).time,
+                        endDate = entry.endDate.toLocalDateTime(TimeZone.currentSystemDefault()).date,
+                        endTime = entry.endDate.toLocalDateTime(TimeZone.currentSystemDefault()).time,
+                    )
+                }
+            }
+        }
+    }
 
     fun onEvent(event: Event) = when (event) {
         is Event.EndDateChange -> onEndDateChange(event.endDate)
@@ -65,31 +89,31 @@ class HistoryAddViewModel @Inject constructor(
     }
 
     private fun onStartDateChange(date: LocalDate?) = viewModelScope.launch {
-        _state.value = state.value.copy(
-            startDate = date,
-        )
+        _state.updateIf<State.Loaded> {
+            copy(startDate = date)
+        }
     }
 
     private fun onStartTimeChange(time: LocalTime?) = viewModelScope.launch {
-        _state.value = state.value.copy(
-            startTime = time,
-        )
+        _state.updateIf<State.Loaded> {
+            copy(startTime = time)
+        }
     }
 
     private fun onEndDateChange(date: LocalDate?) = viewModelScope.launch {
-        _state.value = state.value.copy(
-            endDate = date,
-        )
+        _state.updateIf<State.Loaded> {
+            copy(endDate = date)
+        }
     }
 
     private fun onEndTimeChange(time: LocalTime?) = viewModelScope.launch {
-        _state.value = state.value.copy(
-            endTime = time,
-        )
+        _state.updateIf<State.Loaded> {
+            copy(endTime = time)
+        }
     }
 
     private fun onSaveButtonClick() = viewModelScope.launch {
-        with(state.value) {
+        _state.runIf<State.Loaded> {
             check(isSaveButtonEnable)
             val focus = Focus(
                 startDate = LocalDateTime(checkNotNull(startDate), checkNotNull(startTime)).toInstant(TimeZone.currentSystemDefault()),
