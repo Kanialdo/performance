@@ -12,14 +12,12 @@ class ViewModelState<T>(private val scope: CoroutineScope, initState: T) {
 
     fun asStateFlow(): StateFlow<T> = _state
 
-    fun updateNow(transform: T.() -> T) = (_state.value as? T)?.let {
-        _state.value = transform(it)
+    fun updateNow(value: T) {
+        _state.value = value
     }
 
     fun update(transform: suspend T.() -> T) = scope.launch {
-        (_state.value as? T)?.let {
-            _state.value = transform(it)
-        }
+        _state.value = transform(_state.value)
     }
 
     fun <E : T> updateIf(transform: suspend E.() -> T) = scope.launch {
@@ -29,9 +27,7 @@ class ViewModelState<T>(private val scope: CoroutineScope, initState: T) {
     }
 
     fun run(command: suspend T.() -> Unit) = scope.launch {
-        (_state.value as? T)?.let {
-            command(it)
-        }
+        command(_state.value)
     }
 
     fun <E : T> runIf(command: suspend E.() -> Unit) = scope.launch {

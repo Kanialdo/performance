@@ -38,14 +38,13 @@ class TimerViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             timer.state.collect { timerState ->
-                _state.update {
+                _state.updateNow(
                     when (timerState) {
                         PerformanceTimer.State.NotStarted -> State(
                             counter = timerFormatter.format(seconds),
                             isTimerActive = false,
                             button = State.Button.Start,
                         )
-
                         is PerformanceTimer.State.Pending -> State(
                             counter = timerFormatter.format(timerState.leftSeconds),
                             isTimerActive = true,
@@ -55,8 +54,8 @@ class TimerViewModel @Inject constructor(
                                 State.Button.Stop
                             },
                         )
-                    }
-                }
+                    },
+                )
             }
         }
     }

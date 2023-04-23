@@ -32,9 +32,7 @@ class SettingsViewModel @Inject constructor(
                     }
                 }
                 map.values.forEach { it.sortBy { it.order } }
-                _state.update {
-                    State.Loaded(items = map)
-                }
+                _state.updateNow(State.Loaded(items = map))
             }
         }
     }

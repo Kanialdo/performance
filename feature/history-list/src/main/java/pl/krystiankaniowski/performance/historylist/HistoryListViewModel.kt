@@ -35,7 +35,7 @@ class HistoryListViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getFocusListUseCase().collect { items ->
-                _state.update {
+                _state.updateNow(
                     when {
                         items.isEmpty() -> State.Empty
                         else -> State.Loaded(
@@ -52,8 +52,8 @@ class HistoryListViewModel @Inject constructor(
                                 .toMap()
                                 .toSortedMap { a, b -> b.date.compareTo(a.date) },
                         )
-                    }
-                }
+                    },
+                )
             }
         }
     }
