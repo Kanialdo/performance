@@ -3,9 +3,9 @@ package pl.krystiankaniowski.performance.timer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.architecture.ViewModelState
 import pl.krystiankaniowski.performance.domain.localization.time.TimerFormatter
 import pl.krystiankaniowski.performance.domain.timer.GetCancelThresholdUseCase
 import pl.krystiankaniowski.performance.domain.timer.PerformanceTimer
@@ -25,34 +25,37 @@ class TimerViewModel @Inject constructor(
 
     private val seconds = 25.minutes.inWholeSeconds.toSeconds()
 
-    private val _state: MutableStateFlow<State> = MutableStateFlow(
-        State(
+    private val _state: ViewModelState<State> = ViewModelState(
+        scope = viewModelScope,
+        initState = State(
             counter = timerFormatter.format(seconds),
             isTimerActive = false,
             button = State.Button.Start,
         ),
     )
-    val state: StateFlow<State> = _state
+    val state: StateFlow<State> = _state.asStateFlow()
 
     init {
         viewModelScope.launch {
             timer.state.collect { timerState ->
-                _state.value = when (timerState) {
-                    PerformanceTimer.State.NotStarted -> State(
-                        counter = timerFormatter.format(seconds),
-                        isTimerActive = false,
-                        button = State.Button.Start,
-                    )
+                _state.update {
+                    when (timerState) {
+                        PerformanceTimer.State.NotStarted -> State(
+                            counter = timerFormatter.format(seconds),
+                            isTimerActive = false,
+                            button = State.Button.Start,
+                        )
 
-                    is PerformanceTimer.State.Pending -> State(
-                        counter = timerFormatter.format(timerState.leftSeconds),
-                        isTimerActive = true,
-                        button = if (getCancelThresholdUseCase.fits(timerState)) {
-                            State.Button.Cancel(getCancelThresholdUseCase.left(timerState))
-                        } else {
-                            State.Button.Stop
-                        },
-                    )
+                        is PerformanceTimer.State.Pending -> State(
+                            counter = timerFormatter.format(timerState.leftSeconds),
+                            isTimerActive = true,
+                            button = if (getCancelThresholdUseCase.fits(timerState)) {
+                                State.Button.Cancel(getCancelThresholdUseCase.left(timerState))
+                            } else {
+                                State.Button.Stop
+                            },
+                        )
+                    }
                 }
             }
         }

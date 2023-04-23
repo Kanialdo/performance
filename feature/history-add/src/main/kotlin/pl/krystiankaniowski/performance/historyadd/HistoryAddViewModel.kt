@@ -4,15 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import pl.krystiankaniowski.performance.architecture.ViewModelState
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
 import pl.krystiankaniowski.performance.model.Focus
 import javax.inject.Inject
@@ -50,8 +49,8 @@ class HistoryAddViewModel @Inject constructor(
         object OnSaveClick : Event
     }
 
-    private val _state: MutableStateFlow<State> = MutableStateFlow(State())
-    val state: StateFlow<State> = _state
+    private val _state: ViewModelState<State> = ViewModelState(scope = viewModelScope, initState = State())
+    val state: StateFlow<State> = _state.asStateFlow()
 
     private val _effects: MutableSharedFlow<Effect> = MutableSharedFlow()
     val effects: SharedFlow<Effect> = _effects
@@ -64,39 +63,29 @@ class HistoryAddViewModel @Inject constructor(
         Event.OnSaveClick -> onSaveButtonClick()
     }
 
-    private fun onStartDateChange(date: LocalDate?) = viewModelScope.launch {
-        _state.value = state.value.copy(
-            startDate = date,
-        )
+    private fun onStartDateChange(date: LocalDate?) = _state.update {
+        copy(startDate = date)
     }
 
-    private fun onStartTimeChange(time: LocalTime?) = viewModelScope.launch {
-        _state.value = state.value.copy(
-            startTime = time,
-        )
+    private fun onStartTimeChange(time: LocalTime?) = _state.update {
+        copy(startTime = time)
     }
 
-    private fun onEndDateChange(date: LocalDate?) = viewModelScope.launch {
-        _state.value = state.value.copy(
-            endDate = date,
-        )
+    private fun onEndDateChange(date: LocalDate?) = _state.update {
+        copy(endDate = date)
     }
 
-    private fun onEndTimeChange(time: LocalTime?) = viewModelScope.launch {
-        _state.value = state.value.copy(
-            endTime = time,
-        )
+    private fun onEndTimeChange(time: LocalTime?) = _state.update {
+        copy(endTime = time)
     }
 
-    private fun onSaveButtonClick() = viewModelScope.launch {
-        with(state.value) {
-            check(isSaveButtonEnable)
-            val focus = Focus(
-                startDate = LocalDateTime(checkNotNull(startDate), checkNotNull(startTime)).toInstant(TimeZone.currentSystemDefault()),
-                endDate = LocalDateTime(checkNotNull(endDate), checkNotNull(endTime)).toInstant(TimeZone.currentSystemDefault()),
-            )
-            repository.add(focus)
-            _effects.emit(Effect.CloseScreen)
-        }
+    private fun onSaveButtonClick() = _state.run {
+        check(isSaveButtonEnable)
+        val focus = Focus(
+            startDate = LocalDateTime(checkNotNull(startDate), checkNotNull(startTime)).toInstant(TimeZone.currentSystemDefault()),
+            endDate = LocalDateTime(checkNotNull(endDate), checkNotNull(endTime)).toInstant(TimeZone.currentSystemDefault()),
+        )
+        repository.add(focus)
+        _effects.emit(Effect.CloseScreen)
     }
 }
