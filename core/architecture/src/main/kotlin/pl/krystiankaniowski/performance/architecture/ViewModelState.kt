@@ -12,7 +12,7 @@ class ViewModelState<T>(private val scope: CoroutineScope, initState: T) {
 
     fun asStateFlow(): StateFlow<T> = _state
 
-    fun updateNow(value: T) {
+    fun update(value: T) {
         _state.value = value
     }
 

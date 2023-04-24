@@ -35,7 +35,7 @@ class HistoryListViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getFocusListUseCase().collect { items ->
-                _state.updateNow(
+                _state.update(
                     when {
                         items.isEmpty() -> State.Empty
                         else -> State.Loaded(
