@@ -2,6 +2,7 @@ package pl.krystiankaniowski.performance.vibration.timer
 
 import pl.krystiankaniowski.performance.domain.timer.TimerObserver
 import pl.krystiankaniowski.performance.domain.timer.TimerObserverPriority
+import pl.krystiankaniowski.performance.model.Tag
 import pl.krystiankaniowski.performance.vibration.usecase.IsVibrationEnabledUseCase
 import pl.krystiankaniowski.performance.vibration.usecase.VibrateUseCase
 import javax.inject.Inject
@@ -12,7 +13,7 @@ class VibrationTimerObserver @Inject constructor(
 
     override val priority: Int = TimerObserverPriority.VIBRATION
 
-    override suspend fun onStart() {
+    override suspend fun onStart(tag: Tag) {
         if (isVibrationEnabledUseCase()) {
             vibrateUseCase()
         }

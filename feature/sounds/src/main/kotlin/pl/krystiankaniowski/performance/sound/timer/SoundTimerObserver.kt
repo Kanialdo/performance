@@ -2,6 +2,7 @@ package pl.krystiankaniowski.performance.sound.timer
 
 import pl.krystiankaniowski.performance.domain.timer.TimerObserver
 import pl.krystiankaniowski.performance.domain.timer.TimerObserverPriority
+import pl.krystiankaniowski.performance.model.Tag
 import pl.krystiankaniowski.performance.sound.usecase.IsSoundEnabledUseCase
 import pl.krystiankaniowski.performance.sound.usecase.PlayNotificationSoundUseCase
 import javax.inject.Inject
@@ -12,7 +13,7 @@ class SoundTimerObserver @Inject constructor(
 
     override val priority: Int = TimerObserverPriority.SOUND
 
-    override suspend fun onStart() {
+    override suspend fun onStart(tag: Tag) {
         if (isSoundEnabledUseCase()) {
             playNotificationSoundUseCase()
         }

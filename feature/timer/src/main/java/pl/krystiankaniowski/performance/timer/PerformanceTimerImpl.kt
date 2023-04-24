@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.domain.timer.PerformanceTimer
 import pl.krystiankaniowski.performance.domain.timer.TimerObserver
 import pl.krystiankaniowski.performance.model.Seconds
+import pl.krystiankaniowski.performance.model.Tag
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,9 +32,9 @@ class PerformanceTimerImpl @Inject constructor(
 
     private var job: Job? = null
 
-    override fun start(seconds: Seconds) {
+    override fun start(tag: Tag, seconds: Seconds) {
         job = scope.launch {
-            observers.sortedBy { it.priority }.forEach { it.onStart() }
+            observers.sortedBy { it.priority }.forEach { it.onStart(tag) }
             (seconds.value - 1 downTo 0)
                 .asFlow()
                 .onEach { delay(1000) }
@@ -46,6 +47,7 @@ class PerformanceTimerImpl @Inject constructor(
                         PerformanceTimer.State.Pending(
                             elapsedSeconds = seconds - it,
                             leftSeconds = it,
+                            tag = tag,
                         ),
                     )
                 }

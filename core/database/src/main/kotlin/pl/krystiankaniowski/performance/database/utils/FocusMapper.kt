@@ -7,6 +7,7 @@ internal fun FocusEntity.toDomain() = Focus(
     id = this.uid.toLong(),
     startDate = this.dateStart,
     endDate = this.dateEnd,
+    tag = null,
 )
 
 internal fun List<FocusEntity>.toDomain() = this.map(FocusEntity::toDomain)

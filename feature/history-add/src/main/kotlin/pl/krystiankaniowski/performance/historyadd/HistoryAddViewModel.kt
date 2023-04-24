@@ -15,6 +15,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
 import pl.krystiankaniowski.performance.model.Focus
+import pl.krystiankaniowski.performance.model.Tag
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +28,7 @@ class HistoryAddViewModel @Inject constructor(
         val startTime: LocalTime? = null,
         val endDate: LocalDate? = null,
         val endTime: LocalTime? = null,
+        val tag: Tag? = null,
     ) {
 
         @Suppress("ComplexCondition")
@@ -94,6 +96,7 @@ class HistoryAddViewModel @Inject constructor(
             val focus = Focus(
                 startDate = LocalDateTime(checkNotNull(startDate), checkNotNull(startTime)).toInstant(TimeZone.currentSystemDefault()),
                 endDate = LocalDateTime(checkNotNull(endDate), checkNotNull(endTime)).toInstant(TimeZone.currentSystemDefault()),
+                tag = tag,
             )
             repository.add(focus)
             _effects.emit(Effect.CloseScreen)
