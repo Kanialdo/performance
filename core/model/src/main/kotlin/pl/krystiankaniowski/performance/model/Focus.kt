@@ -6,7 +6,7 @@ data class Focus(
     val id: Long = -1,
     val startDate: Instant,
     val endDate: Instant,
-    val tag:Tag?
+    val tag: Tag?,
 ) {
     val duration: Seconds by lazy { (endDate - startDate).toSeconds() }
 }

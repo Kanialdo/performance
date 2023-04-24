@@ -1,5 +1,6 @@
 package pl.krystiankaniowski.performance.timer
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,7 @@ import pl.krystiankaniowski.performance.domain.timer.fits
 import pl.krystiankaniowski.performance.domain.timer.left
 import pl.krystiankaniowski.performance.model.Seconds
 import pl.krystiankaniowski.performance.model.toSeconds
+import pl.krystiankaniowski.performance.ui.components.UiTag
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.minutes
 
@@ -32,7 +34,7 @@ class TimerViewModel @Inject constructor(
             counter = timerFormatter.format(seconds),
             isTimerActive = false,
             button = State.Button.Start,
-            tag = State.ViewTag("Unknown"),
+            tag = UiTag("Unknown", Color.Gray),
         ),
     )
     val state: StateFlow<State> = _state
@@ -65,7 +67,7 @@ class TimerViewModel @Inject constructor(
     }
 
     fun onEvent(event: Event) = when (event) {
-        Event.Start -> timer.start(seconds)
+        Event.Start -> timer.start(state.value.tag, seconds)
         Event.Stop -> timer.stop()
         Event.Cancel -> timer.stop()
         Event.OnTagClick -> onTagClick()
@@ -85,7 +87,7 @@ class TimerViewModel @Inject constructor(
         val counter: String,
         val isTimerActive: Boolean,
         val button: Button,
-        val tag: ViewTag,
+        val tag: UiTag,
     ) {
 
         sealed interface Button {

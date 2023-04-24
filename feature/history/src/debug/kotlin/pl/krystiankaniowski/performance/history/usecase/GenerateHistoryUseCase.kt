@@ -21,7 +21,8 @@ class GenerateHistoryUseCase @Inject constructor(
             for (i in 0 until amount) {
                 val endDate = Clock.System.now().minus(random.nextInt((3 * 30)).days).minus(random.nextInt((24)).hours).minus(random.nextInt((60)).minutes)
                 val startDate = endDate.minus(25.minutes)
-                add(Focus(startDate = startDate, endDate = endDate))
+                add(Focus(startDate = startDate, endDate = endDate, tag = null))
+                // TODO: Random tag generation
             }
         }.sortedBy { it.startDate }
 

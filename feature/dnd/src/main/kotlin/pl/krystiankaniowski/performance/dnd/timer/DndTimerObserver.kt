@@ -5,6 +5,7 @@ import pl.krystiankaniowski.performance.dnd.usecase.TurnOffDoNotDisturbUseCase
 import pl.krystiankaniowski.performance.dnd.usecase.TurnOnDoNotDisturbUseCase
 import pl.krystiankaniowski.performance.domain.timer.TimerObserver
 import pl.krystiankaniowski.performance.domain.timer.TimerObserverPriority
+import pl.krystiankaniowski.performance.model.Tag
 import javax.inject.Inject
 
 class DndTimerObserver @Inject constructor(
@@ -15,7 +16,7 @@ class DndTimerObserver @Inject constructor(
 
     override val priority: Int = TimerObserverPriority.DO_NOT_DISTURB
 
-    override suspend fun onStart() {
+    override suspend fun onStart(tag: Tag) {
         if (isDoNotDisturbEnabledUseCase()) {
             turnOnDoNotDisturbUseCase()
         }

@@ -8,9 +8,9 @@ interface PerformanceTimer {
 
     val state: Flow<State>
 
-    fun start(seconds: Seconds)
+    fun start(tag: Tag, seconds: Seconds)
 
-    fun setTag(tag: Tag)
+    // fun setTag(tag: Tag)
 
     fun stop()
 
