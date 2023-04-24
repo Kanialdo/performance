@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="stats_title">Stats</string>
-    <string name="settings_generate_history_item">Generate history</string>
-    <string name="stats_empty_title">No data to display</string>
-</resources>

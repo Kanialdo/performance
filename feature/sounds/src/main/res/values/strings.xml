@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setting_item_sound_enabled_title">Sounds</string>
+    <string name="setting_item_sound_enabled_description">Play sounds on timer start and timer end</string>
+</resources>

@@ -5,4 +5,5 @@ plugins {
 dependencies {
     add("testImplementation", libs.junit5.jupiter.api)
     add("testRuntimeOnly", libs.junit5.jupiter.engine)
+    add("testImplementation", libs.junit5.jupiter.params)
 }

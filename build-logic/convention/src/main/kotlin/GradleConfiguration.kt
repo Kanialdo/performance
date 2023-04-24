@@ -1,4 +1,3 @@
-
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.JavaVersion
@@ -7,26 +6,30 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.the
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
+internal object Versions {
+    val java = JavaVersion.VERSION_17
+    const val minSdk = 26
+    const val compileSdk = 33
+}
+
 internal val Project.libs
     get() = the<LibrariesForLibs>()
 
 internal fun CommonExtension<*, *, *, *>.configureKotlinAndroid() {
-    compileSdk = 33
+    compileSdk = Versions.compileSdk
 
     defaultConfig {
-        minSdk = 24
+        minSdk = Versions.minSdk
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments["clearPackageData"] = "true"
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = Versions.java
+        targetCompatibility = Versions.java
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-
         freeCompilerArgs = freeCompilerArgs + listOf(
             "-opt-in=kotlin.RequiresOptIn",
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",

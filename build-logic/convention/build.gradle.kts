@@ -3,12 +3,13 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 dependencies {
     implementation(libs.android.gradlePlugin)
+    implementation(libs.detekt.gradlePlugin)
     implementation(libs.hilt.gradlePlugin)
     implementation(libs.junit5.gradlePlugin)
     implementation(libs.kotlin.gradlePlugin)
