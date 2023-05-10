@@ -1,11 +1,9 @@
 package pl.krystiankaniowski.performance.architecture
 
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
-class ViewModelState<T>(private val scope: CoroutineScope, initState: T) {
+class ViewModelState<T>(initState: T) {
 
     private val _state = MutableStateFlow(initState)
     val value: T get() = _state.value
@@ -16,23 +14,26 @@ class ViewModelState<T>(private val scope: CoroutineScope, initState: T) {
         _state.value = value
     }
 
-    fun update(transform: suspend T.() -> T) = scope.launch {
+    fun update(transform: T.() -> T) {
         _state.value = transform(_state.value)
     }
 
-    fun <E : T> updateIf(transform: suspend E.() -> T) = scope.launch {
-        (_state.value as? E)?.let {
-            _state.value = transform(it)
-        }
+    inline fun <reified E : T> updateIf(noinline transform: E.() -> T) {
+        if (value !is E) return
+        update(transform(value as E))
     }
 
-    fun run(command: suspend T.() -> Unit) = scope.launch {
+    fun run(command: T.() -> Unit) {
         command(_state.value)
     }
 
-    fun <E : T> runIf(command: suspend E.() -> Unit) = scope.launch {
-        (_state.value as? E)?.let {
-            command(it)
-        }
+    inline fun <reified E : T> runIf(noinline command: E.() -> Unit) {
+        if (value !is E) return
+        command((value as E))
     }
+}
+
+inline fun <reified E : T, T> MutableStateFlow<T>.runIf(noinline command: E.() -> Unit) {
+    if (value !is E) return
+    command((value as E))
 }

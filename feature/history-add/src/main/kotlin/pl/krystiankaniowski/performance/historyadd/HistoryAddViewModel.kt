@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -49,7 +50,7 @@ class HistoryAddViewModel @Inject constructor(
         object OnSaveClick : Event
     }
 
-    private val _state: ViewModelState<State> = ViewModelState(scope = viewModelScope, initState = State())
+    private val _state: ViewModelState<State> = ViewModelState(initState = State())
     val state: StateFlow<State> = _state.asStateFlow()
 
     private val _effects: MutableSharedFlow<Effect> = MutableSharedFlow()
@@ -80,12 +81,14 @@ class HistoryAddViewModel @Inject constructor(
     }
 
     private fun onSaveButtonClick() = _state.run {
-        check(isSaveButtonEnable)
-        val focus = Focus(
-            startDate = LocalDateTime(checkNotNull(startDate), checkNotNull(startTime)).toInstant(TimeZone.currentSystemDefault()),
-            endDate = LocalDateTime(checkNotNull(endDate), checkNotNull(endTime)).toInstant(TimeZone.currentSystemDefault()),
-        )
-        repository.add(focus)
-        _effects.emit(Effect.CloseScreen)
+        viewModelScope.launch {
+            check(isSaveButtonEnable)
+            val focus = Focus(
+                startDate = LocalDateTime(checkNotNull(startDate), checkNotNull(startTime)).toInstant(TimeZone.currentSystemDefault()),
+                endDate = LocalDateTime(checkNotNull(endDate), checkNotNull(endTime)).toInstant(TimeZone.currentSystemDefault()),
+            )
+            repository.add(focus)
+            _effects.emit(Effect.CloseScreen)
+        }
     }
 }

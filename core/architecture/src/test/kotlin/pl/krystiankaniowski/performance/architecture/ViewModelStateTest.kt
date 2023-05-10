@@ -48,7 +48,6 @@ class ViewModelStateTest {
         val sut = createSut(scope = this, initState = state1)
 
         sut.updateIf<State.DataState> { state2 }
-        advanceUntilIdle()
 
         Assertions.assertNotEquals(state2, sut.value)
     }
@@ -83,5 +82,5 @@ class ViewModelStateTest {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun createSut(scope: TestScope, initState: State = State.InitState) = ViewModelState<State>(scope = scope, initState = initState)
+    private fun createSut(scope: TestScope, initState: State = State.InitState) : ViewModelState<State> = ViewModelState<State>(scope = scope, initState = initState)
 }
