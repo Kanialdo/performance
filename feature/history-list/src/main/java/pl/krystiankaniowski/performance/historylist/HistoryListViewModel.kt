@@ -4,10 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import pl.krystiankaniowski.performance.architecture.ViewModelState
+import pl.krystiankaniowski.performance.architecture.transform
 import pl.krystiankaniowski.performance.domain.localization.time.DateTimeFormatter
 import pl.krystiankaniowski.performance.domain.localization.time.DurationFormatter
 import pl.krystiankaniowski.performance.domain.stats.GetFocusListUseCase
@@ -20,8 +21,8 @@ class HistoryListViewModel @Inject constructor(
     private val durationFormatter: DurationFormatter,
 ) : ViewModel() {
 
-    private val _state: ViewModelState<State> = ViewModelState(scope = viewModelScope, initState = State.Loading)
-    val state: StateFlow<State> = _state.asStateFlow()
+    private val _state: MutableStateFlow<State> = MutableStateFlow(State.Loading)
+    val state: StateFlow<State> = _state
 
     private val _effects: MutableSharedFlow<Effect> = MutableSharedFlow()
     val effects: SharedFlow<Effect> = _effects
@@ -35,7 +36,7 @@ class HistoryListViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getFocusListUseCase().collect { items ->
-                _state.update(
+                _state.transform {
                     when {
                         items.isEmpty() -> State.Empty
                         else -> State.Loaded(
@@ -52,8 +53,8 @@ class HistoryListViewModel @Inject constructor(
                                 .toMap()
                                 .toSortedMap { a, b -> b.date.compareTo(a.date) },
                         )
-                    },
-                )
+                    }
+                }
             }
         }
     }

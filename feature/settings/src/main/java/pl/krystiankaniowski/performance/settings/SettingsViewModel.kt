@@ -3,10 +3,11 @@ package pl.krystiankaniowski.performance.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import pl.krystiankaniowski.performance.architecture.ViewModelState
+import pl.krystiankaniowski.performance.architecture.update
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
 import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider
@@ -17,8 +18,8 @@ class SettingsViewModel @Inject constructor(
     private val providers: Set<@JvmSuppressWildcards SettingsItemsProvider>,
 ) : ViewModel() {
 
-    private val _state: ViewModelState<State> = ViewModelState(scope = viewModelScope, initState = State.Loading)
-    val state: StateFlow<State> = _state.asStateFlow()
+    private val _state: MutableStateFlow<State> = MutableStateFlow(State.Loading)
+    val state: StateFlow<State> = _state
 
     init {
         viewModelScope.launch {

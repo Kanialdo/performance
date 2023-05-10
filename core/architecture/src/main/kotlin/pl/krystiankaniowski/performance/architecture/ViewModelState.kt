@@ -1,39 +1,41 @@
 package pl.krystiankaniowski.performance.architecture
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-class ViewModelState<T>(initState: T) {
-
-    private val _state = MutableStateFlow(initState)
-    val value: T get() = _state.value
-
-    fun asStateFlow(): StateFlow<T> = _state
-
-    fun update(value: T) {
-        _state.value = value
-    }
-
-    fun update(transform: T.() -> T) {
-        _state.value = transform(_state.value)
-    }
-
-    inline fun <reified E : T> updateIf(noinline transform: E.() -> T) {
-        if (value !is E) return
-        update(transform(value as E))
-    }
-
-    fun run(command: T.() -> Unit) {
-        command(_state.value)
-    }
-
-    inline fun <reified E : T> runIf(noinline command: E.() -> Unit) {
-        if (value !is E) return
-        command((value as E))
-    }
+fun <T> MutableStateFlow<T>.update(value: T) {
+    this.value = value
 }
 
-inline fun <reified E : T, T> MutableStateFlow<T>.runIf(noinline command: E.() -> Unit) {
-    if (value !is E) return
-    command((value as E))
+fun <T> MutableStateFlow<T>.transform(transform: T.() -> T) {
+    value = transform(value)
+}
+
+fun <T> MutableStateFlow<T>.transform(scope: CoroutineScope, transform: suspend T.() -> T) = scope.launch {
+    value = transform(value)
+}
+
+inline fun <reified T> MutableStateFlow<in T>.transformIf(noinline transform: T.() -> T) {
+    if (value !is T) return
+    value = transform(value as T)
+}
+
+inline fun <reified T> MutableStateFlow<in T>.transformIf(scope: CoroutineScope, noinline transform: suspend T.() -> T) = scope.launch {
+    if (value !is T) return@launch
+    value = transform(value as T)
+}
+
+fun <T> MutableStateFlow<T>.run(scope: CoroutineScope, command: suspend T.() -> Unit) = scope.launch {
+    command((value))
+}
+
+inline fun <reified T> MutableStateFlow<in T>.runIf(noinline command: T.() -> Unit) {
+    if (value !is T) return
+    command((value as T))
+}
+
+inline fun <reified T> MutableStateFlow<in T>.runIf(scope: CoroutineScope, noinline command: suspend T.() -> Unit) = scope.launch {
+    if (value !is T) return@launch
+    command((value as T))
 }
