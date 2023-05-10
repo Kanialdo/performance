@@ -108,10 +108,11 @@ class HistoryAddViewModel @Inject constructor(
     private fun onSaveButtonClick() = _state.runIf<State.Loaded>(viewModelScope) {
         check(isSaveButtonEnable)
         val focus = Focus(
+            id = id ?: -1,
             startDate = LocalDateTime(checkNotNull(startDate), checkNotNull(startTime)).toInstant(TimeZone.currentSystemDefault()),
             endDate = LocalDateTime(checkNotNull(endDate), checkNotNull(endTime)).toInstant(TimeZone.currentSystemDefault()),
         )
-        repository.add(focus)
+        repository.upsert(focus)
         _effects.emit(Effect.CloseScreen)
     }
 }

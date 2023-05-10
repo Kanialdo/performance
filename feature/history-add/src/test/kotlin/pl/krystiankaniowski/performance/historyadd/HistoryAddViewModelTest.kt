@@ -110,7 +110,7 @@ class HistoryAddViewModelTest {
 
     @Test
     fun `WHEN data is improperly filled THEN save button is not enabled`() = runTest {
-        coEvery { repository.add(any()) } just Runs
+        coEvery { repository.upsert(any()) } just Runs
 
         val sut = createSut()
         sut.selectAllValues(
@@ -125,7 +125,7 @@ class HistoryAddViewModelTest {
 
     @Test
     fun `WHEN data is properly filled and save button is clicked when form is filled THEN save session and emit close event`() = runTest {
-        coEvery { repository.add(any()) } just Runs
+        coEvery { repository.upsert(any()) } just Runs
 
         val sut = createSut()
         sut.selectAllValues(
@@ -142,7 +142,7 @@ class HistoryAddViewModelTest {
             Assertions.assertEquals(HistoryAddViewModel.Effect.CloseScreen, awaitItem())
         }
 
-        coVerify { repository.add(any()) }
+        coVerify { repository.upsert(any()) }
     }
 
     @Test
@@ -151,7 +151,7 @@ class HistoryAddViewModelTest {
 
         sut.onEvent(HistoryAddViewModel.Event.OnSaveClick)
 
-        coVerify(exactly = 0) { repository.add(any()) }
+        coVerify(exactly = 0) { repository.upsert(any()) }
     }
 
     private fun createSut(savedStateHandle: SavedStateHandle = SavedStateHandle()) = HistoryAddViewModel(

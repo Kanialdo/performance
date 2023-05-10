@@ -14,7 +14,7 @@ internal class FocusRepositoryImpl @Inject constructor(private val focusDao: Foc
 
     override fun getAll() = focusDao.getAll().map { it.toDomain() }
 
-    override suspend fun add(focus: Focus) = focusDao.insert(focus.toDatabase())
+    override suspend fun upsert(focus: Focus) = focusDao.upsert(focus.toDatabase())
 
     override suspend fun delete(id: Long) = focusDao.delete(id)
 

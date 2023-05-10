@@ -9,7 +9,7 @@ interface FocusRepository {
 
     fun getAll(): Flow<List<Focus>>
 
-    suspend fun add(focus: Focus)
+    suspend fun upsert(focus: Focus)
 
     suspend fun delete(id: Long)
 
