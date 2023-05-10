@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.architecture.transform
 import pl.krystiankaniowski.performance.domain.localization.time.DateTimeFormatter
 import pl.krystiankaniowski.performance.domain.localization.time.DurationFormatter
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
@@ -45,8 +46,8 @@ class HistoryDetailsViewModel @Inject constructor(
     val effects: SharedFlow<Effect> = _effects
 
     init {
-        viewModelScope.launch {
-            _state.value = repository.get(id).let { data ->
+        _state.transform(viewModelScope) {
+            repository.get(id).let { data ->
                 State.Loaded(
                     startDate = dateTimeFormatter.formatDateTime(data.startDate),
                     endDate = dateTimeFormatter.formatDateTime(data.endDate),
