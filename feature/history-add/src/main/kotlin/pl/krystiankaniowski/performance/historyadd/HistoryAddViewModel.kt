@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -57,8 +59,8 @@ class HistoryAddViewModel @Inject constructor(
         object OnSaveClick : Event
     }
 
-    private val _state = ViewModelState(viewModelScope, if (id != null) State.Loading else State.Loaded())
-    val state: StateFlow<State> = _state.state
+    private val _state = MutableStateFlow(if (id != null) State.Loading else State.Loaded())
+    val state: StateFlow<State> = _state
 
     private val _effects: MutableSharedFlow<Effect> = MutableSharedFlow()
     val effects: SharedFlow<Effect> = _effects

@@ -41,7 +41,6 @@ class ViewModelState<T>(val scope: CoroutineScope, init: T) {
 private val _state: MutableStateFlow<HistoryAddViewModel.State> = MutableStateFlow(if (id != null) HistoryAddViewModel.State.Loading else HistoryAddViewModel.State.Loaded())
 val state: StateFlow<HistoryAddViewModel.State> = _state
 
-
 inline fun <reified T> MutableStateFlow<in T>.updateIf(transform: T.() -> T) {
     (value as? T)?.let {
         value = transform(it)
@@ -49,6 +48,12 @@ inline fun <reified T> MutableStateFlow<in T>.updateIf(transform: T.() -> T) {
 }
 
 inline fun <reified T> MutableStateFlow<in T>.runIf(command: T.() -> Unit) {
+    (value as? T)?.let {
+        command(it)
+    }
+}
+
+inline fun <reified T> MutableStateFlow<in T>.runIf(scope: CoroutineScope, noinline command: T.() -> Unit) = scope.launch {
     (value as? T)?.let {
         command(it)
     }
