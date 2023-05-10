@@ -1,8 +1,10 @@
 package pl.krystiankaniowski.performance.historylist
 
 import app.cash.turbine.test
+import io.mockk.Awaits
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -25,6 +27,8 @@ class HistoryListViewModelTest {
 
     @Test
     fun `WHEN view model is initialized THEN proper state is emitted`() = runTest {
+        coEvery { getFocusListUseCase.invoke() } just Awaits
+
         val sut = createSut()
 
         coVerify { getFocusListUseCase.invoke() }
@@ -72,6 +76,8 @@ class HistoryListViewModelTest {
 
     @Test
     fun `WHEN add item is clicked THEN emit open add item screen event`() = runTest {
+        coEvery { getFocusListUseCase.invoke() } just Awaits
+
         val sut = createSut()
 
         sut.effects.test {

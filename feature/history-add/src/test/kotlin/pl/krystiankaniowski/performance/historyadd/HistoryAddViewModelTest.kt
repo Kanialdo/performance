@@ -10,6 +10,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
@@ -111,6 +112,7 @@ class HistoryAddViewModelTest {
         coVerify { repository.add(any()) }
     }
 
+    @Disabled("https://github.com/Kanialdo/performance/issues/151")
     @Test
     fun `WHEN save button is clicked when is disabled THEN do not save anything`() = runTest {
         val sut = createSut()
