@@ -8,13 +8,15 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
+import pl.krystiankaniowski.performance.architecture.runIf
+import pl.krystiankaniowski.performance.architecture.transform
+import pl.krystiankaniowski.performance.architecture.transformIf
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
 import pl.krystiankaniowski.performance.model.Focus
 import javax.inject.Inject
@@ -67,7 +69,7 @@ class HistoryAddViewModel @Inject constructor(
 
     init {
         if (id != null) {
-            _state.update {
+            _state.transform(viewModelScope) {
                 val entry = repository.get(id)
                 State.Loaded(
                     startDate = entry.startDate.toLocalDateTime(TimeZone.currentSystemDefault()).date,
@@ -87,23 +89,23 @@ class HistoryAddViewModel @Inject constructor(
         Event.OnSaveClick -> onSaveButtonClick()
     }
 
-    private fun onStartDateChange(date: LocalDate?) = _state.updateIf<State.Loaded> {
+    private fun onStartDateChange(date: LocalDate?) = _state.transformIf<State.Loaded> {
         copy(startDate = date)
     }
 
-    private fun onStartTimeChange(time: LocalTime?) = _state.updateIf<State.Loaded> {
+    private fun onStartTimeChange(time: LocalTime?) = _state.transformIf<State.Loaded> {
         copy(startTime = time)
     }
 
-    private fun onEndDateChange(date: LocalDate?) = _state.updateIf<State.Loaded> {
+    private fun onEndDateChange(date: LocalDate?) = _state.transformIf<State.Loaded> {
         copy(endDate = date)
     }
 
-    private fun onEndTimeChange(time: LocalTime?) = _state.updateIf<State.Loaded> {
+    private fun onEndTimeChange(time: LocalTime?) = _state.transformIf<State.Loaded> {
         copy(endTime = time)
     }
 
-    private fun onSaveButtonClick() = _state.runIf<State.Loaded> {
+    private fun onSaveButtonClick() = _state.runIf<State.Loaded>(viewModelScope) {
         check(isSaveButtonEnable)
         val focus = Focus(
             startDate = LocalDateTime(checkNotNull(startDate), checkNotNull(startTime)).toInstant(TimeZone.currentSystemDefault()),
