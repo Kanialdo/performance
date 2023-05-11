@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         HistoryDetailsScreen(
                             navigateUp = navController::navigateUp,
-                            openEditScreen = { id -> navController.navigate("history/$id/edit") }
+                            openEditScreen = { id -> navController.navigate("history/$id/edit") },
                         )
                     }
                     composable(

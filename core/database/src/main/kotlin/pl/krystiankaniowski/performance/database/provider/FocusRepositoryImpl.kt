@@ -1,5 +1,6 @@
 package pl.krystiankaniowski.performance.database.provider
 
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import pl.krystiankaniowski.performance.database.dao.FocusDao
 import pl.krystiankaniowski.performance.database.utils.toDatabase
@@ -11,6 +12,8 @@ import javax.inject.Inject
 internal class FocusRepositoryImpl @Inject constructor(private val focusDao: FocusDao) : FocusRepository {
 
     override suspend fun get(id: Long) = focusDao.get(id).toDomain()
+
+    override suspend fun observe(id: Long): Flow<Focus> = focusDao.observe(id).map { it.toDomain() }
 
     override suspend fun getAll() = focusDao.getAll().map { it.toDomain() }
 
