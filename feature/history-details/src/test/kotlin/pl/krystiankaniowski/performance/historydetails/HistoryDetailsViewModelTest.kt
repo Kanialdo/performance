@@ -87,6 +87,25 @@ class HistoryDetailsViewModelTest {
         coVerify { repository.delete(1) }
     }
 
+    @Test
+    fun `WHEN edit button is clicked THEN open edit screen effect is invoked`() = runTest {
+        val id = 1L
+        coEvery { repository.get(any()) } returns Focus(
+            id = id,
+            startDate = Clock.System.now(),
+            endDate = Clock.System.now(),
+        )
+        coEvery { dateTimeFormatter.formatDateTime(any()) } returns ""
+        coEvery { durationFormatter.format(any<Seconds>()) } returns ""
+
+        val sut = createSut(id = id)
+
+        sut.effects.test {
+            sut.onEditButtonClick()
+            Assertions.assertEquals(HistoryDetailsViewModel.Effect.OpenEditScreen(id = id), awaitItem())
+        }
+    }
+
     private fun createSut(id: Long): HistoryDetailsViewModel {
         every { savedStateHandle.get<Long>(HistoryDetailsArgs.id) } returns id
         return HistoryDetailsViewModel(

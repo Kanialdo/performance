@@ -114,11 +114,7 @@ class HistoryAddViewModel @Inject constructor(
             startDate = LocalDateTime(checkNotNull(startDate), checkNotNull(startTime)).toInstant(TimeZone.currentSystemDefault()),
             endDate = LocalDateTime(checkNotNull(endDate), checkNotNull(endTime)).toInstant(TimeZone.currentSystemDefault()),
         )
-        if (id != null) {
-            repository.update(focus)
-        } else {
-            repository.insert(focus)
-        }
+        repository.upsert(focus)
         _effects.emit(Effect.CloseScreen)
     }
 }

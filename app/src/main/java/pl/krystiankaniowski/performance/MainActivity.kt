@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import pl.krystiankaniowski.performance.historyadd.HistoryAddEditArgs
 import pl.krystiankaniowski.performance.historyadd.HistoryAddScreen
 import pl.krystiankaniowski.performance.historydetails.HistoryDetailsArgs
+import pl.krystiankaniowski.performance.historydetails.HistoryDetailsScreen
 import pl.krystiankaniowski.performance.historylist.HistoryListScreen
 import pl.krystiankaniowski.performance.navigation.AndroidNavigator
 import pl.krystiankaniowski.performance.settings.SettingsScreen
@@ -78,12 +79,20 @@ class MainActivity : ComponentActivity() {
                     composable(
                         route = "history/{${HistoryDetailsArgs.id}}",
                         arguments = listOf(
+                            navArgument(HistoryDetailsArgs.id) { type = NavType.LongType },
+                        ),
+                    ) {
+                        HistoryDetailsScreen(
+                            navigateUp = navController::navigateUp,
+                            openEditScreen = { id -> navController.navigate("history/$id/edit") }
+                        )
+                    }
+                    composable(
+                        route = "history/{${HistoryAddEditArgs.id}}/edit",
+                        arguments = listOf(
                             navArgument(HistoryAddEditArgs.id) { type = NavType.LongType },
                         ),
                     ) {
-                        // HistoryDetailsScreen(
-                        //     navigateUp = navController::navigateUp,
-                        // )
                         HistoryAddScreen(
                             navigateUp = navController::navigateUp,
                         )

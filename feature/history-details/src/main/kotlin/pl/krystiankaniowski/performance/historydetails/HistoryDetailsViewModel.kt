@@ -36,6 +36,7 @@ class HistoryDetailsViewModel @Inject constructor(
 
     sealed interface Effect {
         object ShowConfirmationPopup : Effect
+        data class OpenEditScreen(val id: Long) : Effect
         object CloseScreen : Effect
     }
 
@@ -55,6 +56,10 @@ class HistoryDetailsViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun onEditButtonClick() = viewModelScope.launch {
+        _effects.emit(Effect.OpenEditScreen(id))
     }
 
     fun onDeleteButtonClick() = viewModelScope.launch {
