@@ -81,12 +81,14 @@ class HistoryAddViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: Event) = when (event) {
-        is Event.EndDateChange -> onEndDateChange(event.endDate)
-        is Event.EndTimeChange -> onEndTimeChange(event.endTime)
-        is Event.StartDateChange -> onStartDateChange(event.startDate)
-        is Event.StartTimeChange -> onStartTimeChange(event.startTime)
-        Event.OnSaveClick -> onSaveButtonClick()
+    fun onEvent(event: Event) {
+        when (event) {
+            is Event.EndDateChange -> onEndDateChange(event.endDate)
+            is Event.EndTimeChange -> onEndTimeChange(event.endTime)
+            is Event.StartDateChange -> onStartDateChange(event.startDate)
+            is Event.StartTimeChange -> onStartTimeChange(event.startTime)
+            Event.OnSaveClick -> onSaveButtonClick()
+        }
     }
 
     private fun onStartDateChange(date: LocalDate?) = _state.transformIf<State.Loaded> {
@@ -112,7 +114,11 @@ class HistoryAddViewModel @Inject constructor(
             startDate = LocalDateTime(checkNotNull(startDate), checkNotNull(startTime)).toInstant(TimeZone.currentSystemDefault()),
             endDate = LocalDateTime(checkNotNull(endDate), checkNotNull(endTime)).toInstant(TimeZone.currentSystemDefault()),
         )
-        repository.upsert(focus)
+        if (id != null) {
+            repository.update(focus)
+        } else {
+            repository.insert(focus)
+        }
         _effects.emit(Effect.CloseScreen)
     }
 }

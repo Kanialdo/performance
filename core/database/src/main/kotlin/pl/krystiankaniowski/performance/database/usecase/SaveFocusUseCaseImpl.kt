@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 internal class SaveFocusUseCaseImpl @Inject constructor(private val focusDao: FocusDao) : SaveFocusUseCase {
     override suspend fun invoke(focus: Focus) {
-        focusDao.upsert(
+        focusDao.insert(
             FocusEntity(
                 uid = 0,
                 dateStart = focus.startDate,
