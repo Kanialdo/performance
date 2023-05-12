@@ -36,7 +36,7 @@ import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 fun TimerScreen(
     viewModel: TimerViewModel = hiltViewModel(),
     onNavigateToSettings: () -> Unit,
-    onNavigateToStats: () -> Unit,
+    onNavigateToHistory: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -45,7 +45,7 @@ fun TimerScreen(
                 actions = {
                     IconButton(
                         content = { Icon(Icons.Default.List, null) },
-                        onClick = onNavigateToStats,
+                        onClick = onNavigateToHistory,
                     )
                     IconButton(
                         content = { Icon(Icons.Default.Settings, null) },
@@ -101,7 +101,6 @@ fun TimerScreenContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun TimerScreenContentPreview_Start() {
@@ -121,7 +120,6 @@ fun TimerScreenContentPreview_Start() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun TimerScreenContentPreview_Stop() {
@@ -141,7 +139,6 @@ fun TimerScreenContentPreview_Stop() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun TimerScreenContentPreview_Cancel() {

@@ -6,9 +6,9 @@ import io.mockk.Awaits
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
 import org.junit.jupiter.api.Assertions
@@ -28,11 +28,10 @@ class HistoryDetailsViewModelTest {
     private val dateTimeFormatter: DateTimeFormatter = mockk()
     private val durationFormatter: DurationFormatter = mockk()
     private val repository: FocusRepository = mockk()
-    private val savedStateHandle: SavedStateHandle = mockk()
 
     @Test
     fun `WHEN view model is created THEN emit loading state`() = runTest {
-        coEvery { repository.get(any()) } just Awaits
+        coEvery { repository.observe(any()) } just Awaits
 
         val sut = createSut(id = 1)
 
@@ -48,7 +47,7 @@ class HistoryDetailsViewModelTest {
             startDate = start,
             endDate = end,
         )
-        coEvery { repository.get(focus.id) } returns focus
+        coEvery { repository.observe(focus.id) } returns flowOf(focus)
         coEvery { dateTimeFormatter.formatDateTime(start) } returns "start"
         coEvery { dateTimeFormatter.formatDateTime(end) } returns "end"
         coEvery { durationFormatter.format(any<Seconds>()) } returns "duration"
@@ -67,10 +66,12 @@ class HistoryDetailsViewModelTest {
 
     @Test
     fun `WHEN on delete button is clicked and then action confirmed THEN delete session and emit close effect`() = runTest {
-        coEvery { repository.get(any()) } returns Focus(
-            id = 1,
-            startDate = Clock.System.now(),
-            endDate = Clock.System.now(),
+        coEvery { repository.observe(any()) } returns flowOf(
+            Focus(
+                id = 1,
+                startDate = Clock.System.now(),
+                endDate = Clock.System.now(),
+            ),
         )
         coEvery { repository.delete(any()) } just Runs
         coEvery { dateTimeFormatter.formatDateTime(any()) } returns ""
@@ -87,12 +88,32 @@ class HistoryDetailsViewModelTest {
         coVerify { repository.delete(1) }
     }
 
+    @Test
+    fun `WHEN edit button is clicked THEN open edit screen effect is invoked`() = runTest {
+        val id = 1L
+        coEvery { repository.observe(any()) } returns flowOf(
+            Focus(
+                id = id,
+                startDate = Clock.System.now(),
+                endDate = Clock.System.now(),
+            ),
+        )
+        coEvery { dateTimeFormatter.formatDateTime(any()) } returns ""
+        coEvery { durationFormatter.format(any<Seconds>()) } returns ""
+
+        val sut = createSut(id = id)
+
+        sut.effects.test {
+            sut.onEditButtonClick()
+            Assertions.assertEquals(HistoryDetailsViewModel.Effect.OpenEditScreen(id = id), awaitItem())
+        }
+    }
+
     private fun createSut(id: Long): HistoryDetailsViewModel {
-        every { savedStateHandle.get<Long>(HistoryDetailsArgs.id) } returns id
         return HistoryDetailsViewModel(
             dateTimeFormatter = dateTimeFormatter,
             durationFormatter = durationFormatter,
-            savedStateHandle = savedStateHandle,
+            savedStateHandle = SavedStateHandle(mapOf(HistoryDetailsArgs.id to id)),
             repository = repository,
         )
     }

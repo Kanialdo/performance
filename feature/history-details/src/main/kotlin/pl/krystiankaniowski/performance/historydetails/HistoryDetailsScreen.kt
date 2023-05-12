@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -32,6 +33,7 @@ import pl.krystiankaniowski.performance.ui.utils.collectAsEffect
 @Composable
 fun HistoryDetailsScreen(
     viewModel: HistoryDetailsViewModel = hiltViewModel(),
+    openEditScreen: (Long) -> Unit,
     navigateUp: () -> Unit,
 ) {
 
@@ -39,6 +41,7 @@ fun HistoryDetailsScreen(
 
     viewModel.effects.collectAsEffect {
         when (it) {
+            is HistoryDetailsViewModel.Effect.OpenEditScreen -> openEditScreen(it.id)
             HistoryDetailsViewModel.Effect.ShowConfirmationPopup -> showConfirmationPopup = true
             HistoryDetailsViewModel.Effect.CloseScreen -> {
                 navigateUp()
@@ -49,6 +52,7 @@ fun HistoryDetailsScreen(
     HistoryDetailsContent(
         state = viewModel.state.collectAsState().value,
         navigateUp = navigateUp,
+        onEditButtonClicked = viewModel::onEditButtonClick,
         onDeleteButtonClicked = viewModel::onDeleteButtonClick,
     )
 
@@ -81,6 +85,7 @@ fun HistoryDetailsScreen(
 private fun HistoryDetailsContent(
     state: HistoryDetailsViewModel.State,
     navigateUp: () -> Unit,
+    onEditButtonClicked: () -> Unit,
     onDeleteButtonClicked: () -> Unit,
 ) {
     Scaffold(
@@ -96,6 +101,15 @@ private fun HistoryDetailsContent(
                 actions = {
                     when (state) {
                         is HistoryDetailsViewModel.State.Loaded -> {
+                            IconButton(
+                                content = {
+                                    Icon(
+                                        Icons.Outlined.Edit,
+                                        stringResource(R.string.action_edit),
+                                    )
+                                },
+                                onClick = onEditButtonClicked,
+                            )
                             IconButton(
                                 content = {
                                     Icon(
@@ -146,6 +160,7 @@ private fun HistoryDetailsContent_Loading_Preview() {
         HistoryDetailsContent(
             state = HistoryDetailsViewModel.State.Loading,
             navigateUp = {},
+            onEditButtonClicked = {},
             onDeleteButtonClicked = {},
         )
     }
@@ -162,6 +177,7 @@ private fun HistoryDetailsContent_Loaded_Preview() {
                 duration = "25 min",
             ),
             navigateUp = {},
+            onEditButtonClicked = {},
             onDeleteButtonClicked = {},
         )
     }

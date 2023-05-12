@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.historyadd.HistoryAddEditArgs
 import pl.krystiankaniowski.performance.historyadd.HistoryAddScreen
 import pl.krystiankaniowski.performance.historydetails.HistoryDetailsArgs
 import pl.krystiankaniowski.performance.historydetails.HistoryDetailsScreen
@@ -53,8 +54,8 @@ class MainActivity : ComponentActivity() {
                             onNavigateToSettings = {
                                 navController.navigate("settings")
                             },
-                            onNavigateToStats = {
-                                navController.navigate("stats")
+                            onNavigateToHistory = {
+                                navController.navigate("history")
                             },
                         )
                     }
@@ -82,6 +83,17 @@ class MainActivity : ComponentActivity() {
                         ),
                     ) {
                         HistoryDetailsScreen(
+                            navigateUp = navController::navigateUp,
+                            openEditScreen = { id -> navController.navigate("history/$id/edit") },
+                        )
+                    }
+                    composable(
+                        route = "history/{${HistoryAddEditArgs.id}}/edit",
+                        arguments = listOf(
+                            navArgument(HistoryAddEditArgs.id) { type = NavType.LongType },
+                        ),
+                    ) {
+                        HistoryAddScreen(
                             navigateUp = navController::navigateUp,
                         )
                     }
