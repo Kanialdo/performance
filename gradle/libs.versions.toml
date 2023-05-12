@@ -1,5 +1,5 @@
 [versions]
-androidxComposeCompiler = "1.4.5"
+androidxComposeCompiler = "1.4.7"
 androidGradlePlugin = "8.0.1"
 coroutines = "1.6.4"
 detekt = "1.22.0"
