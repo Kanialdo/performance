@@ -14,6 +14,7 @@ protobuf = "3.22.2"
 room = "2.5.1"
 
 [libraries]
+accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version = "0.28.0" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version = "1.7.1" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version = "2023.05.01" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
