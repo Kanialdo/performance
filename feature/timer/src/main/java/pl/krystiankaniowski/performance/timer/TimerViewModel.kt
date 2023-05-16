@@ -31,6 +31,7 @@ class TimerViewModel @Inject constructor(
             counter = timerFormatter.format(seconds),
             isTimerActive = false,
             button = State.Button.Start,
+            progress = 0f,
         ),
     )
     val state: StateFlow<State> = _state
@@ -44,6 +45,7 @@ class TimerViewModel @Inject constructor(
                             counter = timerFormatter.format(seconds),
                             isTimerActive = false,
                             button = State.Button.Start,
+                            progress = 0f,
                         )
                         is PerformanceTimer.State.Pending -> State(
                             counter = timerFormatter.format(timerState.leftSeconds),
@@ -53,6 +55,7 @@ class TimerViewModel @Inject constructor(
                             } else {
                                 State.Button.Stop
                             },
+                            progress = timerState.elapsedSeconds.value / (timerState.elapsedSeconds + timerState.leftSeconds).value.toFloat(),
                         )
                     },
                 )
@@ -70,6 +73,7 @@ class TimerViewModel @Inject constructor(
         val counter: String,
         val isTimerActive: Boolean,
         val button: Button,
+        val progress: Float,
     ) {
 
         sealed interface Button {
