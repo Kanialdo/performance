@@ -16,6 +16,8 @@ interface PerformanceTimer {
         data class Pending(
             val elapsedSeconds: Seconds,
             val leftSeconds: Seconds,
-        ) : State
+        ) : State {
+            val progress = elapsedSeconds.value.toFloat() / (elapsedSeconds + leftSeconds).value.toFloat()
+        }
     }
 }

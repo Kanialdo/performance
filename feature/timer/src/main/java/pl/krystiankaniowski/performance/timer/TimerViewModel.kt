@@ -14,6 +14,7 @@ import pl.krystiankaniowski.performance.domain.timer.fits
 import pl.krystiankaniowski.performance.domain.timer.left
 import pl.krystiankaniowski.performance.model.Seconds
 import pl.krystiankaniowski.performance.model.toSeconds
+import pl.krystiankaniowski.performance.timer.usecase.GetProgressUseCase
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.minutes
 
@@ -22,6 +23,7 @@ class TimerViewModel @Inject constructor(
     private val timer: PerformanceTimer,
     private val timerFormatter: TimerFormatter,
     private val getCancelThresholdUseCase: GetCancelThresholdUseCase,
+    private val getProgressUseCase: GetProgressUseCase,
 ) : ViewModel() {
 
     private val seconds = 25.minutes.inWholeSeconds.toSeconds()
@@ -55,7 +57,7 @@ class TimerViewModel @Inject constructor(
                             } else {
                                 State.Button.Stop
                             },
-                            progress = timerState.elapsedSeconds.value / (timerState.elapsedSeconds + timerState.leftSeconds).value.toFloat(),
+                            progress = getProgressUseCase(timerState),
                         )
                     },
                 )
