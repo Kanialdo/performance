@@ -54,6 +54,10 @@ fun PerformanceTheme(
                 color = colorScheme.background,
                 darkIcons = !darkTheme,
             )
+            systemUiController.setNavigationBarColor(
+                color = colorScheme.background,
+                darkIcons = !darkTheme,
+            )
         }
     }
     MaterialTheme(
