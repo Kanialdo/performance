@@ -11,8 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ShowChart
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,6 +42,7 @@ fun TimerScreen(
     viewModel: TimerViewModel = hiltViewModel(),
     onNavigateToSettings: () -> Unit,
     onNavigateToHistory: () -> Unit,
+    onNavigateToStats: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -48,7 +50,11 @@ fun TimerScreen(
                 title = { Text(stringResource(R.string.timer_title)) },
                 actions = {
                     IconButton(
-                        content = { Icon(Icons.Default.List, null) },
+                        content = { Icon(Icons.Default.ShowChart, null) },
+                        onClick = onNavigateToStats,
+                    )
+                    IconButton(
+                        content = { Icon(Icons.Default.History, null) },
                         onClick = onNavigateToHistory,
                     )
                     IconButton(

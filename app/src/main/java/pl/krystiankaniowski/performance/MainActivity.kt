@@ -23,6 +23,7 @@ import pl.krystiankaniowski.performance.historydetails.HistoryDetailsScreen
 import pl.krystiankaniowski.performance.historylist.HistoryListScreen
 import pl.krystiankaniowski.performance.navigation.AndroidNavigator
 import pl.krystiankaniowski.performance.settings.SettingsScreen
+import pl.krystiankaniowski.performance.stats.StatsScreen
 import pl.krystiankaniowski.performance.timer.TimerScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 import javax.inject.Inject
@@ -56,6 +57,9 @@ class MainActivity : ComponentActivity() {
                             },
                             onNavigateToHistory = {
                                 navController.navigate("history")
+                            },
+                            onNavigateToStats = {
+                                navController.navigate("stats")
                             },
                         )
                     }
@@ -94,6 +98,11 @@ class MainActivity : ComponentActivity() {
                         ),
                     ) {
                         HistoryAddScreen(
+                            navigateUp = navController::navigateUp,
+                        )
+                    }
+                    composable(route = "stats") {
+                        StatsScreen(
                             navigateUp = navController::navigateUp,
                         )
                     }
