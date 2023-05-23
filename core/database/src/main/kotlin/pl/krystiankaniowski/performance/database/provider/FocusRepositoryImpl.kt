@@ -13,7 +13,7 @@ internal class FocusRepositoryImpl @Inject constructor(private val focusDao: Foc
 
     override suspend fun get(id: Long) = focusDao.get(id).toDomain()
 
-    override suspend fun observe(id: Long): Flow<Focus> = focusDao.observe(id).map { it.toDomain() }
+    override suspend fun observe(id: Long): Flow<Focus?> = focusDao.observe(id).map { it?.toDomain() }
 
     override suspend fun getAll() = focusDao.getAll().map { it.toDomain() }
 

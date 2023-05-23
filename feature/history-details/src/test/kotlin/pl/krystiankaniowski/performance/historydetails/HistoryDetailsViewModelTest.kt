@@ -65,6 +65,18 @@ class HistoryDetailsViewModelTest {
     }
 
     @Test
+    fun `WHEN history event does not exists THEN emit item not exist state`() = runTest {
+        coEvery { repository.observe(any()) } returns flowOf(null)
+
+        val sut = createSut(id = 0)
+
+        Assertions.assertEquals(
+            HistoryDetailsViewModel.State.ItemNotExist,
+            sut.state.value,
+        )
+    }
+
+    @Test
     fun `WHEN on delete button is clicked and then action confirmed THEN delete session and emit close effect`() = runTest {
         coEvery { repository.observe(any()) } returns flowOf(
             Focus(
