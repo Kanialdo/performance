@@ -27,6 +27,7 @@ class HistoryDetailsViewModel @Inject constructor(
 
     sealed interface State {
         object Loading : State
+        object ItemNotExist : State
         data class Loaded(
             val startDate: String,
             val endDate: String,
@@ -50,11 +51,14 @@ class HistoryDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             repository.observe(id).collect { data ->
                 _state.update(
-                    State.Loaded(
-                        startDate = dateTimeFormatter.formatDateTime(data.startDate),
-                        endDate = dateTimeFormatter.formatDateTime(data.endDate),
-                        duration = durationFormatter.format(data.duration),
-                    ),
+                    when (data) {
+                        null -> State.ItemNotExist
+                        else -> State.Loaded(
+                            startDate = dateTimeFormatter.formatDateTime(data.startDate),
+                            endDate = dateTimeFormatter.formatDateTime(data.endDate),
+                            duration = durationFormatter.format(data.duration),
+                        )
+                    },
                 )
             }
         }

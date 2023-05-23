@@ -24,7 +24,7 @@ internal interface FocusDao {
     suspend fun get(id: Long): FocusEntity
 
     @Query("SELECT * FROM focus WHERE uid = :id")
-    fun observe(id: Long): Flow<FocusEntity>
+    fun observe(id: Long): Flow<FocusEntity?>
 
     @Query("SELECT * FROM focus")
     fun getAll(): Flow<List<FocusEntity>>

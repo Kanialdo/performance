@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import pl.krystiankaniowski.performance.ui.components.PerformanceErrorScreen
 import pl.krystiankaniowski.performance.ui.components.PerformanceLoadingScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 import pl.krystiankaniowski.performance.ui.utils.collectAsEffect
@@ -128,6 +129,7 @@ private fun HistoryDetailsContent(
     ) {
         Column(modifier = Modifier.padding(it)) {
             when (state) {
+                HistoryDetailsViewModel.State.ItemNotExist -> PerformanceErrorScreen(stringResource(R.string.details_item_not_found))
                 HistoryDetailsViewModel.State.Loading -> PerformanceLoadingScreen()
                 is HistoryDetailsViewModel.State.Loaded -> HistoryDetailsContentLoaded(
                     state = state,
