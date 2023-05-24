@@ -9,6 +9,10 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import pl.krystiankaniowski.performance.model.Seconds
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,8 +21,11 @@ class StatsViewModel @Inject constructor() : ViewModel() {
     sealed interface State {
         object Loading : State
         object UnderDevelopment : State
-        object Empty : State
         object Loaded : State
+        data class Daily(
+            val date: String,
+            val total: Seconds,
+        ) : State
     }
 
     sealed interface Effect
@@ -31,7 +38,12 @@ class StatsViewModel @Inject constructor() : ViewModel() {
 
     init {
         viewModelScope.launch {
-            _state.update { State.UnderDevelopment }
+            _state.update {
+                State.Daily(
+                    date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toString(),
+                    total = Seconds(0),
+                )
+            }
         }
     }
 }
