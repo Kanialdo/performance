@@ -10,11 +10,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.atStartOfDayIn
-import kotlinx.datetime.plus
+import kotlinx.datetime.atTime
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
+import pl.krystiankaniowski.performance.domain.localization.time.DateTimeFormatter
 import pl.krystiankaniowski.performance.domain.localization.time.DurationFormatter
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
 import pl.krystiankaniowski.performance.model.toSeconds
@@ -24,6 +25,7 @@ import kotlin.time.Duration.Companion.days
 @HiltViewModel
 class StatsViewModel @Inject constructor(
     private val repository: FocusRepository,
+    private val dateTimeFormatter: DateTimeFormatter,
     private val durationFormatter: DurationFormatter,
 ) : ViewModel() {
 
@@ -37,11 +39,11 @@ class StatsViewModel @Inject constructor(
     }
 
     data class FocusTime(
-        val milisStart: Long,
-        val milisEnd: Long,
+        val millsStart: Long,
+        val millsEnd: Long,
     ) {
-        val started: Float = (milisStart / 1.days.inWholeMilliseconds.toFloat())
-        val width: Float = ((milisEnd - milisStart) / 1.days.inWholeMilliseconds.toFloat())
+        val started: Float = (millsStart / 1.days.inWholeMilliseconds.toFloat())
+        val width: Float = ((millsEnd - millsStart) / 1.days.inWholeMilliseconds.toFloat())
     }
 
     sealed interface Effect
@@ -55,16 +57,15 @@ class StatsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-            repository.getAll().collect {
-                val events = it.filter {
-                    it.startDate >= now.date.atStartOfDayIn(TimeZone.currentSystemDefault()) && it.endDate < now.date.plus(DateTimeUnit.DayBased(1))
-                        .atStartOfDayIn(TimeZone.currentSystemDefault())
-                }
+            repository.getAll(
+                from = now.date.atTime(LocalTime(0, 0, 0)).toInstant(TimeZone.currentSystemDefault()),
+                to = now.date.atTime(LocalTime(23, 59, 59)).toInstant(TimeZone.currentSystemDefault()),
+            ).collect { focuses ->
                 _state.update {
                     State.Daily(
-                        date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toString(),
-                        total = durationFormatter.format(events.sumOf { (it.endDate - it.startDate).inWholeSeconds }.toSeconds()),
-                        chartData = events.map {
+                        date = dateTimeFormatter.formatDate(now.date),
+                        total = durationFormatter.format(focuses.sumOf { (it.endDate - it.startDate).inWholeSeconds }.toSeconds()),
+                        chartData = focuses.map {
                             FocusTime(
                                 it.startDate.toLocalDateTime(TimeZone.currentSystemDefault()).time.toMillisecondOfDay().toLong(),
                                 it.endDate.toLocalDateTime(TimeZone.currentSystemDefault()).time.toMillisecondOfDay().toLong(),

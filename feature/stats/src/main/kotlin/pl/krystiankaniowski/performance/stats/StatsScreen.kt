@@ -12,12 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowLeft
-import androidx.compose.material.icons.filled.ArrowRight
-import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -81,84 +78,61 @@ fun StatsScreen(
 fun StatsScreenContentDaily(state: StatsViewModel.State.Daily) {
     Column {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            IconButton(
-                enabled = false,
-                onClick = { /*TODO*/ },
-                content = { Icon(imageVector = Icons.Default.ArrowLeft, contentDescription = null) },
-            )
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
                 text = state.date,
+                style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center,
             )
-            IconButton(
-                enabled = false,
-                onClick = { /*TODO*/ },
-                content = { Icon(imageVector = Icons.Default.ArrowRight, contentDescription = null) },
-            )
         }
-        Divider()
         Column(
             modifier = Modifier.padding(8.dp),
         ) {
-//            androidx.compose.material3.ListItem(
-//                headlineContent = { Text("Focus time") },
-//                supportingContent = { Text(text = state.total, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.primary) },
-//            )
-//            androidx.compose.material3.ListItem(
-//                headlineContent = { Text("Focus distribution") },
-//                supportingContent = {
-//                    DailyStat(
-//                        data = state.chartData,
-//                    )
-//                },
-//            )
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Focus time")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(text = state.total, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.primary)
-                }
-            }
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Focus distribution")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    DailyStat(
-                        data = state.chartData,
+            Section(
+                header = stringResource(R.string.stats_focus_time),
+                content = {
+                    Text(
+                        text = state.total,
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.primary,
                     )
-                }
-            }
-
-//            Text("Focus time")
-//            Spacer(modifier = Modifier.height(8.dp))
-//            Text(text = state.total, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.primary)
-//            Spacer(modifier = Modifier.height(32.dp))
-//            Text("Focus distribution")
-//            Spacer(modifier = Modifier.height(16.dp))
-//            DailyStat(
-//                data = state.chartData,
-//            )
+                },
+            )
+            Section(
+                header = stringResource(R.string.stats_focus_distribution),
+                content = {
+                    DailyStat(data = state.chartData)
+                },
+            )
         }
     }
 }
 
-@Suppress("EmptyFunctionBlock", "UnusedPrivateMember")
+@Composable
+private fun Section(
+    header: String,
+    content: @Composable () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .border(1.dp, Color.Gray.copy(alpha = 0.25f), RoundedCornerShape(8.dp)),
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(header)
+            Spacer(modifier = Modifier.height(8.dp))
+            content()
+        }
+    }
+}
+
 @Composable
 private fun DailyStat(modifier: Modifier = Modifier, data: List<StatsViewModel.FocusTime>) {
     val c = Color.Gray.copy(alpha = 0.5f)

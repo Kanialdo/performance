@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Update
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.Instant
 import pl.krystiankaniowski.performance.database.model.FocusEntity
 
 @Dao
@@ -28,6 +29,9 @@ internal interface FocusDao {
 
     @Query("SELECT * FROM focus")
     fun getAll(): Flow<List<FocusEntity>>
+
+    @Query("SELECT * FROM focus WHERE date_start BETWEEN :minDate AND :maxDate")
+    fun getAll(minDate: Instant, maxDate: Instant): Flow<List<FocusEntity>>
 
     @Query("DELETE FROM focus WHERE uid = :id")
     suspend fun delete(id: Long)
