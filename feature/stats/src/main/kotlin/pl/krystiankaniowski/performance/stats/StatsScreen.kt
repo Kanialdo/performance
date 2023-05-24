@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowLeft
 import androidx.compose.material.icons.filled.ArrowRight
+import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -104,17 +105,55 @@ fun StatsScreenContentDaily(state: StatsViewModel.State.Daily) {
         }
         Divider()
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(8.dp),
         ) {
-            Text("Focus time")
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = state.total, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.primary)
-            Spacer(modifier = Modifier.height(32.dp))
-            Text("Focus time")
-            Spacer(modifier = Modifier.height(16.dp))
-            DailyStat(
-                data = state.chartData,
-            )
+//            androidx.compose.material3.ListItem(
+//                headlineContent = { Text("Focus time") },
+//                supportingContent = { Text(text = state.total, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.primary) },
+//            )
+//            androidx.compose.material3.ListItem(
+//                headlineContent = { Text("Focus distribution") },
+//                supportingContent = {
+//                    DailyStat(
+//                        data = state.chartData,
+//                    )
+//                },
+//            )
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text("Focus time")
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(text = state.total, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.primary)
+                }
+            }
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text("Focus distribution")
+                    Spacer(modifier = Modifier.height(4.dp))
+                    DailyStat(
+                        data = state.chartData,
+                    )
+                }
+            }
+
+//            Text("Focus time")
+//            Spacer(modifier = Modifier.height(8.dp))
+//            Text(text = state.total, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.primary)
+//            Spacer(modifier = Modifier.height(32.dp))
+//            Text("Focus distribution")
+//            Spacer(modifier = Modifier.height(16.dp))
+//            DailyStat(
+//                data = state.chartData,
+//            )
         }
     }
 }
@@ -123,7 +162,7 @@ fun StatsScreenContentDaily(state: StatsViewModel.State.Daily) {
 @Composable
 private fun DailyStat(modifier: Modifier = Modifier, data: List<StatsViewModel.FocusTime>) {
     val c = Color.Gray.copy(alpha = 0.5f)
-    Column(modifier = modifier) {
+    Column(modifier = modifier.padding(top = 8.dp, bottom = 8.dp)) {
         BoxWithConstraints(
             modifier = Modifier
                 .fillMaxWidth()
