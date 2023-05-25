@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import pl.krystiankaniowski.performance.ui.components.PerformanceFormItems
+import pl.krystiankaniowski.performance.ui.components.PerformanceLoadingScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 import pl.krystiankaniowski.performance.ui.utils.collectAsEffect
 
@@ -62,43 +63,60 @@ private fun HistoryAddContent(
                     )
                 },
                 actions = {
-                    IconButton(
-                        content = {
-                            Icon(
-                                Icons.Default.Done,
-                                stringResource(R.string.action_save),
-                            )
-                        },
-                        enabled = state.isSaveButtonEnable,
-                        onClick = { onEvent(HistoryAddViewModel.Event.OnSaveClick) },
-                    )
+                    if (state is HistoryAddViewModel.State.Loaded) {
+                        IconButton(
+                            content = {
+                                Icon(
+                                    Icons.Default.Done,
+                                    stringResource(R.string.action_save),
+                                )
+                            },
+                            enabled = state.isSaveButtonEnable,
+                            onClick = { onEvent(HistoryAddViewModel.Event.OnSaveClick) },
+                        )
+                    }
                 },
             )
         },
     ) {
         Column(modifier = Modifier.padding(it)) {
-            PerformanceFormItems.DateInput(
-                label = stringResource(R.string.add_event_start_label),
-                date = state.startDate,
-                onDateChange = { date -> onEvent(HistoryAddViewModel.Event.StartDateChange(date)) },
-            )
-            PerformanceFormItems.TimeInput(
-                label = stringResource(R.string.add_event_start_time_label),
-                time = state.startTime,
-                onTimeChange = { time -> onEvent(HistoryAddViewModel.Event.StartTimeChange(time)) },
-            )
-            PerformanceFormItems.DateInput(
-                label = stringResource(R.string.add_event_end_label),
-                date = state.endDate,
-                onDateChange = { date -> onEvent(HistoryAddViewModel.Event.EndDateChange(date)) },
-            )
-            PerformanceFormItems.TimeInput(
-                label = stringResource(R.string.add_event_end_time_label),
-                time = state.endTime,
-                onTimeChange = { time -> onEvent(HistoryAddViewModel.Event.EndTimeChange(time)) },
-            )
+            when (state) {
+                is HistoryAddViewModel.State.Loaded -> HistoryAddContentLoaded(
+                    state = state,
+                    onEvent = onEvent,
+                )
+
+                HistoryAddViewModel.State.Loading -> PerformanceLoadingScreen()
+            }
         }
     }
+}
+
+@Composable
+private fun HistoryAddContentLoaded(
+    state: HistoryAddViewModel.State.Loaded,
+    onEvent: (HistoryAddViewModel.Event) -> Unit,
+) {
+    PerformanceFormItems.DateInput(
+        label = stringResource(R.string.add_event_start_label),
+        date = state.startDate,
+        onDateChange = { date -> onEvent(HistoryAddViewModel.Event.StartDateChange(date)) },
+    )
+    PerformanceFormItems.TimeInput(
+        label = stringResource(R.string.add_event_start_time_label),
+        time = state.startTime,
+        onTimeChange = { time -> onEvent(HistoryAddViewModel.Event.StartTimeChange(time)) },
+    )
+    PerformanceFormItems.DateInput(
+        label = stringResource(R.string.add_event_end_label),
+        date = state.endDate,
+        onDateChange = { date -> onEvent(HistoryAddViewModel.Event.EndDateChange(date)) },
+    )
+    PerformanceFormItems.TimeInput(
+        label = stringResource(R.string.add_event_end_time_label),
+        time = state.endTime,
+        onTimeChange = { time -> onEvent(HistoryAddViewModel.Event.EndTimeChange(time)) },
+    )
 }
 
 @Preview
@@ -106,7 +124,7 @@ private fun HistoryAddContent(
 private fun HistoryAddContent_Preview() {
     PerformanceTheme {
         HistoryAddContent(
-            state = HistoryAddViewModel.State(
+            state = HistoryAddViewModel.State.Loaded(
                 startDate = LocalDate(2020, 10, 20),
                 startTime = LocalTime(8, 30),
                 endDate = null,

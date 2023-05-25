@@ -14,6 +14,7 @@ import pl.krystiankaniowski.performance.domain.timer.fits
 import pl.krystiankaniowski.performance.domain.timer.left
 import pl.krystiankaniowski.performance.model.Seconds
 import pl.krystiankaniowski.performance.model.toSeconds
+import pl.krystiankaniowski.performance.timer.usecase.GetProgressUseCase
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.minutes
 
@@ -22,6 +23,7 @@ class TimerViewModel @Inject constructor(
     private val timer: PerformanceTimer,
     private val timerFormatter: TimerFormatter,
     private val getCancelThresholdUseCase: GetCancelThresholdUseCase,
+    private val getProgressUseCase: GetProgressUseCase,
 ) : ViewModel() {
 
     private val seconds = 25.minutes.inWholeSeconds.toSeconds()
@@ -31,6 +33,7 @@ class TimerViewModel @Inject constructor(
             counter = timerFormatter.format(seconds),
             isTimerActive = false,
             button = State.Button.Start,
+            progress = 0f,
         ),
     )
     val state: StateFlow<State> = _state
@@ -44,6 +47,7 @@ class TimerViewModel @Inject constructor(
                             counter = timerFormatter.format(seconds),
                             isTimerActive = false,
                             button = State.Button.Start,
+                            progress = 0f,
                         )
                         is PerformanceTimer.State.Pending -> State(
                             counter = timerFormatter.format(timerState.leftSeconds),
@@ -53,6 +57,7 @@ class TimerViewModel @Inject constructor(
                             } else {
                                 State.Button.Stop
                             },
+                            progress = getProgressUseCase(timerState),
                         )
                     },
                 )
@@ -70,6 +75,7 @@ class TimerViewModel @Inject constructor(
         val counter: String,
         val isTimerActive: Boolean,
         val button: Button,
+        val progress: Float,
     ) {
 
         sealed interface Button {

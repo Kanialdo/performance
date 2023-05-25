@@ -11,4 +11,5 @@ dependencies {
     implementation(libs.androidx.core)
     implementation(libs.androidx.activity.compose)
     implementation(libs.lottie)
+    implementation(libs.accompanist.systemuicontroller)
 }
