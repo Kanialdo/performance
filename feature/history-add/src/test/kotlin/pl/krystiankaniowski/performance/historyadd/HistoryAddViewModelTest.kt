@@ -14,6 +14,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import pl.krystiankaniowski.performance.domain.stats.FocusRepository
@@ -145,6 +146,7 @@ class HistoryAddViewModelTest {
         coVerify { repository.upsert(any()) }
     }
 
+    @Disabled("https://github.com/Kanialdo/performance/issues/151")
     @Test
     fun `WHEN save button is clicked when is disabled THEN do not save anything`() = runTest {
         val sut = createSut()

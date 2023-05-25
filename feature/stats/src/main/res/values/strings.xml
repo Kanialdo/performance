@@ -2,4 +2,6 @@
 <resources>
     <string name="stats_title">Stats</string>
     <string name="stats_empty_title">No data to display</string>
+    <string name="stats_focus_time">Focus time</string>
+    <string name="stats_focus_distribution">Focus distribution</string>
 </resources>
