@@ -76,7 +76,7 @@ class HistoryListViewModelTest {
 
     @Test
     fun `WHEN add item is clicked THEN emit open add item screen event`() = runTest {
-        coEvery { getFocusListUseCase.invoke() } just Awaits
+        coEvery { getFocusListUseCase.invoke() } returns flowOf(emptyList())
 
         val sut = createSut()
 

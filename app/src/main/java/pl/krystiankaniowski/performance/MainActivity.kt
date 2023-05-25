@@ -16,12 +16,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.historyadd.HistoryAddEditArgs
 import pl.krystiankaniowski.performance.historyadd.HistoryAddScreen
 import pl.krystiankaniowski.performance.historydetails.HistoryDetailsArgs
 import pl.krystiankaniowski.performance.historydetails.HistoryDetailsScreen
 import pl.krystiankaniowski.performance.historylist.HistoryListScreen
 import pl.krystiankaniowski.performance.navigation.AndroidNavigator
 import pl.krystiankaniowski.performance.settings.SettingsScreen
+import pl.krystiankaniowski.performance.stats.StatsScreen
 import pl.krystiankaniowski.performance.timer.TimerScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 import javax.inject.Inject
@@ -53,6 +55,9 @@ class MainActivity : ComponentActivity() {
                             onNavigateToSettings = {
                                 navController.navigate("settings")
                             },
+                            onNavigateToHistory = {
+                                navController.navigate("history")
+                            },
                             onNavigateToStats = {
                                 navController.navigate("stats")
                             },
@@ -82,6 +87,22 @@ class MainActivity : ComponentActivity() {
                         ),
                     ) {
                         HistoryDetailsScreen(
+                            navigateUp = navController::navigateUp,
+                            openEditScreen = { id -> navController.navigate("history/$id/edit") },
+                        )
+                    }
+                    composable(
+                        route = "history/{${HistoryAddEditArgs.id}}/edit",
+                        arguments = listOf(
+                            navArgument(HistoryAddEditArgs.id) { type = NavType.LongType },
+                        ),
+                    ) {
+                        HistoryAddScreen(
+                            navigateUp = navController::navigateUp,
+                        )
+                    }
+                    composable(route = "stats") {
+                        StatsScreen(
                             navigateUp = navController::navigateUp,
                         )
                     }

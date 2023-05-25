@@ -13,6 +13,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -99,7 +100,7 @@ private fun HistoryListContent(
 private fun HistoryListHeader(
     item: HistoryListViewModel.State.Loaded.Item.Header,
 ) {
-    ListItem(headlineContent = { Text(item.date) })
+    ListItem(headlineContent = { Text(text = item.date, color = MaterialTheme.colorScheme.primary) })
 }
 
 @Composable
@@ -110,7 +111,7 @@ private fun HistoryListItem(
     ListItem(
         modifier = Modifier.clickable { onClick(item.id) },
         headlineContent = { Text("Focus") },
-        trailingContent = { Text(item.duration) },
+        trailingContent = { Text(text = item.duration, color = MaterialTheme.colorScheme.secondary) },
     )
 }
 

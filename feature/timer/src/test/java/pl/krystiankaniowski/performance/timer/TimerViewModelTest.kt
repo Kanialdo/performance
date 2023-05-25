@@ -15,6 +15,7 @@ import pl.krystiankaniowski.performance.domain.timer.PerformanceTimer
 import pl.krystiankaniowski.performance.model.Seconds
 import pl.krystiankaniowski.performance.model.toSeconds
 import pl.krystiankaniowski.performance.testing.rule.InstantDispatcherExtension
+import pl.krystiankaniowski.performance.timer.usecase.GetProgressUseCase
 import kotlin.time.Duration.Companion.minutes
 
 @ExtendWith(InstantDispatcherExtension::class)
@@ -23,6 +24,7 @@ class TimerViewModelTest {
     private val performanceTimer: PerformanceTimer = mockk()
     private val timerFormatter: TimerFormatter = mockk()
     private val getCancelThresholdUseCase: GetCancelThresholdUseCase = mockk()
+    private val getProgressUseCase: GetProgressUseCase = mockk()
 
     @Test
     fun `WHEN start is requested THEN start is performed on timer`() = runTest {
@@ -72,6 +74,7 @@ class TimerViewModelTest {
                 counter = "0:10",
                 isTimerActive = true,
                 button = TimerViewModel.State.Button.Stop,
+                progress = 0f,
             ),
         )
     }
@@ -94,6 +97,7 @@ class TimerViewModelTest {
                 counter = "0:10",
                 isTimerActive = true,
                 button = TimerViewModel.State.Button.Cancel(10.toSeconds()),
+                progress = 0f,
             ),
         )
     }
@@ -110,6 +114,7 @@ class TimerViewModelTest {
                 counter = "25:00",
                 isTimerActive = false,
                 button = TimerViewModel.State.Button.Start,
+                progress = 0f,
             ),
         )
     }
@@ -119,10 +124,12 @@ class TimerViewModelTest {
     ): TimerViewModel {
         coEvery { performanceTimer.state }.coAnswers { flowOf(timerState) }
         coEvery { timerFormatter.format(25.minutes.toSeconds()) } returns "25:00"
+        coEvery { getProgressUseCase.invoke(any()) } returns 0f
         return TimerViewModel(
             timer = performanceTimer,
             getCancelThresholdUseCase = getCancelThresholdUseCase,
             timerFormatter = timerFormatter,
+            getProgressUseCase = getProgressUseCase,
         )
     }
 }

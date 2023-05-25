@@ -1,21 +1,23 @@
 [versions]
-androidxComposeCompiler = "1.4.5"
-androidGradlePlugin = "8.0.1"
+androidxComposeCompiler = "1.4.7"
+androidGradlePlugin = "8.0.2"
 coroutines = "1.7.0"
 detekt = "1.22.0"
-hilt = "2.45"
+hilt = "2.46.1"
 junit5 = "5.9.3"
 junit5GradlePlugin = "1.9.3.0"
-kotlin = "1.8.20"
+kotlin = "1.8.21"
 lifecycle = "2.6.1"
-material3 = "1.1.0-rc01"
+material3 = "1.1.0"
 mockk = "1.13.5"
 protobuf = "3.22.2"
 room = "2.5.1"
 
 [libraries]
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version = "1.7.1" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version = "2023.05.00" }
+accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version = "0.30.1" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version = "1.7.2" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version = "2023.05.01" }
+androidx-compose-materialIconsExtended = { group = "androidx.compose.material", name = "material-icons-extended", version = "1.4.3" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
@@ -23,7 +25,7 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-core = { group = "androidx.core", name = "core-ktx", version = "1.10.0" }
+androidx-core = { group = "androidx.core", name = "core-ktx", version = "1.10.1" }
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version = "1.0.0" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.0.0" }
 androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
@@ -55,7 +57,7 @@ detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gr
 hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 junit5-gradlePlugin = { group = "de.mannodermaus.gradle.plugins", name = "android-junit5", version.ref = "junit5GradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version = "1.8.20-1.0.11" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version = "1.8.21-1.0.11" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

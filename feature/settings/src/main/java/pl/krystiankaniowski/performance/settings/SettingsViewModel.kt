@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import pl.krystiankaniowski.performance.architecture.update
 import pl.krystiankaniowski.performance.domain.settings.SettingsItem
 import pl.krystiankaniowski.performance.domain.settings.SettingsItems
 import pl.krystiankaniowski.performance.domain.settings.SettingsItemsProvider
@@ -32,9 +33,7 @@ class SettingsViewModel @Inject constructor(
                     }
                 }
                 map.values.forEach { it.sortBy { it.order } }
-                _state.value = State.Loaded(
-                    items = map,
-                )
+                _state.update(State.Loaded(items = map))
             }
         }
     }

@@ -11,9 +11,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:ui"))
+    implementation(project(":core:architecture"))
     implementation(project(":core:domain"))
     implementation(project(":core:model"))
+    implementation(project(":core:ui"))
 
     testImplementation(project(":core:testing"))
 
