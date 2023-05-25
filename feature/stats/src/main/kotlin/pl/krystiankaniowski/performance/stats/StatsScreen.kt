@@ -17,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowLeft
+import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,6 +39,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
+import pl.krystiankaniowski.performance.ui.components.PerformanceErrorScreen
 import pl.krystiankaniowski.performance.ui.components.PerformanceLoadingScreen
 import pl.krystiankaniowski.performance.ui.theme.PerformanceTheme
 import kotlin.time.Duration.Companion.hours
@@ -68,8 +74,11 @@ fun StatsScreen(
         ) {
             when (val state = viewModel.state.collectAsState().value) {
                 StatsViewModel.State.Loading -> PerformanceLoadingScreen()
+                StatsViewModel.State.Error -> PerformanceErrorScreen(stringResource(R.string.stats_error_occurred))
                 is StatsViewModel.State.Daily -> StatsScreenContentDaily(
                     state = state,
+                    onPreviousClick = viewModel::onPreviousClick,
+                    onNextClick = viewModel::onNextClick,
                 )
             }
         }
@@ -77,7 +86,11 @@ fun StatsScreen(
 }
 
 @Composable
-fun StatsScreenContentDaily(state: StatsViewModel.State.Daily) {
+fun StatsScreenContentDaily(
+    state: StatsViewModel.State.Daily,
+    onPreviousClick: () -> Unit,
+    onNextClick: () -> Unit,
+) {
     Column {
         Row(
             modifier = Modifier
@@ -86,6 +99,11 @@ fun StatsScreenContentDaily(state: StatsViewModel.State.Daily) {
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            IconButton(
+                onClick = onPreviousClick,
+                enabled = state.isPreviousButtonEnabled,
+                content = { Icon(imageVector = Icons.Default.ArrowLeft, contentDescription = null) },
+            )
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -93,6 +111,11 @@ fun StatsScreenContentDaily(state: StatsViewModel.State.Daily) {
                 text = state.date,
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center,
+            )
+            IconButton(
+                onClick = onNextClick,
+                enabled = state.isNextButtonEnabled,
+                content = { Icon(imageVector = Icons.Default.ArrowRight, contentDescription = null) },
             )
         }
         Column(
@@ -181,13 +204,17 @@ private fun StatsScreenContentDaily_Preview() {
             Box(modifier = Modifier.padding(it)) {
                 StatsScreenContentDaily(
                     state = StatsViewModel.State.Daily(
-                        date = "2020-02-02",
+                        date = Clock.System.todayIn(TimeZone.currentSystemDefault()).toString(),
                         total = "1h 30 min",
                         chartData = listOf(
                             StatsViewModel.FocusTime(10.hours.inWholeMilliseconds, 10.hours.inWholeMilliseconds + 25.minutes.inWholeMilliseconds),
                             StatsViewModel.FocusTime(11.hours.inWholeMilliseconds, 11.hours.inWholeMilliseconds + 25.minutes.inWholeMilliseconds),
                         ),
+                        isPreviousButtonEnabled = true,
+                        isNextButtonEnabled = false,
                     ),
+                    onPreviousClick = {},
+                    onNextClick = {},
                 )
             }
         }
