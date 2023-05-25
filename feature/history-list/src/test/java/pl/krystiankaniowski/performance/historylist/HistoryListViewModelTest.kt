@@ -9,6 +9,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -46,7 +47,7 @@ class HistoryListViewModelTest {
         val formattedDate = "01.01.2001"
         coEvery { getFocusListUseCase.invoke() } returns flowOf(listOf(Focus(id = 1, startDate = date, endDate = date)))
         coEvery { durationFormatter.format(any(), any()) } returns formattedDuration
-        coEvery { dateTimeFormatter.formatDate(any()) } returns formattedDate
+        coEvery { dateTimeFormatter.formatDate(any<Instant>()) } returns formattedDate
 
         val sut = createSut()
 
