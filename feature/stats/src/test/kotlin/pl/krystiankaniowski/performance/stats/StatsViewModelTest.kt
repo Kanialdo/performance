@@ -40,7 +40,7 @@ class StatsViewModelTest {
 
     @Test
     fun `WHEN no data is returned from repository THEN proper state is emitted`() = runTest {
-        val date = "2000-01-01"
+        val date = "date"
         val formattedTime = "0 min"
         coEvery { repository.getAll(any(), any()) } returns flowOf(emptyList())
         coEvery { dateTimeFormatter.formatDate(any<LocalDate>()) } returns date
@@ -54,8 +54,34 @@ class StatsViewModelTest {
                 date = date,
                 total = formattedTime,
                 chartData = emptyList(),
+                isPreviousButtonEnabled = true,
+                isNextButtonEnabled = false,
             ),
         )
+    }
+
+    @Test
+    fun `WHEN user move to previous days THEN move buttons have proper state`() = runTest {
+        val date = "date"
+        val formattedTime = "0 min"
+        coEvery { repository.getAll(any(), any()) } returns flowOf(emptyList())
+        coEvery { dateTimeFormatter.formatDate(any<LocalDate>()) } returns date
+        coEvery { durationFormatter.format(any<Seconds>()) } returns formattedTime
+
+        val sut = createSut()
+
+        Assertions.assertFalse((sut.state.value as StatsViewModel.State.Daily).isNextButtonEnabled)
+        Assertions.assertTrue((sut.state.value as StatsViewModel.State.Daily).isPreviousButtonEnabled)
+
+        repeat(StatsViewModel.MAX_HISTORY_DAYS - 1) {
+            sut.onPreviousClick()
+            Assertions.assertTrue((sut.state.value as StatsViewModel.State.Daily).isNextButtonEnabled)
+            Assertions.assertTrue((sut.state.value as StatsViewModel.State.Daily).isNextButtonEnabled)
+        }
+
+        sut.onPreviousClick()
+        Assertions.assertFalse((sut.state.value as StatsViewModel.State.Daily).isPreviousButtonEnabled)
+        Assertions.assertTrue((sut.state.value as StatsViewModel.State.Daily).isNextButtonEnabled)
     }
 
     @Test
@@ -84,6 +110,8 @@ class StatsViewModelTest {
                         millsEnd = LocalDateTime(2000, 1, 1, 16, 0, 0).time.toMillisecondOfDay().toLong(),
                     ),
                 ),
+                isPreviousButtonEnabled = true,
+                isNextButtonEnabled = false,
             ),
         )
     }
@@ -96,7 +124,7 @@ class StatsViewModelTest {
 
         Assertions.assertEquals(
             sut.state.value,
-            StatsViewModel.State.Loading,
+            StatsViewModel.State.Error,
         )
     }
 
