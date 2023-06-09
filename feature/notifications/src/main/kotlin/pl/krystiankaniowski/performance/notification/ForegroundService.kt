@@ -61,10 +61,10 @@ class ForegroundService : Service() {
     private fun buildNotification(contentMessage: String): Notification {
         val mainActivityName = "pl.krystiankaniowski.performance.MainActivity"
         val pendingIntent: PendingIntent = PendingIntent.getActivity(
-            /* context = */ this,
-            /* requestCode = */ 0,
-            /* intent = */ Intent(this, Class.forName(mainActivityName)),
-            /* flags = */ PendingIntent.FLAG_IMMUTABLE,
+            this, // context
+            0, // requestCode
+            Intent(this, Class.forName(mainActivityName)), // intent
+            PendingIntent.FLAG_IMMUTABLE, // flags
         )
 
         return NotificationCompat.Builder(this, Constants.CHANNEL_TIMER)
