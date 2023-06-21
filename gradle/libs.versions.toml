@@ -48,7 +48,7 @@ kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime",
 lottie = { group = "com.airbnb.android", name = "lottie-compose", version = "6.0.1" }
 mockk-core = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
-turbine = { group = "app.cash.turbine", name = "turbine", version = "0.13.0" }
+turbine = { group = "app.cash.turbine", name = "turbine", version = "1.0.0" }
 
 detekt-plugins-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
