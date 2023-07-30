@@ -2,7 +2,7 @@
 androidxComposeCompiler = "1.4.7"
 androidGradlePlugin = "8.0.2"
 coroutines = "1.7.3"
-detekt = "1.23.0"
+detekt = "1.23.1"
 hilt = "2.47"
 junit5 = "5.10.0"
 junit5GradlePlugin = "1.9.3.0"
