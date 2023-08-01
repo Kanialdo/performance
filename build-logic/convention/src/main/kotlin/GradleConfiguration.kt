@@ -15,7 +15,7 @@ internal object Versions {
 internal val Project.libs
     get() = the<LibrariesForLibs>()
 
-internal fun CommonExtension<*, *, *, *>.configureKotlinAndroid() {
+internal fun CommonExtension<*, *, *, *, *>.configureKotlinAndroid() {
     compileSdk = Versions.compileSdk
 
     defaultConfig {
@@ -49,11 +49,11 @@ internal fun CommonExtension<*, *, *, *>.configureKotlinAndroid() {
     }
 }
 
-private fun CommonExtension<*, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
+private fun CommonExtension<*, *, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
     (this as ExtensionAware).extensions.configure("kotlinOptions", block)
 }
 
-internal fun Project.configureCompose(commonExtension: CommonExtension<*, *, *, *>) {
+internal fun Project.configureCompose(commonExtension: CommonExtension<*, *, *, *, *>) {
 
     with(commonExtension) {
         kotlinOptions {
