@@ -14,5 +14,5 @@ interface AccountModule {
 
     @Binds
     @IntoSet
-    fun AccountSettingsProvider.bindAccountSettingsProvider(): SettingsItemsProvider
+    fun bindAccountSettingsProvider(impl: AccountSettingsProvider): SettingsItemsProvider
 }

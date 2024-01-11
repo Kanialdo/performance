@@ -13,8 +13,8 @@ import pl.krystiankaniowski.performance.timer.usecase.GetCancelThresholdUseCaseI
 interface TimerModule {
 
     @Binds
-    fun GetCancelThresholdUseCaseImpl.bindGetCancelThresholdUseCaseImpl(): GetCancelThresholdUseCase
+    fun bindGetCancelThresholdUseCaseImpl(impl: GetCancelThresholdUseCaseImpl): GetCancelThresholdUseCase
 
     @Binds
-    fun PerformanceTimerImpl.bindPerformanceTimerImpl(): PerformanceTimer
+    fun bindPerformanceTimerImpl(impl: PerformanceTimerImpl): PerformanceTimer
 }

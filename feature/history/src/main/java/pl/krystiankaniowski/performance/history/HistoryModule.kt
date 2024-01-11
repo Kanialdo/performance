@@ -14,5 +14,5 @@ interface HistoryModule {
 
     @Binds
     @IntoSet
-    fun HistoryTimerObserver.bindStatsTimerObserver(): TimerObserver
+    fun bindStatsTimerObserver(impl: HistoryTimerObserver): TimerObserver
 }

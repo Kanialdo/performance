@@ -28,10 +28,10 @@ object VibrationModule {
 
         @Binds
         @IntoSet
-        fun VibrationSettingsProvider.bindVibrationSettingsProvider(): SettingsItemsProvider
+        fun bindVibrationSettingsProvider(impl: VibrationSettingsProvider): SettingsItemsProvider
 
         @Binds
         @IntoSet
-        fun VibrationTimerObserver.bindVibrationTimerObserver(): TimerObserver
+        fun bindVibrationTimerObserver(impl: VibrationTimerObserver): TimerObserver
     }
 }

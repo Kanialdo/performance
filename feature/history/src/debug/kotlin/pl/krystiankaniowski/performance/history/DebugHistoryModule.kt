@@ -14,5 +14,5 @@ interface DebugHistoryModule {
 
     @Binds
     @IntoSet
-    fun DebugHistorySettingsProvider.bindDebugStatsSettingsProvider(): SettingsItemsProvider
+    fun bindDebugStatsSettingsProvider(impl: DebugHistorySettingsProvider): SettingsItemsProvider
 }
