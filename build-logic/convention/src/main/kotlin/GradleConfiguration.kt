@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 internal object Versions {
     val java = JavaVersion.VERSION_17
     const val minSdk = 26
-    const val compileSdk = 33
+    const val compileSdk = 34
 }
 
 internal val Project.libs
