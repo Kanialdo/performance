@@ -14,5 +14,5 @@ interface AboutModule {
 
     @Binds
     @IntoSet
-    fun AboutSettingsProvider.bindDndSettingsProvider(): SettingsItemsProvider
+    fun bindDndSettingsProvider(impl: AboutSettingsProvider): SettingsItemsProvider
 }

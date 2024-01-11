@@ -12,5 +12,5 @@ import pl.krystiankaniowski.performance.navigation.AndroidNavigator
 interface AppModule {
 
     @Binds
-    fun AndroidNavigator.bindAndroidNavigator(): Navigator
+    fun bindAndroidNavigator(impl: AndroidNavigator): Navigator
 }

@@ -11,5 +11,5 @@ import pl.krystiankaniowski.performance.domain.repository.AppSettingsRepository
 interface DatastoreModule {
 
     @Binds
-    fun PerformanceDataStore.bindPerformanceDataStore(): AppSettingsRepository
+    fun bindPerformanceDataStore(impl: PerformanceDataStore): AppSettingsRepository
 }

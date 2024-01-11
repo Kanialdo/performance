@@ -18,14 +18,14 @@ import pl.krystiankaniowski.performance.localization.time.TimerFormatterImpl
 interface LocalizationModule {
 
     @Binds
-    fun StringsProviderImpl.bindStringsProviderImpl(): StringsProvider
+    fun bindStringsProviderImpl(impl: StringsProviderImpl): StringsProvider
 
     @Binds
-    fun DateTimeFormatterImpl.bindDateTimeFormatterImpl(): DateTimeFormatter
+    fun bindDateTimeFormatterImpl(impl: DateTimeFormatterImpl): DateTimeFormatter
 
     @Binds
-    fun DurationFormatterImpl.bindDurationFormatterImpl(): DurationFormatter
+    fun bindDurationFormatterImpl(impl: DurationFormatterImpl): DurationFormatter
 
     @Binds
-    fun TimerFormatterImpl.bindTimerFormatterImpl(): TimerFormatter
+    fun bindTimerFormatterImpl(impl: TimerFormatterImpl): TimerFormatter
 }

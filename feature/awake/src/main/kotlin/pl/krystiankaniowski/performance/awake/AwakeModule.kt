@@ -14,5 +14,5 @@ interface AwakeModule {
 
     @Binds
     @IntoSet
-    fun AwakeSettingsProvider.bindAwakeSettingsProvider(): SettingsItemsProvider
+    fun bindAwakeSettingsProvider(impl: AwakeSettingsProvider): SettingsItemsProvider
 }

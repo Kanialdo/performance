@@ -16,9 +16,9 @@ interface SoundModule {
 
     @Binds
     @IntoSet
-    fun SoundSettingsProvider.bindSoundSettingsProvider(): SettingsItemsProvider
+    fun bindSoundSettingsProvider(impl: SoundSettingsProvider): SettingsItemsProvider
 
     @Binds
     @IntoSet
-    fun SoundTimerObserver.bindSoundTimerObserver(): TimerObserver
+    fun bindSoundTimerObserver(impl: SoundTimerObserver): TimerObserver
 }

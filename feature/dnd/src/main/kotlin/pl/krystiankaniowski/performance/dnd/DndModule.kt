@@ -23,22 +23,22 @@ import pl.krystiankaniowski.performance.domain.timer.TimerObserver
 interface DndModule {
 
     @Binds
-    fun TurnOnDoNotDisturbUseCaseImpl.bindTurnOnDoNotDisturbUseCase(): TurnOnDoNotDisturbUseCase
+    fun bindTurnOnDoNotDisturbUseCase(impl: TurnOnDoNotDisturbUseCaseImpl): TurnOnDoNotDisturbUseCase
 
     @Binds
-    fun TurnOffDoNotDisturbUseCaseImpl.bindTurnOffDoNotDisturbUseCase(): TurnOffDoNotDisturbUseCase
+    fun bindTurnOffDoNotDisturbUseCase(impl: TurnOffDoNotDisturbUseCaseImpl): TurnOffDoNotDisturbUseCase
 
     @Binds
-    fun IsDoNotDisturbEnabledUseCaseImpl.bindIsDoNotDisturbEnabledUseCase(): IsDoNotDisturbEnabledUseCase
+    fun bindIsDoNotDisturbEnabledUseCase(impl: IsDoNotDisturbEnabledUseCaseImpl): IsDoNotDisturbEnabledUseCase
 
     @Binds
-    fun SetDoNotDisturbEnabledUseCaseImpl.bindSetDoNotDisturbEnabledUseCase(): SetDoNotDisturbEnabledUseCase
-
-    @Binds
-    @IntoSet
-    fun DndSettingsProvider.bindDndSettingsProvider(): SettingsItemsProvider
+    fun bindSetDoNotDisturbEnabledUseCase(impl: SetDoNotDisturbEnabledUseCaseImpl): SetDoNotDisturbEnabledUseCase
 
     @Binds
     @IntoSet
-    fun DndTimerObserver.bindDndTimerObserver(): TimerObserver
+    fun bindDndSettingsProvider(impl: DndSettingsProvider): SettingsItemsProvider
+
+    @Binds
+    @IntoSet
+    fun bindDndTimerObserver(impl: DndTimerObserver): TimerObserver
 }

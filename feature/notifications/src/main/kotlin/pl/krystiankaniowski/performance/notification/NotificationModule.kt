@@ -29,14 +29,14 @@ object NotificationModule {
 
         @Binds
         @IntoSet
-        fun NotificationsInitializer.bindNotificationsInitializer(): Initializer
+        fun bindNotificationsInitializer(impl: NotificationsInitializer): Initializer
 
         @Binds
         @IntoSet
-        fun NotificationSettingsProvider.bindNotificationSettingsProvider(): SettingsItemsProvider
+        fun bindNotificationSettingsProvider(impl: NotificationSettingsProvider): SettingsItemsProvider
 
         @Binds
         @IntoSet
-        fun NotificationTimerObserver.bindNotificationTimerObserver(): TimerObserver
+        fun bindNotificationTimerObserver(impl: NotificationTimerObserver): TimerObserver
     }
 }
