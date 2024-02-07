@@ -1,5 +1,5 @@
 [versions]
-androidxComposeCompiler = "1.4.7"
+androidxComposeCompiler = "1.5.8"
 androidGradlePlugin = "8.2.1"
 coroutines = "1.7.3"
 detekt = "1.23.4"
@@ -29,7 +29,7 @@ androidx-core = { group = "androidx.core", name = "core-ktx", version = "1.12.0"
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version = "1.0.0" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.1.0" }
 androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version = "2.7.6" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version = "2.7.7" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
