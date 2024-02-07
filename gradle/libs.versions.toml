@@ -11,7 +11,7 @@ lifecycle = "2.7.0"
 material3 = "1.1.2"
 mockk = "1.13.9"
 protobuf = "3.22.2"
-room = "2.5.2"
+room = "2.6.1"
 
 [libraries]
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version = "0.34.0" }
