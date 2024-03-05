@@ -1,9 +1,16 @@
+import dagger.hilt.android.plugin.HiltExtension
+
 plugins {
-    kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp")
+}
+
+extensions.configure<HiltExtension> {
+    enableAggregatingTask = false
+    enableExperimentalClasspathAggregation = true
 }
 
 dependencies {
     add("implementation", libs.hilt.android)
-    add("kapt", libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 }

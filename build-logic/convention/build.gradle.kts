@@ -14,6 +14,7 @@ dependencies {
     implementation(libs.junit5.gradlePlugin)
     implementation(libs.kotlin.gradlePlugin)
     implementation(libs.ksp.gradlePlugin)
+    implementation(libs.room.gradlePlugin)
 
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
