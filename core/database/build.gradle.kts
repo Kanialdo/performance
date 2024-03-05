@@ -1,16 +1,18 @@
+import androidx.room.gradle.RoomExtension
+
 plugins {
     id("performance.android.library")
     id("performance.android.hilt")
     id("performance.ksp")
+    id("androidx.room")
 }
 
 android {
     namespace = "pl.krystiankaniowski.performance.database"
 }
 
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-    arg("room.incremental", "true")
+extensions.configure<RoomExtension> {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {

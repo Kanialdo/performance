@@ -1,6 +1,5 @@
 plugins {
     id("performance.android.application")
-    kotlin("kapt")
 }
 
 android {
@@ -23,10 +22,6 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
-}
-
-kapt {
-    correctErrorTypes = true
 }
 
 dependencies {
