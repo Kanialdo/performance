@@ -1,6 +1,6 @@
 [versions]
 androidxComposeCompiler = "1.5.8"
-androidGradlePlugin = "8.3.0"
+androidGradlePlugin = "8.3.1"
 coroutines = "1.8.0"
 detekt = "1.23.5"
 hilt = "2.51"
