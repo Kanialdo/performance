@@ -11,6 +11,13 @@
       "matchPackagePatterns": [
         "^org\\.jetbrains\\.kotlin[.:]"
       ]
+    },
+    {
+      "groupName": "Compose",
+      "matchPackagePrefixes": [
+        "androidx.compose:compose-bom",
+        "androidx.compose.material:material-icons-extended",
+      ],
     }
   ],
   "extends": [
