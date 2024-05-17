@@ -6,7 +6,7 @@ detekt = "1.23.6"
 hilt = "2.51.1"
 junit5 = "5.10.2"
 junit5GradlePlugin = "1.10.0.0"
-kotlin = "1.9.22"
+kotlin = "1.9.24"
 lifecycle = "2.8.0"
 material3 = "1.2.1"
 mockk = "1.13.11"
@@ -57,7 +57,7 @@ detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gr
 hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 junit5-gradlePlugin = { group = "de.mannodermaus.gradle.plugins", name = "android-junit5", version.ref = "junit5GradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version = "1.9.22-1.0.18" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version = "1.9.24-1.0.20" }
 room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
 
 [plugins]
