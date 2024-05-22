@@ -3,6 +3,7 @@ plugins {
     kotlin("android")
     id("performance.android.hilt")
     id("performance.junit5")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
