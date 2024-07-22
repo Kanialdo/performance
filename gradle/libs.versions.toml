@@ -9,7 +9,7 @@ junit5GradlePlugin = "1.10.0.0"
 kotlin = "1.9.22"
 lifecycle = "2.8.3"
 material3 = "1.2.1"
-mockk = "1.13.11"
+mockk = "1.13.12"
 protobuf = "3.22.2"
 room = "2.6.1"
 
