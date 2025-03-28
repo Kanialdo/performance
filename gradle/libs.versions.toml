@@ -16,7 +16,7 @@ room = "2.6.1"
 [libraries]
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version = "0.36.0" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version = "1.9.3" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version = "2025.03.00" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version = "2025.03.01" }
 androidx-compose-materialIconsExtended = { group = "androidx.compose.material", name = "material-icons-extended", version = "1.7.8" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
